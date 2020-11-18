@@ -20,5 +20,8 @@
     "url": "https://github.com/dotaallstars200/E-learning-Express-Website/issues"
   },
   "homepage": "https://github.com/dotaallstars200/E-learning-Express-Website#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
