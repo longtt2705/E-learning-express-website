@@ -1,0 +1,24 @@
+{
+  "name": "elearning",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dotaallstars200/E-learning-Express-Website.git"
+  },
+  "keywords": [
+    "elearning",
+    "express",
+    "website"
+  ],
+  "author": "Long Nang Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dotaallstars200/E-learning-Express-Website/issues"
+  },
+  "homepage": "https://github.com/dotaallstars200/E-learning-Express-Website#readme",
+  "description": ""
+}
