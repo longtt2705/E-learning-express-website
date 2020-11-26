@@ -6,6 +6,10 @@
     color: #fff;
 }
 
+.navbar .icon {
+    font-size: 30pt;
+}
+
 .navbar .nav-link:hover,
 .navbar .nav-link:focus {
     color: #fff;
@@ -47,4 +51,44 @@
         color: #fff;
     }
 
+}
+
+.goals img {
+    height: 150px;
+    width: 100%;
+    padding: 20px;
+}
+
+.goals .card {
+    border-width: 0px;
+    border-radius: 5%;
+    box-sizing: border-box;
+}
+
+.banner img {
+    width: 100%;
+    position: relative;
+}
+
+.banner .caption {
+    position: absolute;
+    width: 50%;
+    top: 50%;
+    left: 10%;
+    transform: translate(0%, -50%);
+}
+
+.banner .caption #join-button {
+    margin-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: mintcream;
+    font-weight: bold;
+}
+
+/* Change navbar styling on small viewports */
+@media (max-width: 1200px) {
+    .banner {
+        display: none;
+    }
 }

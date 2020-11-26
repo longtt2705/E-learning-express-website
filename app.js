@@ -22,7 +22,9 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
  
 app.get('/', function (req, res) {
-    res.render('home');
+    res.render('home', {
+        layout: false,
+    });
 });
  
 app.listen(PORT, ()=> {
