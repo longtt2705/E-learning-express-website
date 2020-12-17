@@ -1,0 +1,77 @@
+.cards-group {
+    margin-top: 100px;
+}
+
+.cards-group .card {
+    margin: 20px;
+}
+
+.cards-group img {
+    
+    width: 100%;
+    padding: 20px;
+}
+
+.cards-group .card {
+    border-width: 0px;
+    border-radius: 5%;
+    box-sizing: border-box;
+}
+
+.catgories .card-img-top {
+    padding: 0;
+}
+
+.catgories .card {
+    padding: 0;
+}
+
+.banner img {
+    width: 100%;
+    position: relative;
+}
+
+.banner .caption {
+    position: absolute;
+    width: 50%;
+    top: 50%;
+    left: 10%;
+    transform: translate(0%, -50%);
+}
+
+.banner .caption #join-button {
+    margin-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: mintcream;
+    font-weight: bold;
+}
+
+.banner-outcome {
+    position: relative;
+}
+
+.banner-outcome img {
+    margin-top: 100px;
+    width: 100%;
+}
+
+.banner-outcome .caption {
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    font-size: 16pt;
+    transform: translate(0%, -50%);
+}
+
+/* Change navbar styling on small viewports */
+@media (max-width: 1200px) {
+    .banner {
+        display: none;
+    }
+
+    .banner-outcome {
+        display: none;
+    }
+}
+

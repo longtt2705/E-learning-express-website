@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sign-up Page</title>
+    <!--Made with love by Mutiullah Samim -->
+
+    <!--Bootsrap 4 CDN-->
+    <link rel=" stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <!--Custom styles-->
+    <link rel="stylesheet" type="text/css" href="/styles/account.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-center h-100">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Sign Up</h3>
+                    <div class="d-flex justify-content-end social_icon">
+                        <a href="/"><i class="fab fa-facebook-square"></i></a>
+                        <a href="/auth/google"><i class="fab fa-google-plus-square"></i></a>
+                        <a href="/"><i class="fab fa-twitter-square"></i></a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" id="frmRegister" onsubmit="">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            </div>
+                            <input id="email" type="email" class="form-control" placeholder="email" name="email"
+                                autofocus>
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input id="password" type="password" class="form-control" placeholder="password"
+                                name="password">
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input id="password-confirm" type="password" class="form-control"
+                                placeholder="confirm your password">
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input id="name" type="text" class="form-control" placeholder="name" name="name">
+
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            </div>
+                            <input id="phone" type="text" class="form-control" placeholder="phone" name="phone">
+
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Sign Up" class="btn float-right login_btn">
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center links">
+                        Already have an account?
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <a href="/account/login">Login now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.8.1/dist/sweetalert2.all.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $("#frmRegister").on("submit", function (e) {
+
+            e.preventDefault();
+
+            const email = $('#email').val();
+            if (email.length === 0) {
+                errorMessage("Email cannot be empty!")
+                return;
+            }
+
+            const password = $('#password').val();
+            if (password.length < 6) {
+                errorMessage("Password must have at least 6 characters!")
+                return;
+            }
+
+            const passwordConfirm = $('#password-confirm').val();
+            if (passwordConfirm !== password) {
+                errorMessage("Password and confirm password must be the same!")
+                return;
+            }
+
+            const name = $('#name').val();
+            if (name.length === 0) {
+                errorMessage("Name cannot be empty!")
+                return;
+            }
+
+            const phone = $('#phone').val();
+            if (phone.length !== 0) {
+                const isNum = /^\d+$/.test(phone);
+                if (!isNum) {
+                    errorMessage("Phone numbers only contains digits!")
+                    return;
+                }
+                if (phone.length > 10) {
+
+                    errorMessage("Phone numbers must contains less than 10 digits!")
+                    return;
+                }
+            }
+
+            $.getJSON(`/account/is-available?user=${email}`, function (data) {
+                if (data === true) {
+                    $('#frmRegister').off('submit').submit();
+                } else {
+                    errorMessage("Email already exists!")
+                }
+            })
+        });
+
+        function errorMessage(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message,
+
+            });
+        }
+    </script>
+</body>
+
+</html>
