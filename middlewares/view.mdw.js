@@ -13,6 +13,20 @@ module.exports = (app) => {
         format(val) {
           return numeral(val).format("0,0");
         },
+        starPrint: function (value, option) {
+          //In ngoi sao cua khoa hoc dua vao so diem danh gia
+          var str = "";
+          let index = 0;
+          for (; index < value; index++) {
+            str = str + "<span class='fa fa-star checked'> </span>";
+          }
+
+          for (; index < 5; index++) {
+            str = str + "<span class='fa fa-star'> </span>";
+          }
+
+          return str + option.fn({ result: "" });
+        },
       },
     })
   );
