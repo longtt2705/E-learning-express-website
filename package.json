@@ -23,8 +23,11 @@
   "homepage": "https://github.com/dotaallstars200/E-learning-Express-Website#readme",
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
     "express-handlebars": "^5.2.0",
+    "mdb-ui-kit": "^3.0.0",
     "serve-favicon": "^2.5.0"
   }
 }

@@ -2,8 +2,8 @@ footer {
     width: 100%;
     margin-top: 50px;
     padding-top: 10px;
-    background-color: cornflowerblue;
-    color: white;
+    background-color: #d82a4e;
+    color: white !important;
 }
 
 footer .title {
@@ -23,7 +23,7 @@ footer a {
 
 footer a:hover {
     text-decoration: none;
-    color: lightblue;
+    color: rgb(223, 140, 151);
 }
 
 footer h4 {
@@ -48,10 +48,10 @@ footer .contact {
     text-align: center;
     line-height: 50px;
     font-size: 20pt;
-    background-color: rgb(76, 133, 240);
+    background-color:  #ec2b52;
     border-radius: 50%;
 }
 
 footer .contact:hover {
-    background-color: darkblue;
+    background-color: #f31d48;
 }

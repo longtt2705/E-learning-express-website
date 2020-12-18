@@ -1,68 +1,29 @@
-.navbar {
-    transition: all 0.4s;
+.cards-group {
+    margin-top: 100px;
 }
 
-.navbar .nav-link {
-    color: #fff;
+.cards-group .card {
+    margin: 20px;
 }
 
-.navbar .icon {
-    font-size: 30pt;
-}
-
-.navbar .nav-link:hover,
-.navbar .nav-link:focus {
-    color: #fff;
-    text-decoration: none;
-}
-
-.navbar .navbar-brand {
-    color: #fff;
-}
-
-
-/* Change navbar styling on scroll */
-.navbar.active {
-    background-color: cornflowerblue;
-    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.navbar.active .nav-link {
-    color: #fff;
-}
-
-.navbar.active .nav-link:hover,
-.navbar.active .nav-link:focus {
-    text-decoration: none;
-}
-
-.navbar.active .navbar-brand {
-    color: #fff;
-}
-
-
-/* Change navbar styling on small viewports */
-@media (max-width: 1200px) {
-    .navbar {
-        background-color: cornflowerblue;
-    }
-
-    .navbar .navbar-brand, .navbar .nav-link {
-        color: #fff;
-    }
-
-}
-
-.goals img {
-    height: 150px;
+.cards-group img {
+    
     width: 100%;
     padding: 20px;
 }
 
-.goals .card {
+.cards-group .card {
     border-width: 0px;
     border-radius: 5%;
     box-sizing: border-box;
+}
+
+.catgories .card-img-top {
+    padding: 0;
+}
+
+.catgories .card {
+    padding: 0;
 }
 
 .banner img {
@@ -86,9 +47,31 @@
     font-weight: bold;
 }
 
+.banner-outcome {
+    position: relative;
+}
+
+.banner-outcome img {
+    margin-top: 100px;
+    width: 100%;
+}
+
+.banner-outcome .caption {
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    font-size: 16pt;
+    transform: translate(0%, -50%);
+}
+
 /* Change navbar styling on small viewports */
 @media (max-width: 1200px) {
     .banner {
         display: none;
     }
+
+    .banner-outcome {
+        display: none;
+    }
 }
+
