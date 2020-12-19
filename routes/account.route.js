@@ -6,8 +6,6 @@ const encryptTimes = 10;
 const router = express.Router();
 const mailer = require("../middlewares/mailer.mdw");
 const jwt = require("jsonwebtoken");
-const { assign } = require("nodemailer/lib/shared");
-const { async } = require("crypto-random-string");
 
 router.get("/login", async function (req, res) {
   if (req.session.isAuth) res.redirect("/");
@@ -49,6 +47,8 @@ router.post("/login", async function (req, res) {
     });
   }
 
+  user.isAdmin = user.RoleId == 1;
+  console.log(user.isAdmin);
   req.session.isAuth = true;
   req.session.authUser = user;
 

@@ -1,10 +1,11 @@
 const express = require("express");
-
+const auth = require("../middlewares/auth.mdw");
+const bcrypt = require("bcryptjs");
+const encryptTimes = 10;
+const accountModel = require("../models/account.model");
 const router = express.Router();
 
-const datetime = new Date();
-
-router.get("/dashboard", async function (req, res) {
+router.get("/", auth, isAdmin, async function (req, res) {
   const active = getActive("dashboard");
   res.render("viewAdmin/dashboard", {
     layout: "admin.hbs",
@@ -12,33 +13,50 @@ router.get("/dashboard", async function (req, res) {
   });
 });
 
-router.get("/course", async function (req, res) {
-  const active = getActive("course");
-  res.render("viewAdmin/pages/courses", {
+router.get("/account", auth, isAdmin, async function (req, res) {
+  const active = getActive("account");
+  res.render("viewAdmin/account/account", {
     layout: "admin.hbs",
     active,
   });
 });
 
-router.get("/course/add", async function (req, res) {
+router.get("/account/add", auth, isAdmin, async function (req, res) {
   const active = getActive("add");
-  res.render("viewAdmin/pages/course-add", {
+  res.render("viewAdmin/account/account-add", {
     layout: "admin.hbs",
     active,
   });
 });
 
-router.get("/course/edit", async function (req, res) {
+router.post("/account/add", async function (req, res) {
+  const hash = bcrypt.hashSync(req.body.password, encryptTimes);
+  const account = {
+    username: req.body.email,
+    password: hash,
+    phone: req.body.phone,
+    balance: 0.0,
+    name: req.body.name,
+    image: "avatar.jpg",
+    statusid: 4,
+    roleid: req.body.roleid,
+  };
+
+  await accountModel.add(account);
+  res.redirect("../account/add");
+});
+
+router.get("/account/edit", auth, isAdmin, async function (req, res) {
   const active = getActive("edit");
-  res.render("viewAdmin/pages/course-edit", {
+  res.render("viewAdmin/account/account-edit", {
     layout: "admin.hbs",
     active,
   });
 });
 
-router.get("/course/detail", async function (req, res) {
+router.get("/account/detail", auth, async function (req, res) {
   const active = getActive("detail");
-  res.render("viewAdmin/pages/course-detail", {
+  res.render("viewAdmin/account/account-detail", {
     layout: "admin.hbs",
     active,
   });
@@ -64,21 +82,12 @@ const getActive = (name) => {
   return active;
 };
 
-router.post("/course/add", async function (req, res) {
-  console.log("add");
-  const course = {
-    name: req.body.title,
-    price: req.body.price,
-    image: req.body.image,
-    coursedescription: req.body.description,
-    coursedetail: req.body.detail,
-    statusid: req.body.statusid,
-    updatedate: datetime,
-    categoryId: req.body.category,
-  };
+function isAdmin(req, res, next) {
+  if (req.session.authUser.RoleId != 1) {
+    return res.redirect("../");
+  }
 
-  await courseModel.add(course);
-  res.redirect("../admin/course");
-});
+  next();
+}
 
 module.exports = router;

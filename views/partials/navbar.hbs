@@ -15,7 +15,8 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <a href="#" class="nav-link font-weight-bold">Categories
-                        <span class="sr-only">(current)</span></a></li>
+                        <span class="sr-only">(current)</span></a>
+                </li>
                 <li class="nav-item"><a href="#" class="nav-link font-weight-bold">About</a></li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -53,6 +54,13 @@
                             <i class="fa fa-user" aria-hidden="true"></i>
                             Profile
                         </a>
+                        {{!-- <div class="dropdown-divider"></div> --}}
+                        {{#if authUser.isAdmin}}
+                        <a class="dropdown-item" href="/admin/">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            Administrator
+                        </a>
+                        {{/if}}
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="javascript: $('#frmLogout').submit();">
                             <i class="fa fa-sign-out" aria-hidden="true"></i>
@@ -68,7 +76,6 @@
                     <a href="/account/signup" class="btn btn-outline-light my-2 my-sm-0 font-weight-bold">Sign up</a>
                 </li>
                 {{/if}}
-
             </ul>
         </div>
     </div>

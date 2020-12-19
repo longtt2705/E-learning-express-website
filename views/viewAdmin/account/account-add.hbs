@@ -1,0 +1,159 @@
+{{#section 'title'}}
+<title>Add Account</title>
+{{/section}}
+
+{{#section 'script'}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.8.1/dist/sweetalert2.all.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $("#frmRegister").on("submit", function (e) {
+
+        e.preventDefault();
+
+        const email = $('#email').val();
+        if (email.length === 0) {
+            errorMessage("Email cannot be empty!")
+            return;
+        }
+
+        const password = $('#password').val();
+        if (password.length < 6) {
+            errorMessage("Password must have at least 6 characters!")
+            return;
+        }
+
+        const passwordConfirm = $('#password-confirm').val();
+        if (passwordConfirm !== password) {
+            errorMessage("Password and confirm password must be the same!")
+            return;
+        }
+
+        const name = $('#name').val();
+        console.log(name)
+        if (name.length === 0) {
+            errorMessage("Name cannot be empty!")
+            return;
+        }
+
+        const phone = $('#phone').val();
+        if (phone.length !== 0) {
+            const isNum = /^\d+$/.test(phone);
+            if (!isNum) {
+                errorMessage("Phone numbers only contains digits!")
+                return;
+            }
+            if (phone.length > 10) {
+
+                errorMessage("Phone numbers must contains less than 10 digits!")
+                return;
+            }
+        }
+
+        $.getJSON(`/account/is-available?user=${email}`, function (data) {
+            if (data === true) {
+                $('#frmRegister').off('submit').submit();
+            } else {
+                errorMessage("Email already exists!")
+            }
+        })
+    });
+
+    function errorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: message,
+
+        });
+    }
+</script>
+{{/section}}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Account Add</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Account Add</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content container ">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title font-weight-bold">Add an account</h3>
+
+
+            </div>
+            <div class="card-body">
+                <form action="" method="POST" id="frmRegister">
+                    <label for="email">Information</label>
+                    <div class="ml-2">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            </div>
+                            <input id="email" type="email" class="form-control" placeholder="email" name="email"
+                                autofocus>
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input id="password" type="password" class="form-control" placeholder="password"
+                                name="password">
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input id="password-confirm" type="password" class="form-control"
+                                placeholder="confirm your password">
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input id="name" type="text" class="form-control" placeholder="name" name="name">
+
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            </div>
+                            <input id="phone" type="text" class="form-control" placeholder="phone" name="phone">
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputStatus">Roles</label>
+                        <select id="inputStatus" class="form-control custom-select ml-2" name="roleid">
+                            <option value="2">Student</option>
+                            <option value="3">Teacher</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Add" class="btn float-right btn-success">
+
+                    </div>
+                    <a href="/admin/account" class="btn float-left btn-secondary ml-2">Cancel</a>
+                </form>
+            </div>
+            <!-- /.card-body -->
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>
