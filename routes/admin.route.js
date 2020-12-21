@@ -15,9 +15,15 @@ router.get("/", auth, isAdmin, async function (req, res) {
 
 router.get("/account", auth, isAdmin, async function (req, res) {
   const active = getActive("account");
+  const rows = await accountModel.allWithoutAdmin();
+  rows.forEach((e) => {
+    e.isVerified = e.StatusId == 4;
+  });
   res.render("viewAdmin/account/account", {
     layout: "admin.hbs",
     active,
+    items: rows,
+    isEmpty: rows.length === 0,
   });
 });
 
@@ -29,7 +35,7 @@ router.get("/account/add", auth, isAdmin, async function (req, res) {
   });
 });
 
-router.post("/account/add", async function (req, res) {
+router.post("/account/add", auth, isAdmin, async function (req, res) {
   const hash = bcrypt.hashSync(req.body.password, encryptTimes);
   const account = {
     username: req.body.email,
@@ -46,15 +52,39 @@ router.post("/account/add", async function (req, res) {
   res.redirect("../account/add");
 });
 
-router.get("/account/edit", auth, isAdmin, async function (req, res) {
+router.get("/account/edit/:username", auth, isAdmin, async function (req, res) {
   const active = getActive("edit");
+  let account = await accountModel.singleByUserNameWithoutProvider(
+    req.params.username
+  );
+  account.isStudent = account.RoleId === 2;
   res.render("viewAdmin/account/account-edit", {
     layout: "admin.hbs",
     active,
+    account,
   });
 });
 
-router.get("/account/detail", auth, async function (req, res) {
+router.post("/account/edit/:user", auth, isAdmin, async function (req, res) {
+  const account = await accountModel.singleByUserNameWithoutProvider(
+    req.body.email
+  );
+  account.Phone = req.body.phone;
+  account.Name = req.body.name;
+  account.RoleId = req.body.roleid;
+
+  await accountModel.patch(account);
+  res.redirect("../");
+});
+
+router.post("/account/delete", auth, isAdmin, async function (req, res) {
+  const username = req.body.username;
+
+  await accountModel.delete(username);
+  res.redirect("../account");
+});
+
+router.get("/account/detail", auth, isAdmin, async function (req, res) {
   const active = getActive("detail");
   res.render("viewAdmin/account/account-detail", {
     layout: "admin.hbs",

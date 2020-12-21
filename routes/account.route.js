@@ -107,7 +107,7 @@ router.get("/confirmation", function (req, res) {
     const email = decoded.data;
     const rows = await accountModel.singleByUserName(email);
     rows.StatusId = 4;
-    await accountModel.updateConfirmEmail(rows);
+    await accountModel.patch(rows);
 
     req.session.isAuth = true;
     req.session.authUser = await accountModel.singleByUserName(email);
