@@ -12,13 +12,13 @@
         </button>
         <form id="frmLogout" method="POST" action="/account/logout"></form>
         <div id="navbarSupportedContent" class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto" id="category">
                 <li class="nav-item active dropdown">
-                    <a href="#" class="nav-link font-weight-bold dropdown-toggle" data-toggle="dropdown">Categories
+                    <a href="#" class="nav-link font-weight-bold dropdown-toggle" data-toggle="dropdown" onclick="click();">Categories
                         <span class="sr-only">(current)</span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-submenu">
-                            <a class="dropdown-item dropdown-toggle font-weight-bold text-white" data-toggle="dropdown" href="#">Development</a>
+                            <a href="#" class="dropdown-item dropdown-toggle font-weight-bold text-white" data-toggle="dropdown">Development</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item font-weight-bold text-white" href="#">Web Development</a></li>
                                 <li><a class="dropdown-item font-weight-bold text-white" href="#">Data Science</a></li>
@@ -26,7 +26,7 @@
                             </ul>
                         </li>
                         <li class="dropdown-submenu">
-                            <a class="dropdown-item dropdown-toggle font-weight-bold text-white" data-toggle="dropdown" href="#">IT &amp; Software</a>
+                            <a href="#" class="dropdown-item dropdown-toggle font-weight-bold text-white" data-toggle="dropdown" >IT &amp; Software</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item font-weight-bold text-white" href="#">Javascript</a></li>
                                 <li><a class="dropdown-item font-weight-bold text-white" href="#">Python</a></li>
@@ -129,11 +129,15 @@
         transform: rotate(-90deg);
     }
 
-    .navbar-nav li:hover .dropdown-menu{
+    #category li:hover .dropdown-menu{
         background-color:lightgray;
     }
 
-    .navbar-nav li:hover .dropdown-menu .dropdown-item:hover{
+    #category li:hover .dropdown-menu .dropdown-item:hover{
         background-color:darkgray;
     }
 </style>
+
+<script>
+    const click ()=> false;
+</script>
