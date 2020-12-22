@@ -4,6 +4,15 @@
 
 {{#section 'script'}}
 <script src="/js/main.js"></script>
+<script>
+    const container = document.querySelector('#course-container');
+    console.log(container);
+    mixitup(container, {
+        selectors: {
+            control: '[data-mixitup-control]'
+        }
+    })
+</script>
 {{/section}}
 
 <!-- Page Preloder -->
@@ -104,13 +113,13 @@
 
     <div class="course-warp">
         <ul class="course-filter controls">
-            <li class="control active" data-filter="all">All</li>
-            <li class="control" data-filter=".finance">Finance</li>
-            <li class="control" data-filter=".design">Design</li>
-            <li class="control" data-filter=".web">Web Development</li>
-            <li class="control" data-filter=".photo">Photography</li>
+            <li class="control active" data-mixitup-control data-filter="all">All</li>
+            <li class="control" data-mixitup-control data-filter=".finance">Finance</li>
+            <li class="control" data-mixitup-control data-filter=".design">Design</li>
+            <li class="control" data-mixitup-control data-filter=".web">Web Development</li>
+            <li class="control" data-mixitup-control data-filter=".photo">Photography</li>
         </ul>
-        <div class="row course-items-area">
+        <div class="row course-items-area" id="course-container">
             <!-- course -->
             {{#each this.categories}}
             <div class="mix col-lg-3 col-md-4 col-sm-6 {{this.CourType}}">

@@ -134,3 +134,22 @@ $(window).on("resize", function () {
     $(".navbar").addClass("fixed-top");
   }
 });
+
+$(document).ready(function () {
+  $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+    var target = $(e.target).attr("href");
+    if (target === "#portfolio") {
+      if (!$("#portfoliolist").mixItUp("isLoaded")) {
+        $("#portfoliolist").mixItUp({
+          selectors: {
+            target: ".portfolio",
+            filter: ".filter",
+          },
+          load: {
+            filter: "all", // show app tab on first load
+          },
+        });
+      }
+    }
+  });
+});

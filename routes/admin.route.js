@@ -3,6 +3,10 @@ const auth = require("../middlewares/auth.mdw");
 const bcrypt = require("bcryptjs");
 const encryptTimes = 10;
 const accountModel = require("../models/account.model");
+const config = require("../config/default.json");
+const multer = require("multer");
+const fs = require("fs");
+
 const router = express.Router();
 
 router.get("/", auth, isAdmin, async function (req, res) {
@@ -15,7 +19,28 @@ router.get("/", auth, isAdmin, async function (req, res) {
 
 router.get("/account", auth, isAdmin, async function (req, res) {
   const active = getActive("account");
-  const rows = await accountModel.allWithoutAdmin();
+  let page = req.query.page || 1;
+  const total = await accountModel.countAllWithoutAdmin();
+
+  const totalPage = Math.ceil(total / config.pagination.limit);
+
+  if (page < 1) page = 1;
+  if (page > totalPage) page = totalPage;
+
+  const offset = (page - 1) * config.pagination.limit;
+  const rows = await accountModel.allWithoutAdminByPage(offset);
+
+  const page_items = [];
+
+  for (let i = 1; i <= totalPage; i++) {
+    const page_item = {
+      value: i,
+      isActive: page == i,
+    };
+
+    page_items.push(page_item);
+  }
+
   rows.forEach((e) => {
     e.isVerified = e.StatusId == 4;
   });
@@ -24,11 +49,71 @@ router.get("/account", auth, isAdmin, async function (req, res) {
     active,
     items: rows,
     isEmpty: rows.length === 0,
+    page_items,
+    canGoPrev: page > 1,
+    canGoNext: page < totalPage,
+    nextPage: page + 1,
+    prevPage: page - 1,
+  });
+});
+
+router.get("/account/search", auth, isAdmin, async (req, res) => {
+  const searchType = req.query.search;
+  const sort = req.query.sort;
+  const order = req.query.order;
+  const content = req.query.searchContent;
+  const total = await accountModel.countAllWithCondition(searchType, content);
+  const totalPage = Math.ceil(total / config.pagination.limit);
+  const active = getActive("account");
+  let page = req.query.page || 1;
+  if (page < 1) page = 1;
+  if (totalPage > 0 && page > totalPage) page = totalPage;
+
+  const offset = (page - 1) * config.pagination.limit;
+  const rows = await accountModel.searchWithConditionByPage(
+    searchType,
+    sort,
+    order,
+    content,
+    offset
+  );
+
+  const page_items = [];
+
+  for (let i = 1; i <= totalPage; i++) {
+    const page_item = {
+      value: i,
+      isActive: page == i,
+    };
+
+    page_items.push(page_item);
+  }
+
+  if (rows != null) {
+    rows.forEach((e) => {
+      e.isVerified = e.StatusId == 4;
+    });
+  }
+
+  res.render("viewAdmin/account/account", {
+    layout: "admin.hbs",
+    active,
+    items: rows,
+    isEmpty: rows.length === 0,
+    page_items,
+    canGoPrev: page > 1,
+    canGoNext: page < totalPage,
+    nextPage: page + 1,
+    prevPage: page - 1,
+    searchType,
+    sort,
+    order,
+    content,
   });
 });
 
 router.get("/account/add", auth, isAdmin, async function (req, res) {
-  const active = getActive("add");
+  const active = getActive("account");
   res.render("viewAdmin/account/account-add", {
     layout: "admin.hbs",
     active,
@@ -53,7 +138,7 @@ router.post("/account/add", auth, isAdmin, async function (req, res) {
 });
 
 router.get("/account/edit/:username", auth, isAdmin, async function (req, res) {
-  const active = getActive("edit");
+  const active = getActive("account");
   let account = await accountModel.singleByUserNameWithoutProvider(
     req.params.username
   );
@@ -62,6 +147,53 @@ router.get("/account/edit/:username", auth, isAdmin, async function (req, res) {
     layout: "admin.hbs",
     active,
     account,
+  });
+});
+
+router.get(
+  "/account/edit/upload/:username",
+  auth,
+  isAdmin,
+  async function (req, res) {
+    const active = getActive("account");
+    let account = await accountModel.singleByUserNameWithoutProvider(
+      req.params.username
+    );
+    account.isStudent = account.RoleId === 2;
+    res.render("viewAdmin/account/account-edit-avatar", {
+      layout: "admin.hbs",
+      active,
+      account,
+    });
+  }
+);
+
+router.post("/account/edit/upload/:username", auth, isAdmin, (req, res) => {
+  const username = req.params.username;
+  const dir = "./public/img/account/" + username;
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+  let fileName = null;
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, dir);
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+      fileName = file.originalname;
+    },
+  });
+  const upload = multer({ storage });
+  upload.single("fuMain")(req, res, async function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      let user = await accountModel.singleByUserNameWithoutProvider(username);
+      user.Image = "account/" + username + "/" + fileName;
+      await accountModel.patch(user);
+      res.redirect("../" + username);
+    }
   });
 });
 
@@ -84,20 +216,9 @@ router.post("/account/delete", auth, isAdmin, async function (req, res) {
   res.redirect("../account");
 });
 
-router.get("/account/detail", auth, isAdmin, async function (req, res) {
-  const active = getActive("detail");
-  res.render("viewAdmin/account/account-detail", {
-    layout: "admin.hbs",
-    active,
-  });
-});
-
 const getActive = (name) => {
   let active = {
     coursesWrapper: false,
-    add: false,
-    edit: false,
-    detail: false,
     dashboardWrapper: false,
     course: false,
     account: false,

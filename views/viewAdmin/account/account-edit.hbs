@@ -1,12 +1,15 @@
 {{#section 'title'}}
-<title>Add Account</title>
+<title>Edit Account</title>
 {{/section}}
 
 {{#section 'script'}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.8.1/dist/sweetalert2.all.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
 <script>
+
     $("#frmEdit").on("submit", function (e) {
 
         e.preventDefault();
@@ -62,7 +65,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+                        <li class="breadcrumb-item active">Account</li>
                         <li class="breadcrumb-item active">Account Edit</li>
                     </ol>
                 </div>
@@ -71,66 +75,72 @@
     </section>
 
     <!-- Main content -->
-    <section class="content container ">
+    <section class="content container">
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title font-weight-bold">Add an account</h3>
-
-
+                <h3 class="card-title font-weight-bold">Edit account</h3>
             </div>
-            {{#with account}}
-            <div class="card-body">
-                <form action="" method="POST" id="frmEdit">
-                    <label for="email">Information</label>
-                    <div class="ml-2">
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            </div>
-                            <input id="email" type="email" class="form-control" value="{{Username}}" name="email"
-                                readonly>
-                        </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                            </div>
-                            <input id="name" type="text" class="form-control" value="{{Name}}" name="name">
+            <form action="" method="POST" id="frmEdit">
+                {{#with account}}
+                <div class="card-body row">
+                    <div class="input-group form-group col-sm-4 d-flex flex-column align-items-center">
 
-                        </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                            </div>
-                            <input id="phone" type="text" class="form-control" placeholder="phone" value="{{Phone}}"
-                                name="phone">
-
-                        </div>
+                        <img src="/public/img/{{Image}}" alt="avatar" class="rounded-circle"
+                            style="width: 300px; height: 300px">
+                        <a href="/admin/account/edit/upload/{{Username}}" class="btn btn-primary"><i
+                                class="fas fa-camera"></i></a>
                     </div>
 
-                    <div class="form-group">
-                        <label for="inputStatus">Roles</label>
-                        {{#if isStudent}}
-                        <select id="inputStatus" class="form-control custom-select ml-2" name="roleid">
-                            <option value="2">Student</option>
-                            <option value="3">Teacher</option>
-                        </select>
-                        {{else}}
-                        <select id="inputStatus" class="form-control custom-select ml-2" name="roleid">
-                            <option value="3">Teacher</option>
-                            <option value="2">Student</option>
-                        </select>
-                        {{/if}}
+                    <div class="col-sm-8">
+                        <label for="email">Information</label>
+                        <div class="ml-2">
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                </div>
+                                <input id="email" type="email" class="form-control" value="{{Username}}" name="email"
+                                    readonly>
+                            </div>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                </div>
+                                <input id="name" type="text" class="form-control" value="{{Name}}" name="name">
+                            </div>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                </div>
+                                <input id="phone" type="text" class="form-control" placeholder="phone" value="{{Phone}}"
+                                    name="phone">
+                            </div>
 
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Edit" class="btn float-right btn-success">
+                        </div>
 
+                        <div class="form-group">
+                            <label for="inputStatus">Roles</label>
+                            {{#if isStudent}}
+                            <select id="inputStatus" class="form-control custom-select ml-2" name="roleid">
+                                <option value="2">Student</option>
+                                <option value="3">Teacher</option>
+                            </select>
+                            {{else}}
+                            <select id="inputStatus" class="form-control custom-select ml-2" name="roleid">
+                                <option value="3">Teacher</option>
+                                <option value="2">Student</option>
+                            </select>
+                            {{/if}}
+
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Edit" class="btn float-right btn-success">
+                        </div>
+                        <a href="/admin/account" class="btn float-left btn-secondary ml-2">Cancel</a>
                     </div>
-                    <a href="/admin/account" class="btn float-left btn-secondary ml-2">Cancel</a>
-                </form>
-            </div>
-            {{/with}}
-            <!-- /.card-body -->
+                </div>
+                {{/with}}
+                <!-- /.card-body -->
+            </form>
         </div>
 
     </section>
