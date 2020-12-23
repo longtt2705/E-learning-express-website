@@ -117,39 +117,11 @@ $(window).on("load", function () {
   });
 })(jQuery);
 
-$(function () {
-  $(window).on("scroll", function () {
-    if ($(window).scrollTop() > 10) {
-      $(".navbar").addClass("active");
-    } else {
-      $(".navbar").removeClass("active");
-    }
-  });
-});
-
-$(window).on("resize", function () {
-  if ($(window).width() < 1200) {
+$(document).ready(function () {
+  var is_root = location.pathname == "/";
+  if (!is_root) {
     $(".navbar").removeClass("fixed-top");
   } else {
     $(".navbar").addClass("fixed-top");
   }
-});
-
-$(document).ready(function () {
-  $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
-    var target = $(e.target).attr("href");
-    if (target === "#portfolio") {
-      if (!$("#portfoliolist").mixItUp("isLoaded")) {
-        $("#portfoliolist").mixItUp({
-          selectors: {
-            target: ".portfolio",
-            filter: ".filter",
-          },
-          load: {
-            filter: "all", // show app tab on first load
-          },
-        });
-      }
-    }
-  });
 });
