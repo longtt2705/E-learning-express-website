@@ -49,7 +49,11 @@ router.post("/login", async function (req, res) {
     });
   }
 
-  user.isAdmin = user.RoleId == 1;
+  user.role = {
+    isAdmin: user.RoleId == 1,
+    isStudent: user.RoleId == 2,
+    isTeacher: user.RoleId == 3,
+  };
   console.log(user.isAdmin);
   req.session.isAuth = true;
   req.session.authUser = user;
@@ -134,7 +138,8 @@ router.post("/profile/upload", auth, (req, res) => {
       user.Image = "account/" + username + "/" + fileName;
 
       await accountModel.patch(user);
-      user.isAdmin = req.session.authUser.isAdmin;
+      user.role = { ...req.session.authUser.role };
+
       req.session.authUser = user;
       res.redirect("/account/profile");
     }
@@ -145,11 +150,13 @@ router.post("/profile", auth, async function (req, res) {
   const account = await accountModel.singleByUserNameWithoutProvider(
     req.body.email
   );
+
   account.Phone = req.body.phone;
   account.Name = req.body.name;
+  account.Description = req.body.FullDes;
 
   await accountModel.patch(account);
-  account.isAdmin = req.session.authUser.isAdmin;
+  account.role = { ...req.session.authUser.role };
   req.session.authUser = account;
 
   res.redirect("/account/profile");

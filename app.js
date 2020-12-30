@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const favicon = require("serve-favicon");
 const path = require("path");
+const multer = require("multer");
 require("express-async-errors");
 
 app.use(express.urlencoded({ extended: true }));

@@ -19,8 +19,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
 <script src="/js/admin/js/adminlte.min.js"></script>
+<script src="https://cdn.tiny.cloud/1/q0kzpipqhk68lm10jszycgringtmyob5iqbxc6vkl9kh1noc/tinymce/5/tinymce.min.js"
+    referrerpolicy="origin"></script>
 <script>
-
+    tinymce.init({
+        selector: '#txtFullDes',
+        height: 600,
+        plugins: 'paste image link autolink lists table media',
+        menubar: false,
+        toolbar: [
+            'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+        ],
+    });
     $("#frmEdit").on("submit", function (e) {
 
         e.preventDefault();
@@ -117,18 +127,23 @@
                                 <input id="phone" type="text" class="form-control" placeholder="phone" value="{{Phone}}"
                                     name="phone">
                             </div>
-
+                            <div class=" form-group">
+                                <label for="inputStatus">Description</label>
+                                <textarea class="form-control custom-select ml-2" name="FullDes" id="txtFullDes"
+                                    cols="30" rows="10">{{Description}}</textarea>
+                            </div>
                         </div>
+
                         <div class="form-group align-self-center">
                             <input type="submit" value="Save" class="btn btn-danger">
                         </div>
+
                     </div>
                 </div>
                 {{/with}}
                 <!-- /.card-body -->
             </form>
         </div>
-
     </section>
     <!-- /.content -->
 </div>

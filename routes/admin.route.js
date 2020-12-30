@@ -211,6 +211,7 @@ router.post("/account/edit/:user", auth, isAdmin, async function (req, res) {
   );
   account.Phone = req.body.phone;
   account.Name = req.body.name;
+  account.Description = req.body.FullDes;
   account.RoleId = req.body.roleid;
 
   await accountModel.patch(account);
