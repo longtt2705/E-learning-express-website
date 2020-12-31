@@ -1,6 +1,6 @@
 const rowCourses = [
   {
-    CourType: "finance",
+    CourType: "development",
     CourName: "Art & Crafts",
     CourImage: "../public/img/courses/1.jpg",
     CourPrice: "$15",
@@ -12,7 +12,7 @@ const rowCourses = [
     CourNumberRating: 245900,
   },
   {
-    CourType: "design",
+    CourType: "development",
     CourName: "IT Development",
     CourImage: "../public/img/courses/2.jpg",
     CourPrice: "$35",
@@ -36,7 +36,7 @@ const rowCourses = [
     CourNumberRating: 450607,
   },
   {
-    CourType: "finance",
+    CourType: "it",
     CourName: "photo",
     CourImage: "../public/img/courses/4.jpg",
     CourPrice: "$25",
@@ -47,6 +47,64 @@ const rowCourses = [
     CourStar: 5,
     CourNumberRating: 103208,
   },
+  {
+    CourType: "development",
+    CourName: "finance",
+    CourImage: "../public/img/courses/5.jpg",
+    CourPrice: "$65",
+    CourAuImage: "../public/img/authors/5.jpg",
+    CourAuName: "Marry Sup",
+    CourAuRole: "Developer",
+    CourStudent: "3000 Students",
+    CourStar: 5,
+    CourNumberRating: 205001,
+  },
+  {
+    CourType: "development",
+    CourName: "Socia Media",
+    CourImage: "../public/img/courses/6.jpg",
+    CourPrice: "$75",
+    CourAuImage: "../public/img/authors/6.jpg",
+    CourAuName: "Mora Tr",
+    CourAuRole: "Developer",
+    CourStudent: "350 Students",
+    CourStar: 4,
+    CourNumberRating: 105740,
+  },
+  {
+    CourType: "it",
+    CourName: "IT Development",
+    CourImage: "../public/img/courses/7.jpg",
+    CourPrice: "$60",
+    CourAuImage: "../public/img/authors/7.jpg",
+    CourAuName: "Lilia Mass",
+    CourAuRole: "Developer",
+    CourStudent: "460 Students",
+    CourStar: 4,
+    CourNumberRating: 125300,
+  },
+  {
+    CourType: "mco",
+    CourName: "HTML 5",
+    CourImage: "../public/img/courses/8.jpg",
+    CourPrice: "$100",
+    CourAuImage: "../public/img/authors/8.jpg",
+    CourAuName: "Thomas Moore",
+    CourAuRole: "Developer",
+    CourStudent: "200 Students",
+    CourStar: 3,
+    CourNumberRating: 15402,
+  },
+];
+const rowTopic = [
+  { TopicType: "IT", TopicImage: "../public/img/categories/1.jpg" },
+  { TopicType: "Design web", TopicImage: "../public/img/categories/2.jpg" },
+  { TopicType: "Music", TopicImage: "../public/img/categories/3.jpg" },
+  { TopicType: "Business", TopicImage: "../public/img/categories/4.jpg" },
+  { TopicType: "Photography", TopicImage: "../public/img/categories/5.jpg" },
+  { TopicType: "Social Media", TopicImage: "../public/img/categories/6.jpg" },
+];
+const topcourse=[
   {
     CourType: "finance",
     CourName: "finance",
@@ -83,32 +141,12 @@ const rowCourses = [
     CourStar: 4,
     CourNumberRating: 125300,
   },
-  {
-    CourType: "photo",
-    CourName: "HTML 5",
-    CourImage: "../public/img/courses/8.jpg",
-    CourPrice: "$100",
-    CourAuImage: "../public/img/authors/8.jpg",
-    CourAuName: "Thomas Moore",
-    CourAuRole: "Developer",
-    CourStudent: "200 Students",
-    CourStar: 3,
-    CourNumberRating: 15402,
-  },
 ];
-const rowTopic = [
-  { TopicType: "IT", TopicImage: "../public/img/categories/1.jpg" },
-  { TopicType: "Design web", TopicImage: "../public/img/categories/2.jpg" },
-  { TopicType: "Music", TopicImage: "../public/img/categories/3.jpg" },
-  { TopicType: "Business", TopicImage: "../public/img/categories/4.jpg" },
-  { TopicType: "Photography", TopicImage: "../public/img/categories/5.jpg" },
-  { TopicType: "Social Media", TopicImage: "../public/img/categories/6.jpg" },
-];
-
 module.exports = (app) => {
   app.get("/", function (req, res) {
     res.render("home", {
       categories: rowCourses,
+      bestcourse: topcourse,
       topic: rowTopic,
       empty: rowCourses.length === 0,
     });

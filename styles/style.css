@@ -14,7 +14,7 @@ body {
 	height: 100%;
 	font-family: 'Raleway', sans-serif;
 	-webkit-font-smoothing: antialiased;
-	font-smoothing: antialiased;
+	
 }
 
 h1,
@@ -116,6 +116,7 @@ ol {
 	font-size: 48px;
 	font-weight: 600;
 	margin-bottom: 25px;
+
 }
 
 .section-title p {
@@ -132,6 +133,10 @@ ol {
 .spad {
 	padding-top: 115px;
 	padding-bottom: 115px;
+}
+.spadCarousel {
+	padding-top: 200px;
+	
 }
 
 .text-white h1,
@@ -303,18 +308,13 @@ ol {
 ---------------------*/
 
 .hero-section {
-	height: 720px;
-	position: relative;
+	height: 948px;
 }
 
 .hero-text {
-	position: absolute;
 	text-align: center;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	color: #d9d9d9 !important;
-
+	padding-top: 340px;
+	margin-bottom: 105px;
 }
 
 .hero-text h2 {
@@ -336,12 +336,6 @@ ol {
 
 .intro-newslatter .site-btn {
 	min-width: 214px;
-}
-
-@media only screen and (max-width: 1200px) {
-	.carousel {
-		display: none;
-	}
 }
 
 /*------------------
@@ -521,6 +515,7 @@ ol {
 
 .course-item {
 	margin-bottom: 30px;
+	box-shadow: 0px 0px 10px  ;
 }
 
 .course-item .course-thumb {
@@ -663,6 +658,30 @@ ol {
 .course-filter li.mixitup-control-active {
 	color: #d82a4e;
 	border-bottom: 4px solid #d82a4e;
+}
+.course-item:hover {
+	color:  #d82a4e;
+	background-color: #d82a4e;
+}
+
+.course-item:hover .course-info{
+	color:  #d82a4e;
+	background-color: #d82a4e;
+}
+.course-item:hover .course-info .course-text h5{
+	color: white;
+}
+.course-item:hover .course-info .course-text .students{
+	color: white;
+}
+.course-item:hover .course-info .course-text .numberRating{
+	color: white;
+}
+.course-item:hover .course-info .course-text p{
+	color: white;
+}
+.course-item:hover .course-info .course-author p{
+	color: white;
 }
 
 /*------------------
@@ -1818,3 +1837,6 @@ ol {
 		margin-right: 10px;
 	}
 }
+
+
+.carousel,.carousel .carousel-inner,.carousel .carousel-inner .active,.carousel .carousel-inner .carousel-item,.view,body,html{height:100%}.navbar{background-color:rgba(0,0,0,.2)}.page-footer,.top-nav-collapse{background-color:#1C2331}@media only screen and (max-width:768px){.navbar{background-color:#1C2331}}

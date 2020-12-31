@@ -22,6 +22,7 @@
 
 
 <!-- Hero section -->
+
 <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
         <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
@@ -68,36 +69,149 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
-{{!-- <section class="hero-section set-bg" data-setbg="public/img/bg.jpg">
-    <div class="container">
-        <div class="hero-text text-white">
-            <h2>Get The Best Free Online Courses</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris
-                scelerisque, at rutrum nulla <br> dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
-        </div>
-    </div>
-</section> --}}
-<!-- Hero section end -->
 
-<!--Carousel-->
 
-<section class="course-section spadCarousel">
+
+<section class="course-section spad">
     <div class="container">
         <div class="section-title">
-            <h2>Khoá học nổi bật nhất tuần</h2>
+            <h2>
+                The most outstanding course of the week</h2>
             <div class="divider-custom">
                 <div class="divider-custom-line"></div>
-                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-icon"><i class="fas fa-crown" style="color: yellow;"></i></div>
                 <div class="divider-custom-line"></div>
             </div>
         </div>
+        <div class="course-warp">
+            <div class="row coursebest-items-area" id="coursebest-container">
+                <!-- course -->
+
+                {{#each this.bestcourse}}
+
+                <div class="mix col-lg-4 col-md-4 col-sm-6">
+                    <div class="course-items">
+                        <div class="course-thumb set-bg" data-setbg="{{this.CourImage}}">
+                            <div class="price">Price {{this.CourPrice}}</div>
+                        </div>
+                        <div class="course-info">
+                            <div class="course-text">
+                                <h5>{{this.Course}}</h5>
+                                <p>Mô tả các kiểu sẽ được ghi ở đây</p>
+                                <div class="students">
+                                    {{this.CourStudent}}
+                                </div>
+                                <span class="rating"> {{this.CourStar}}/5 </span>
+                                {{#starPrint this.CourStar}}
+                                {{result}}
+                                {{/starPrint}}
+                                <span class="numberRating">({{this.CourNumberRating}})</span>
+                            </div>
+                            <div class="course-btn text-center">
+                                <button type="button" class="btn btn-rounded btn-warning btn-lg ">LEAR
+                                    MORE</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{/each}}
+            </div>
+        </div>
     </div>
+
 </section>
 
 
 
 
-<!-- course section -->
+<!-- course new section -->
+<section class="course-section spad">
+    <div class="container">
+        <div class="section-title mb-0">
+            <h2>Newest Courses</h2>
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
+            <p>
+                The courses with a large number of students have been viewed over the past week</p>
+        </div>
+    </div>
+
+    <div class="course-warp">
+        <ul class="course-filter controls">
+
+            <li class="control" data-mixitup-control data-filter=".development">Development</li>
+            <li class="control" data-mixitup-control data-filter=".it">IT &amp; Software</li>
+            <li class="control" data-mixitup-control data-filter=".mco">Microsoft Office</li>
+
+        </ul>
+        <div class="row course-items-area">
+            <!-- course -->
+            {{#each this.categories}}
+            <div class="mix col-lg-3 col-md-4 col-sm-6 {{this.CourType}}">
+                <div class="course-item">
+                    <div class="course-thumb set-bg" data-setbg="{{this.CourImage}}">
+                        <div class="price">Price {{this.CourPrice}}</div>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-text">
+                            <h5>{{this.Course}}</h5>
+                            <p>Mô tả các kiểu sẽ được ghi ở đây</p>
+                            <div class="students">
+                                {{this.CourStudent}}
+                            </div>
+                            <span class="rating"> {{this.CourStar}}/5 </span>
+                            {{#starPrint this.CourStar}}
+                            {{result}}
+                            {{/starPrint}}
+                            <span class="numberRating">({{this.CourNumberRating}})</span>
+                        </div>
+                        <div class="course-author">
+                            <div class="ca-pic set-bg" data-setbg="{{this.CourAuImage}}"></div>
+                            <p>{{this.CourAuName}},{{this.CourAuRole}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</section>
+<!-- course new section end -->
+
+<!-- categories section -->
+<section class="categories-section bg-categories spad">
+    <div class="container ">
+        <div class="section-title">
+            <h2 style="color: white;">Top Course Categories</h2>
+            <div class="divider-custom divider-light">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            {{#each this.topic}}
+            <!-- categorie -->
+            <div class="col-lg-4 col-md-6">
+                <div class="categorie-item">
+                    <div class="ci-thumb set-bg" data-setbg="{{this.TopicImage}}"></div>
+                    <div class="ci-text">
+                        <h5>{{this.TopicType}}</h5>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</section>
+<!-- categories section end -->
+
+<!-- course viewed section -->
 <section class="course-section spad">
     <div class="container">
         <div class="section-title mb-0">
@@ -107,17 +221,16 @@
                 <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                 <div class="divider-custom-line"></div>
             </div>
-            <p>Các khóa học có số lượng học viên được theo dõi nhiều trong tuần qua</p>
+            <p>
+                The courses with a large number of students have been viewed over the past week</p>
         </div>
     </div>
 
     <div class="course-warp">
         <ul class="course-filter controls">
-            <li class="control active" data-mixitup-control data-filter="all">All</li>
-            <li class="control" data-mixitup-control data-filter=".finance">Finance</li>
-            <li class="control" data-mixitup-control data-filter=".design">Design</li>
-            <li class="control" data-mixitup-control data-filter=".web">Web Development</li>
-            <li class="control" data-mixitup-control data-filter=".photo">Photography</li>
+            <li class="control" data-mixitup-control data-filter=".development">Development</li>
+            <li class="control" data-mixitup-control data-filter=".it">IT &amp; Software</li>
+            <li class="control" data-mixitup-control data-filter=".mco">Microsoft Office</li>
         </ul>
         <div class="row course-items-area" id="course-container">
             <!-- course -->
@@ -151,32 +264,4 @@
         </div>
     </div>
 </section>
-<!-- course section end -->
-<!-- categories section -->
-<section class="categories-section bg-categories spad">
-    <div class="container ">
-        <div class="section-title">
-            <h2 style="color: white;">Top Course Categories</h2>
-            <div class="divider-custom divider-light">
-                <div class="divider-custom-line"></div>
-                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                <div class="divider-custom-line"></div>
-            </div>
-        </div>
-
-        <div class="row">
-            {{#each this.topic}}
-            <!-- categories -->
-            <div class="col-lg-4 col-md-6">
-                <div class="categorie-item">
-                    <div class="ci-thumb set-bg" data-setbg="{{this.TopicImage}}"></div>
-                    <div class="ci-text">
-                        <h5>{{this.TopicType}}</h5>
-                    </div>
-                </div>
-            </div>
-            {{/each}}
-        </div>
-    </div>
-</section>
-<!-- categories section end -->
+<!-- course viewed section end -->
