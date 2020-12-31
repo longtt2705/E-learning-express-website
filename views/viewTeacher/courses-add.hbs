@@ -1,0 +1,115 @@
+{{#section 'css'}}
+<link rel="stylesheet" href="/styles/admin/dist/css/adminlte.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="/styles/admin/fontawesome-free/css/all.min.css">
+<!-- Select2 -->
+<link rel="stylesheet" href="/styles/admin/fontawesome-free/css/select2.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="/styles/admin/dist/css/adminlte.min.css">
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<link href='https://fonts.googleapis.com/css?family=Adamina' rel='stylesheet'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput.min.css">
+<style>
+    #add-courses {
+        font-family: 'Adamina';
+        font-size: 18px;
+    }
+</style>
+{{/section}}
+
+{{#section 'script'}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.8.1/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
+<script src="/js/admin/js/adminlte.min.js"></script>
+<script src="https://cdn.tiny.cloud/1/q0kzpipqhk68lm10jszycgringtmyob5iqbxc6vkl9kh1noc/tinymce/5/tinymce.min.js"
+    referrerpolicy="origin"></script>
+<script src="/js/course-add.js"></script>
+{{/section}}
+<!-- Content Wrapper. Contains page content -->
+<div id="add-courses" class="container">
+    <!-- Content Header (Page header) -->
+    <section class="content-header mt-lg-5">
+        <div class="container-fluid">
+            <div class="row mb-2 justify-content-center">
+                <div>
+                    <h1 class="font-weight-bold">Publish your Course to everyone</h1>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content container mt-lg-1">
+        <div class="card card-primary">
+            <div class="card-header" style="background-color: #d82a4e;">
+                <h3 class="card-title font-weight-bold">Add a new course</h3>
+            </div>
+            <form action="" method="POST" id="frmAddCourse" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="d-flex flex-column">
+                        <label for="courseName">Your course's name</label>
+                        <div class="input-group form-group ml-2">
+                            <input id="courseName" type="text" class="form-control" name="courseName">
+                        </div>
+                        <label for="courseImage">Your course's image</label>
+                        <div class="input-group form-group ml-2 row align-items-center">
+                            <div class="card-body col-sm-6">
+                                <div class="form-group">
+                                    <input id="courseImage" type="file" class="file" data-preview-file-type="text"
+                                        name="courseImage"></input>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <p>Make your course stand out with a great image from our design team based on your
+                                    preferences and style. <br>
+                                    If you create your image, it must meet our course image quality standards to be
+                                    accepted <br>
+                                    Important guildlines: 1000x675 pixels; .jpg, .jpeg, .gif, or .png</p>
+
+                            </div>
+                        </div>
+                        <label for="categories">Which category does your course belong to?</label>
+                        <div class="form-group input-group">
+                            <select id="categories" class="form-control custom-select ml-2" name="categories">
+                                {{#each this.category as |item|}}
+                                <option value="{{item.Id}}">{{item.Name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <label for="price">How much does your course cost? (dollars)</label>
+                        <div class="form-group input-group">
+                            <div class="input-group form-group ml-2">
+                                <input id="price" type="text" class="form-control" name="price">
+                            </div>
+                        </div>
+                        <label for="about">Write some sentences about your course</label>
+                        <div class="form-group input-group">
+                            <textarea class="form-control custom-select ml-2" name="shortDes" id="shortDes" cols="30"
+                                rows="5"></textarea>
+                        </div>
+                        <label for="about">Write exactly what student will learn from your course</label>
+                        <div class="form-group input-group">
+                            <textarea class="form-control custom-select ml-2" name="detailDes" id="detailDes" cols="30"
+                                rows="10"></textarea>
+                        </div>
+                        <label>Your course's content</label>
+                        <div id="chapter-area" class="container">
+                        </div>
+                        <div>
+                            <button id="addNewChapter" class="btn btn-danger">Add new chapter</button>
+                        </div>
+
+                        <div class="form-group align-self-center">
+                            <input type="submit" value="Save" class="btn btn-danger">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>

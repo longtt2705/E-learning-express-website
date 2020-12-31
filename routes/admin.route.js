@@ -62,24 +62,36 @@ router.get("/account/search", auth, isAdmin, async (req, res) => {
   const sort = req.query.sort;
   const order = req.query.order;
   const content = req.query.searchContent;
-  const total = await accountModel.countAllWithCondition(searchType, content);
-  const totalPage = Math.ceil(total / config.pagination.limit);
   const active = getActive("account");
+  let rows, total;
+  if (searchType === "username")
+    total = await accountModel.countAllWithLike(searchType, content);
+  else total = await accountModel.countAllWithFullText(searchType, content);
+  const totalPage = Math.ceil(total / config.pagination.limit);
+
   let page = req.query.page || 1;
   if (page < 1) page = 1;
   if (totalPage > 0 && page > totalPage) page = totalPage;
-
   const offset = (page - 1) * config.pagination.limit;
-  const rows = await accountModel.searchWithConditionByPage(
-    searchType,
-    sort,
-    order,
-    content,
-    offset
-  );
+  if (searchType === "username") {
+    rows = await accountModel.searchWithLikeByPage(
+      searchType,
+      sort,
+      order,
+      content,
+      offset
+    );
+  } else {
+    rows = await accountModel.searchWithFullTextByPage(
+      searchType,
+      sort,
+      order,
+      content,
+      offset
+    );
+  }
 
   const page_items = [];
-
   for (let i = 1; i <= totalPage; i++) {
     const page_item = {
       value: i,
@@ -105,10 +117,6 @@ router.get("/account/search", auth, isAdmin, async (req, res) => {
     canGoNext: page < totalPage,
     nextPage: page + 1,
     prevPage: page - 1,
-    searchType,
-    sort,
-    order,
-    content,
   });
 });
 
@@ -203,6 +211,7 @@ router.post("/account/edit/:user", auth, isAdmin, async function (req, res) {
   );
   account.Phone = req.body.phone;
   account.Name = req.body.name;
+  account.Description = req.body.FullDes;
   account.RoleId = req.body.roleid;
 
   await accountModel.patch(account);

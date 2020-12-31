@@ -49,15 +49,28 @@ module.exports = {
     return rows[0];
   },
 
-  async searchWithConditionByPage(searchType, sort, order, content, offset) {
+  async searchWithLikeByPage(searchType, sort, order, content, offset) {
     return db.load(
-      `select * from ${TBL_ACCOUNT} where MATCH(${searchType}) AGAINST('${content}' IN BOOLEAN MODE) order by ${order} ${sort} limit ${config.pagination.limit} offset ${offset}`
+      `select * from ${TBL_ACCOUNT} a join roles r on a.roleid = r.id where roleid != '1' and ${searchType} like '%${content}%' order by ${order} ${sort} limit ${config.pagination.limit} offset ${offset}`
     );
   },
 
-  async countAllWithCondition(searchType, content) {
+  async countAllWithLike(searchType, content) {
     const rows = await db.load(
-      `select count(*) as total from ${TBL_ACCOUNT} where match(${searchType}) against('${content}' IN BOOLEAN MODE)`
+      `select count(*) as total from ${TBL_ACCOUNT} where roleid != '1' and ${searchType} like '%${content}%'`
+    );
+    return rows[0].total;
+  },
+
+  async searchWithFullTextByPage(searchType, sort, order, content, offset) {
+    return db.load(
+      `select * from ${TBL_ACCOUNT} a join roles r on a.roleid = r.id where roleid != '1' and MATCH(${searchType}) AGAINST('${content}' IN BOOLEAN MODE) order by ${order} ${sort} limit ${config.pagination.limit} offset ${offset}`
+    );
+  },
+
+  async countAllWithFullText(searchType, content) {
+    const rows = await db.load(
+      `select count(*) as total from ${TBL_ACCOUNT} where roleid != '1' and match(${searchType}) against('${content}' IN BOOLEAN MODE)`
     );
     return rows[0].total;
   },

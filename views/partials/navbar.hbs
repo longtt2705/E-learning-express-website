@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg py-2 justify-content-between fixed-top">
+<nav class="navbar navbar-expand-lg py-2 justify-content-between fixed-top active">
     <div class="container">
         <a href="/" class="navbar-brand text-uppercase font-weight-bold mr-5">
             <i class="icon fas fa-book-open" style="vertical-align: middle;"></i>
@@ -17,31 +17,18 @@
                     <a href="#" class="nav-link font-weight-bold dropdown-toggle" data-toggle="dropdown">Categories
                         <span class="sr-only">(current)</span></a>
                     <ul class="dropdown-menu">
+                        {{#each this.lcCategories as |item|}}
                         <li class="dropdown-submenu">
-                            <a class="dropdown-item dropdown-toggle font-weight-bold text-white" data-toggle="dropdown" href="#">Development</a>
+                            <a class="dropdown-item dropdown-toggle font-weight-bold" data-toggle="dropdown"
+                                href="#">{{item.Name}}</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item font-weight-bold text-white" href="#">Web Development</a></li>
-                                <li><a class="dropdown-item font-weight-bold text-white" href="#">Data Science</a></li>
-                                <li><a class="dropdown-item font-weight-bold text-white" href="#">Mobile Development</a></li>
+                                {{#each item.SubCate as |cate|}}
+                                <li><a class="dropdown-item font-weight-bold" href="#">{{cate.Name}}</a>
+                                </li>
+                                {{/each}}
                             </ul>
                         </li>
-                        <li class="dropdown-submenu">
-                            <a class="dropdown-item dropdown-toggle font-weight-bold text-white" data-toggle="dropdown" href="#">IT &amp; Software</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item font-weight-bold text-white" href="#">Javascript</a></li>
-                                <li><a class="dropdown-item font-weight-bold text-white" href="#">Python</a></li>
-                                <li><a class="dropdown-item font-weight-bold text-white" href="#">Java</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown-submenu">
-                            <a class="dropdown-item dropdown-toggle font-weight-bold text-white" data-toggle="dropdown" href="#">Microsoft Office</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item font-weight-bold text-white" href="#">Excel</a></li>
-                                <li><a class="dropdown-item font-weight-bold text-white" href="#">Word</a></li>
-                                <li><a class="dropdown-item font-weight-bold text-white" href="#">Powerpoint</a></li>
-                            </ul>
-                        </li>
-
+                        {{/each}}
                     </ul>
                 </li>
                 <li class="nav-item"><a href="#" class="nav-link font-weight-bold">About</a></li>
@@ -82,10 +69,16 @@
                             Profile
                         </a>
                         {{!-- <div class="dropdown-divider"></div> --}}
-                        {{#if authUser.isAdmin}}
+                        {{#if authUser.role.isAdmin}}
                         <a class="dropdown-item" href="/admin/">
                             <i class="fa fa-user" aria-hidden="true"></i>
                             Administrator
+                        </a>
+                        {{/if}}
+                        {{#if authUser.role.isTeacher}}
+                        <a class="dropdown-item" href="/teacher/">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            My Courses
                         </a>
                         {{/if}}
                         <div class="dropdown-divider"></div>
@@ -129,11 +122,11 @@
         transform: rotate(-90deg);
     }
 
-    .navbar-nav li:hover .dropdown-menu{
-        background-color:lightgray;
+    .navbar-nav li:hover .dropdown-menu {
+        background-color: white;
     }
 
-    .navbar-nav li:hover .dropdown-menu .dropdown-item:hover{
-        background-color:darkgray;
+    .navbar-nav li:hover .dropdown-menu .dropdown-item:hover {
+        background-color: lightgray;
     }
 </style>

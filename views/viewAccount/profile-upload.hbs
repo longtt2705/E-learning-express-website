@@ -1,0 +1,64 @@
+{{#section 'title'}}
+<title>Edit Account</title>
+{{/section}}
+
+{{#section 'css'}}
+<link rel="stylesheet" href="/styles/admin/dist/css/adminlte.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="/styles/admin/fontawesome-free/css/all.min.css">
+<!-- Select2 -->
+<link rel="stylesheet" href="/styles/admin/fontawesome-free/css/select2.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="/styles/admin/dist/css/adminlte.min.css">
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput.min.css">
+{{/section}}
+{{#section 'script'}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.8.1/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
+<script src="/js/admin/js/adminlte.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
+<script>
+    $('#fuMain').fileinput({
+        theme: 'fa',
+        allowedFileExtensions: ['png', 'jpg', 'gif'],
+    });
+</script>
+{{/section}}
+<!-- Content Wrapper. Contains page content -->
+<div class="container">
+    <!-- Content Header (Page header) -->
+    <section class="content-header mt-lg-5">
+        <div class="container-fluid">
+            <div class="row mb-2 justify-content-center">
+                <div>
+                    <h1 class="font-weight-bold">Public profile</h1>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content container">
+        <div class="card card-primary">
+            <div class="card-header" style="background-color: #d82a4e;">
+                <h3 class="card-title font-weight-bold">Edit Avatar</h3>
+            </div>
+            <form action="" method="POST" enctype="multipart/form-data">
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <input id="fuMain" type="file" class="file" data-preview-file-type="text" name="fuMain">
+                    </div>
+                </div>
+
+                <!-- /.card-body -->
+            </form>
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>

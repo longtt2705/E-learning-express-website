@@ -3,8 +3,30 @@
 {{/section}}
 
 {{#section 'script'}}
-<script src="/js/main.js"></script>
+
 <script>
+    $(function () {
+        $(window).on("scroll", function () {
+            if ($(window).scrollTop() > 10) {
+                $(".navbar").addClass("active");
+            } else {
+                $(".navbar").removeClass("active");
+            }
+        });
+    });
+
+    $(window).on("resize", function () {
+        if ($(window).width() < 1200) {
+            $(".navbar").removeClass("fixed-top");
+        } else {
+            $(".navbar").addClass("fixed-top");
+        }
+    });
+
+    $(document).ready(function () {
+        $(".navbar").removeClass("active");
+    })
+
     const container = document.querySelector('#course-container');
     console.log(container);
     mixitup(container, {

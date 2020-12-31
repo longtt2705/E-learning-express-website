@@ -32,14 +32,43 @@
             }
         })
     });
+    var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+    };
     $(document).ready(function () {
-        const url = window.location.href;
-        let arr = url.split('?');
+        const url = window.location.pathname;
+
+        let arr = url.split('/');
 
         // params found
-        if (url.length > 1 && arr[1] !== '') {
-            console.log(url)
-            $('a[class=page-link]').attr("href", + "&page=" + $('a[class=page-link]').data("page"));
+        if (url.length > 1 && arr[arr.length - 1] === 'search') {
+
+            const search = getUrlParameter("search");
+            const sort = getUrlParameter("sort");
+            const order = getUrlParameter("order");
+            const searchContent = getUrlParameter("searchContent");
+
+            $("#form_search #search").val(search).change();
+            $("#form_search #sort").val(sort).change();
+            $("#form_search #order").val(order).change();
+            $("#form_search #searchContent").val(searchContent);
+
+            let PageURL = "?search=" + search + "&sort=" + sort + "&order=" + order + "&searchContent=" + searchContent;
+            $('a[class=page-link]').map(function () {
+                $(this).attr("href", PageURL + "&page=" + $(this).data("page"));
+            });
+
         }
     });
 </script>
@@ -70,7 +99,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Search Type:</label>
-                                    <select class="select2" style="width: 100%;" name="search">
+                                    <select class="select2" style="width: 100%;" name="search" id="search">
                                         <option value="username" selected>Email</option>
                                         <option value="name">Name</option>
                                     </select>
@@ -79,7 +108,7 @@
                             <div class="col-3">
                                 <div class="form-group">
                                     <label>Sort Order:</label>
-                                    <select class="select2" style="width: 100%;" name="sort">
+                                    <select class="select2" style="width: 100%;" name="sort" id="sort">
                                         <option value="ASC" selected>Ascending</option>
                                         <option value="DESC">Descending</option>
                                     </select>
@@ -88,7 +117,7 @@
                             <div class="col-3">
                                 <div class="form-group">
                                     <label>Order By:</label>
-                                    <select class="select2" style="width: 100%;" name="order">
+                                    <select class="select2" style="width: 100%;" name="order" id="order">
                                         <option value="username" selected>Email</option>
                                         <option value="name">Name</option>
                                         <option value="roleid">Role</option>
@@ -99,7 +128,7 @@
                         <div class="form-group">
                             <div class="input-group input-group-lg">
                                 <input type="text" class="form-control form-control-lg"
-                                    placeholder="Type your keywords here" name="searchContent" value="{{content}}">
+                                    placeholder="Type your keywords here" name="searchContent" id="searchContent">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-lg btn-default">
                                         <i class="fa fa-search"></i>
