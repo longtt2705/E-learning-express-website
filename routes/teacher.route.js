@@ -37,9 +37,7 @@ router.get("/", auth, isTeacher, async (req, res) => {
   rows.forEach((e) => {
     e.isVerified = e.StatusId == 4;
   });
-  res.render("viewAdmin/account/account", {
-    layout: "admin.hbs",
-    active,
+  res.render("viewTeacher/courses", {
     items: rows,
     isEmpty: rows.length === 0,
     page_items,
@@ -48,8 +46,6 @@ router.get("/", auth, isTeacher, async (req, res) => {
     nextPage: page + 1,
     prevPage: page - 1,
   });
-
-  res.render("viewTeacher/courses", {});
 });
 
 router.get("/add", auth, isTeacher, (req, res) => {
@@ -75,15 +71,25 @@ router.post("/add", auth, isTeacher, (req, res) => {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       courseName = req.body.courseName;
-      dir = "./public/courses/" + username + "/" + courseName;
+      if (file.fieldname.split("-").pop() === "courseImage")
+        dir = "./public/courses/" + username + "/" + courseName;
+      else {
+        const chapterName = file.fieldname.split("-")[0];
+        dir =
+          "./public/courses/" + username + "/" + courseName + "/" + chapterName;
+      }
+
       if (!fs.existsSync(dir)) {
         shell.mkdir("-p", dir);
       }
       cb(null, dir);
     },
     filename: function (req, file, cb) {
-      fileName = file.fieldname + "." + file.originalname.split(".").pop();
-      if (file.fieldname === "courseImage")
+      fileName =
+        file.fieldname.split("-").pop() +
+        "." +
+        file.originalname.split(".").pop();
+      if (file.fieldname.split("-").pop() === "courseImage")
         imageExtension = file.originalname.split(".").pop();
       cb(null, fileName);
     },
@@ -99,7 +105,7 @@ router.post("/add", auth, isTeacher, (req, res) => {
         categoryId: req.body.categories,
         shortDes: req.body.shortDes,
         detailDes: req.body.detailDes,
-        discountPrice: req.body.discountPrice ? req.body.discountPrice : null,
+        discountPrice: req.body.discount ? req.body.discount : null,
         totalView: 0,
         totalStudent: 0,
         updateDate: moment(new Date(), "YYYY-MM-DDThh:mm:ssZ").format(
@@ -108,6 +114,7 @@ router.post("/add", auth, isTeacher, (req, res) => {
         author: req.session.authUser.Username,
         statusId: 2,
         image: username + "/" + courseName + "/courseImage." + imageExtension,
+        isFinish: req.body.isFinish ? req.body.isFinish : 0,
       };
 
       const { insertId } = await courseModel.add(course);
@@ -153,12 +160,23 @@ async function insertCourseContent(
           chapterName: fields[field],
         };
         const res = await courseContentModel.add(courseContent);
-        chapterIds[chapterId] = res.insertId;
+        chapterIds[chapterId] = {
+          chapterId: res.insertId,
+          chapterName: fields[field],
+        };
       } else {
         const courseContentDetail = {
           name: fields[field],
-          contentId: chapterIds[chapterId],
-          video: username + "/" + courseName + "/" + fileName,
+          contentId: chapterIds[chapterId].chapterId,
+          video:
+            username +
+            "/" +
+            courseName +
+            "/" +
+            chapterIds[chapterId].chapterName +
+            "/" +
+            fields[field] +
+            ".mp4",
         };
         await courseContentDetailModel.add(courseContentDetail);
       }

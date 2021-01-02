@@ -46,7 +46,7 @@ $("#addNewChapter").on("click", function (e) {
               <div class="row">
                   <div class="col-sm-11 row">
                     <label class="col-sm-2" for="chapter-${id}">Chapter ${id}</label>
-                    <input type="text" class="form-control col-sm-10 chapter" name="chapter-${id}">
+                    <input type="text" class="form-control col-sm-10 chapter" name="chapter-${id}" id="chapter-${id}">
                   </div>
                   <div class="col-sm-1">
                       <button type="button" id="close-chapter-${id}" class="close" aria-label="Close">
@@ -98,7 +98,7 @@ $("#addNewChapter").on("click", function (e) {
         </div>
       </div>
       <div class="card-body">
-        <input id="video-${chapterId}-${lessonId}" type="file" class="file" data-preview-file-type="text" name="video-${chapterId}-${lessonId}"></input>
+        <input class="video" id="video-${chapterId}-${lessonId}" type="file" class="file" data-preview-file-type="text" name="video-${chapterId}-${lessonId}"></input>
       </div>
     </div>
     `);
@@ -113,7 +113,7 @@ $("#addNewChapter").on("click", function (e) {
       theme: "fa",
       showUpload: false,
       dropZoneEnabled: false,
-      allowedFileExtensions: ["mp4", "mkv"],
+      allowedFileExtensions: ["mp4"],
     });
   });
 });
@@ -188,19 +188,38 @@ $("#frmAddCourse").on("submit", function (e) {
         chapterNames[chapterName] = true;
       }
     }
+
+    const lessonNames = {};
+    $(`#${$(this).attr("id")} .lesson`).each(function (i) {
+      const lessonName = $(this).val();
+      if (lessonName.length === 0) {
+        hasError = true;
+        errorMessage("Lesson's name cannot be empty!");
+        return;
+      } else {
+        if (lessonNames.hasOwnProperty(lessonName)) {
+          hasError = true;
+          errorMessage(
+            "Lesson's name in the same chapter must be different from the other ones!"
+          );
+          return;
+        } else {
+          lessonNames[lessonName] = true;
+          const splitedId = $(this).attr("id").split("-");
+          $(`#video-${splitedId[1]}-${splitedId[2]}`).attr(
+            "name",
+            chapterName + "-" + lessonName
+          );
+        }
+      }
+    });
   });
 
-  $(".lesson").each(function (index) {
-    const lessonName = $(this).val();
-    if (lessonName.length === 0) {
+  $(".video").each(function (index) {
+    if (document.getElementById(`${$(this).attr("id")}`).files.length == 0) {
       hasError = true;
-
-      errorMessage("Lesson's name cannot be empty!");
+      errorMessage("You need to upload an video corresponding to your lesson!");
       return;
-    } else {
-      const splitedId = $(this).attr("id").split("-");
-
-      $(`#video-${splitedId[1]}-${splitedId[2]}`).attr("name", lessonName);
     }
   });
 

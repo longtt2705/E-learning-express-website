@@ -9,13 +9,13 @@ module.exports = {
 
   allWithUsernameByPage(username, offset) {
     return db.load(
-      `select * from ${TBL_COURSE} c join roles r on c.roleid = r.id where c.author = '${username}' limit ${config.pagination.limit} offset ${offset}`
+      `select * from ${TBL_COURSE} c join status s on c.statusid = s.id where c.author = '${username}' limit ${config.pagination.limit} offset ${offset}`
     );
   },
 
   async countAllWithUsername(username) {
     const rows = await db.load(
-      `select count(*) as total from ${TBL_COURSE} where username = '${username}'`
+      `select count(*) as total from ${TBL_COURSE} where author = '${username}'`
     );
     return rows[0].total;
   },

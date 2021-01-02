@@ -1,6 +1,7 @@
 const exphbs = require("express-handlebars");
 const hbs_sections = require("express-handlebars-sections");
 const numeral = require("numeral");
+const moment = require("moment");
 
 module.exports = (app) => {
   app.engine(
@@ -12,6 +13,9 @@ module.exports = (app) => {
         section: hbs_sections(),
         format(val) {
           return numeral(val).format("0,0");
+        },
+        formatDate(date) {
+          return moment(date, "YYYY-MM-DD hh:mm:ss").format("DD-MM-YYYY");
         },
         starPrint: function (value, option) {
           //In ngoi sao cua khoa hoc dua vao so diem danh gia
