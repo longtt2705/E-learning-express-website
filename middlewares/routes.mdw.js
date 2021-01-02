@@ -104,7 +104,7 @@ const rowTopic = [
   { TopicType: "Photography", TopicImage: "../public/img/categories/5.jpg" },
   { TopicType: "Social Media", TopicImage: "../public/img/categories/6.jpg" },
 ];
-const topcourse=[
+const topcourse = [
   {
     CourType: "finance",
     CourName: "finance",

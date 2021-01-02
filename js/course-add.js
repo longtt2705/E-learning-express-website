@@ -27,7 +27,7 @@ $("#courseImage").fileinput({
   minImageWidth: 1000,
   minImageHeight: 675,
   resizePreference: "width",
-  uploadUrl: "/teacher/add",
+
   allowedFileExtensions: ["png", "jpg", "gif"],
 });
 
@@ -83,8 +83,8 @@ $("#addNewChapter").on("click", function (e) {
     let lessonId = +localStorage.getItem(`totalLesson${chapterId}`);
 
     $(`#lesson-area-${chapterId}`).append(`
-    <div id="lesson-${chapterId}-${lessonId}" class="my-3 card shadow-sm">
-      <div class="card-header">
+    <div id="lesson-${chapterId}-${lessonId}" class="my-3 card shadow">
+      <div class="card-header" style="background-color: #d82a4e; color: white;">
         <div class="row">
           <div class="col-sm-11 row">
             <label class="col-sm-2" for="lesson-${chapterId}-${lessonId}">Lesson ${lessonId}</label>
@@ -159,14 +159,34 @@ $("#frmAddCourse").on("submit", function (e) {
     return;
   }
 
+  const discount = $("#discount").val();
+  if (discount.length !== 0) {
+    const isNum = /^\d+$/.test(discount);
+    if (!isNum) {
+      errorMessage("Discount must be a number!");
+      return;
+    } else if (+discount < 0) {
+      errorMessage("Discount must be a postitive number!");
+      return;
+    }
+  }
+
   let hasError = false;
+  const chapterNames = {};
   $(".chapter").each(function (index) {
     const chapterName = $(this).val();
     if (chapterName.length === 0) {
       hasError = true;
-
       errorMessage("Chapter's name cannot be empty!");
       return;
+    } else {
+      if (chapterNames.hasOwnProperty(chapterName)) {
+        hasError = true;
+        errorMessage("Chapter's name must be different from the other ones!");
+        return;
+      } else {
+        chapterNames[chapterName] = true;
+      }
     }
   });
 
@@ -177,11 +197,24 @@ $("#frmAddCourse").on("submit", function (e) {
 
       errorMessage("Lesson's name cannot be empty!");
       return;
+    } else {
+      const splitedId = $(this).attr("id").split("-");
+
+      $(`#video-${splitedId[1]}-${splitedId[2]}`).attr("name", lessonName);
     }
   });
 
   if (!hasError) {
-    $("#frmAddCourse").off("submit").submit();
+    $.getJSON(
+      `/teacher/course/is-available?courseName=${course}`,
+      function (data) {
+        if (data === true) {
+          $("#frmAddCourse").off("submit").submit();
+        } else {
+          errorMessage("Your course name has already existed!");
+        }
+      }
+    );
   }
 });
 

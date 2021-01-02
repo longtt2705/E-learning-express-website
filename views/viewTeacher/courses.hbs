@@ -1,41 +1,190 @@
-<div id="chapter-area" class="container">
-    <div class="card" id="chapter1">
-        <div class="card-header">
-            <div class="row">
-                <div class="col">
-                    <label for="chapter1">Chapter name</label>
-                    <input type="text" class="form-control" name="chapter1">
+{{#section 'title'}}
+<title>Account</title>
+{{/section}}
+
+{{#section 'css'}}
+<!-- Font Awesome -->
+<link rel="stylesheet" href="/styles/admin/fontawesome-free/css/all.min.css">
+<!-- Select2 -->
+<link rel="stylesheet" href="/styles/admin/fontawesome-free/css/select2.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="/styles/admin/dist/css/adminlte.min.css">
+{{/section}}
+{{#section 'script'}}
+<!-- Select2 -->
+<script src="/js/admin/select2.full.min.js"></script>
+<script>
+    $(function () {
+        $('.select2').select2()
+    });
+</script>
+{{/section}}
+<!-- Content Wrapper. Contains page content -->
+<div class="container card mt-lg-5">
+    <!-- Content Header (Page header) -->
+    <section class="content-header ">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>My Courses</h1>
                 </div>
-                <div class="col">
-                    <button type="button" class="close" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+
             </div>
-        </div>
-        <div class="card-body">
-            <div id="lesson-area1">
-                <div class="card" id="lesson1">
-                    <div class="card-header">
+        </div><!-- /.container-fluid -->
+        <div class="container-fluid">
+            <form action="/admin/account/search" method="get" id="form_search">
+                <div class="row">
+                    <div class="col-md-10 offset-md-1">
                         <div class="row">
-                            <div class="col">
-                                <label for="lesson1-1">Lesson name</label>
-                                <input id="lesson1-1" type="text" class="form-control" name="lesson1">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Search Type:</label>
+                                    <select class="select2" style="width: 100%;" name="search" id="search">
+                                        <option value="username" selected>Email</option>
+                                        <option value="name">Name</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col">
-                                <button type="button" class="close" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Sort Order:</label>
+                                    <select class="select2" style="width: 100%;" name="sort" id="sort">
+                                        <option value="ASC" selected>Ascending</option>
+                                        <option value="DESC">Descending</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Order By:</label>
+                                    <select class="select2" style="width: 100%;" name="order" id="order">
+                                        <option value="username" selected>Email</option>
+                                        <option value="name">Name</option>
+                                        <option value="roleid">Role</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group input-group-lg">
+                                <input type="text" class="form-control form-control-lg"
+                                    placeholder="Type your keywords here" name="searchContent" id="searchContent">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-lg btn-default">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <input id="video1-1" type="file" class="file" data-preview-file-type="text"
-                            name="video1-1"></input>
-                    </div>
                 </div>
-                <div class="my-3">
-                    <button id="addNewLesson1" class="btn btn-danger">Add new chapter</button>
+            </form>
+
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Course</h3>
+                <a class="btn btn-info  mx-5" href="/teacher/add">
+                    <i class="fas fa-plus">
+                    </i>
+                    Add Course
+                </a>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
+            <div class="card-body p-0">
+                <table class="table table-striped projects table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%">
+                                Course Name
+                            </th>
+                            <th style="width: 15%">
+                                Author
+                            </th>
+                            <th style="width: 25%">
+                                Course Progress
+                            </th>
+                            <th style="width: 8%" class="text-center">
+                                Status
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a>
+                                    Basic Python
+                                </a>
+                                <br />
+                                <small>
+                                    Last update 01.01.2019
+                                </small>
+                            </td>
+                            <td>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <img alt="Avatar" class="table-avatar" src="/public/img/avatar3.png">
+                                    </li>
+                                    <li>
+                                        <p>Gaga</p>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td class="project_progress">
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="57"
+                                        aria-valuemin="0" aria-valuemax="100" style="width: 57%">
+                                    </div>
+                                </div>
+                                <small>
+                                    57% Complete
+                                </small>
+                            </td>
+                            <td class="project-state">
+                                <span class="badge badge-success">Active</span>
+                            </td>
+                            <td class="project-actions text-right">
+                                <a class="btn btn-primary btn-sm" href="#">
+                                    <i class="fas fa-folder">
+                                    </i>
+                                    View
+                                </a>
+                                <a class="btn btn-info btn-sm" href="#">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                    Edit
+                                </a>
+                                <a class="btn btn-danger btn-sm" href="#">
+                                    <i class="fas fa-trash">
+                                    </i>
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
         </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

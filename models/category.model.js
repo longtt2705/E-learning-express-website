@@ -18,7 +18,6 @@ module.exports = {
 
   patch(entity) {
     const condition = { username: entity.Username };
-    console.log(entity);
     return db.patch(entity, condition, TBL_CATEGORIES);
   },
 };
