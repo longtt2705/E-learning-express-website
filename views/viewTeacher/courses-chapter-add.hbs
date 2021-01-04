@@ -1,0 +1,194 @@
+{{#section 'css'}}
+<link rel="stylesheet" href="/styles/admin/dist/css/adminlte.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="/styles/admin/fontawesome-free/css/all.min.css">
+<!-- Select2 -->
+<link rel="stylesheet" href="/styles/admin/fontawesome-free/css/select2.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="/styles/admin/dist/css/adminlte.min.css">
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<link href='https://fonts.googleapis.com/css?family=Adamina' rel='stylesheet'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput.min.css">
+<style>
+    #add-courses {
+        font-family: 'Adamina';
+        font-size: 18px;
+    }
+</style>
+
+{{/section}}
+
+{{#section 'script'}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.8.1/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
+<script src="/js/admin/js/adminlte.min.js"></script>
+<script src="https://cdn.tiny.cloud/1/q0kzpipqhk68lm10jszycgringtmyob5iqbxc6vkl9kh1noc/tinymce/5/tinymce.min.js"
+    referrerpolicy="origin"></script>
+<script>
+    localStorage.setItem('totalLesson', 0);
+    $(`#addNewLesson`).on("click", function (e) {
+        e.preventDefault();
+
+
+        localStorage.setItem(
+            `totalLesson`,
+            +localStorage.getItem(`totalLesson`) + 1
+        );
+        let lessonId = +localStorage.getItem(`totalLesson`);
+
+        $(`#lesson-area`).append(`
+    <div id="lesson-${lessonId}" class="my-3 card shadow">
+      <div class="card-header" style="background-color: #d82a4e; color: white;">
+        <div class="row">
+          <div class="col-sm-11 row">
+            <label class="col-sm-2" for="lesson-${lessonId}">Lesson ${lessonId}</label>
+            <input id="${lessonId}" type="text" class="form-control mb-2 col-sm-10 lesson" name="lessonName-${lessonId}">
+          </div>
+          <div class="col-sm-1">
+              <button type="button" class="close" id="close-${lessonId}" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <input class="video" id="video-${lessonId}" type="file" class="file" data-preview-file-type="text" name="video-${lessonId}"></input>
+      </div>
+    </div>
+    `);
+
+        $(`#close-${lessonId}`).on("click", function (e) {
+            $(`#lesson-${lessonId}`).fadeOut(500, function () {
+                $(this).remove();
+            });
+        });
+
+        $(`#video-${lessonId}`).fileinput({
+            theme: "fa",
+            showUpload: false,
+            dropZoneEnabled: false,
+            allowedFileExtensions: ["mp4"],
+        });
+    });
+
+    $("#frmAddChapter").on("submit", function (e) {
+        e.preventDefault();
+
+        let hasError = false;
+
+        const chapterName = $("#chapter").val();
+        if (chapterName.length === 0) {
+            errorMessage("Chapter's name cannot be empty!");
+            return;
+        }
+
+        const lessonNames = {};
+        $(`.lesson`).each(function (i) {
+            const lessonName = $(this).val();
+
+            if (lessonName.length === 0) {
+                hasError = true;
+                errorMessage("Lesson's name cannot be empty!");
+                return;
+            } else {
+                if (lessonNames.hasOwnProperty(lessonName)) {
+                    hasError = true;
+                    errorMessage(
+                        "Lesson's name in the same chapter must be different from the other ones!"
+                    );
+                    return;
+                } else {
+                    lessonNames[lessonName] = true;
+                    $(`#video-${$(this).attr("id")}`).attr(
+                        "name", lessonName
+                    );
+
+                }
+            }
+        });
+
+        $(".video").each(function (index) {
+            if (document.getElementById(`${$(this).attr("id")}`).files.length == 0) {
+                hasError = true;
+                errorMessage("You need to upload an video corresponding to your lesson!");
+                return;
+            }
+        });
+
+        if (!hasError) {
+            const courseId = $("#chapter").data("course");
+            const chapterId = $("#chapter").data("id");
+
+            $.getJSON(
+                `/teacher/contents/is-available?courseId=${courseId}&chapterName=${chapterName}&chapterId=-1`,
+                function (data) {
+                    if (data === true) {
+                        $("#frmAddChapter").off("submit").submit();
+                    } else {
+                        errorMessage("Your chapter name has already existed!");
+                    }
+                }
+            );
+        }
+    });
+    function errorMessage(message) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: message,
+        });
+    }
+</script>
+{{/section}}
+<!-- Content Wrapper. Contains page content -->
+<div id="add-courses" class="container">
+    <!-- Content Header (Page header) -->
+    <section class="content-header mt-lg-5">
+        <div class="container-fluid">
+            <div class="row mb-2 justify-content-center">
+                <div>
+                    <h1 class="font-weight-bold">Add a chapter to your course</h1>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+
+    <section class="content container mt-lg-1">
+        <div class="card card-primary">
+            <div class="card-header" style="background-color: #d82a4e;">
+                <h3 class="card-title font-weight-bold">{{course.Name}}</h3>
+            </div>
+            <form action="" method="POST" id="frmAddChapter" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="card shadow">
+                        <div class="card-header" style="background-color: #d82a4e; color: white;">
+                            <div class="row">
+                                <div class="col-sm-11 row">
+                                    <label class="col-sm-2" for="chapter">Chapter</label>
+                                    <input type="text" class="form-control col-sm-10 chapter" name="chapter"
+                                        id="chapter" data-course="{{course.Id}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="lesson-area">
+                            </div>
+                            <div class="my-3">
+                                <button id="addNewLesson" class="btn btn-danger">Add new lesson</button>
+                            </div>
+                        </div>
+                        <div class="form-group align-self-center">
+                            <input type="submit" value="Save" class="btn btn-danger">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>

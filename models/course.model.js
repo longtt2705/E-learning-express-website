@@ -7,9 +7,18 @@ module.exports = {
     return db.load(`select * from ${TBL_COURSE}`);
   },
 
+  async singleById(id) {
+    const rows = await db.load(
+      `select * from ${TBL_COURSE} where id = '${id}'`
+    );
+    if (rows.length === 0) return null;
+
+    return rows[0];
+  },
+
   allWithUsernameByPage(username, offset) {
     return db.load(
-      `select * from ${TBL_COURSE} c join status s on c.statusid = s.id where c.author = '${username}' limit ${config.pagination.limit} offset ${offset}`
+      `select c.*, s.StatusType from ${TBL_COURSE} c join status s on c.statusid = s.id where c.author = '${username}' limit ${config.pagination.limit} offset ${offset}`
     );
   },
 
@@ -20,8 +29,8 @@ module.exports = {
     return rows[0].total;
   },
 
-  delete(username) {
-    const condition = { username: username };
+  delete(id) {
+    const condition = { id: id };
     return db.del(condition, TBL_COURSE);
   },
 
@@ -30,13 +39,22 @@ module.exports = {
   },
 
   patch(entity) {
-    const condition = { username: entity.Username };
+    const condition = { id: entity.Id };
     return db.patch(entity, condition, TBL_COURSE);
   },
 
-  async singleByName(courseName) {
+  async checkIfCourseNameExist(courseId, courseName, username) {
     const rows = await db.load(
-      `select * from ${TBL_COURSE} where name = '${courseName}'`
+      `select * from ${TBL_COURSE} where author = '${username}' and name = '${courseName}' and id != '${courseId}'`
+    );
+    if (rows.length === 0) return null;
+
+    return rows[0];
+  },
+
+  async singleByName(courseName, username) {
+    const rows = await db.load(
+      `select * from ${TBL_COURSE} where name = '${courseName}' and author = '${username}'`
     );
     if (rows.length === 0) return null;
 

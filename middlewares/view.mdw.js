@@ -15,7 +15,7 @@ module.exports = (app) => {
           return numeral(val).format("0,0");
         },
         formatDate(date) {
-          return moment(date, "YYYY-MM-DD hh:mm:ss").format("DD-MM-YYYY");
+          return moment(date, "YYYY-MM-DD hh:mm:ss").format("DD-MM-YYYY LTS");
         },
         starPrint: function (value, option) {
           //In ngoi sao cua khoa hoc dua vao so diem danh gia
