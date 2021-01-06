@@ -85,7 +85,7 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
 .product-title{font-size: 16px; margin-bottom: 5px;}
 .product-rating{font-size: 12px;
 
-    color: #ffa811;}
+    color: #ffa811 !important;}
 .product-bestseller{
     color: #ffa811;
     border: 3px;
@@ -294,7 +294,7 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
 }
 
 .text-light {
-    color: #f0f0f8 !important;
+    color: #f0f0f8;
 }
 
 .text-dark {

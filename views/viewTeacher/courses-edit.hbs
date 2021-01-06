@@ -77,7 +77,7 @@
                         <div class="form-group input-group">
                             <select id="categories" class="form-control custom-select ml-2" name="categories">
                                 {{#each ../category as |item|}}
-                                <option value="{{item.Id}}">{{item.Name}}</option>
+                                <option value="{{item.Id}}" {{#if item.selected}}selected{{/if}}>{{item.Name}}</option>
                                 {{/each}}
                             </select>
                         </div>

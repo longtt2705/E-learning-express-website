@@ -14,6 +14,9 @@ module.exports = (app) => {
         format(val) {
           return numeral(val).format("0,0");
         },
+        formatPrice(val) {
+          return numeral(val).format("0,0.00");
+        },
         formatDate(date) {
           return moment(date, "YYYY-MM-DD hh:mm:ss").format("DD-MM-YYYY LTS");
         },
