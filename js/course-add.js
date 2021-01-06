@@ -12,6 +12,7 @@ tinymce.init({
   selector: "#detailDes",
   height: 500,
   width: 1200,
+
   plugins: "paste image link autolink lists table media",
   menubar: false,
   toolbar: [

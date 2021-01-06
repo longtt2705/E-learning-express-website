@@ -27,9 +27,28 @@
 
 <script src="/js/course-chapter.js"></script>
 <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
+<script>
+    $('.delete').on('click', function () {
+        Swal.fire({
+            title: 'Do you want to delete this lesson?',
+            showCancelButton: true,
+            confirmButtonText: `Accept`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                const id = $(this).data("id");
+                $('#txtId').val(id);
+                $('#frmDelete').submit();
+            }
+        })
+    });
+</script>
 {{/section}}
 <!-- Content Wrapper. Contains page content -->
 <div id="add-courses" class="container">
+    <form id="frmDelete" action="/teacher/{{courseId}}/contents/{{chapter.Id}}/delete" method="POST">
+        <input type="hidden" name="Id" id="txtId">
+    </form>
     <!-- Content Header (Page header) -->
     <section class="content-header mt-lg-5">
         <div class="container-fluid">
@@ -65,7 +84,8 @@
                                     value="{{Name}}" readonly>
                             </div>
                             <div class="col-sm-1">
-                                <button type="button" class="close" id="{{Id}}" aria-label="Close">
+                                <button class="btn font-weight-bold delete" id="{{Id}}" aria-label="Close"
+                                    data-id="{{Id}}">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>

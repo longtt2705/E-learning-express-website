@@ -5,10 +5,11 @@
 {{#section 'css'}}
 <link rel="stylesheet" href="/styles/detail.css">
 <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" href="jquery.rateyo.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 {{/section}}
 
 {{#section 'script'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <script>
     $(".show-more").click(function () {
         if ($(".text-decrip ").hasClass("show-more-height")) {
@@ -20,74 +21,85 @@
         $(".text-decrip ").toggleClass("show-more-height");
     });
 
+    $(".rate").each(function (e) {
+        console.log($(this).data("rate"));
+        $(this).rateYo({
+            rating: $(this).data("rate"),
+            readOnly: true,
+            starWidth: "18px"
+        });
+    });
+    $(".shortDes").each(function (e) {
+        $(this).html($(this).data("des"));
+    });
+    $(".detailDes").each(function (e) {
+        $(this).html($(this).data("des"));
+    });
 
 </script>
 
 {{/section}}
 
+{{#with course}}
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
 </div>
 
-
 <!-- Hero section -->
-
 <div class="paid-course-landing-page__container">
     <div class="top-content dark-background">
         <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="row">
                 {{!-- Start content-top-detail --}}
+
                 <div class="col-xl-7 col-lg-6 col-md-6 col-sm-12 col-12 pl-xl-0 pl-lg-0 pl-md-0 m-b-30">
                     <div class="product-details text-light">
                         <div class=" pb-3">
-                            <h2 class="mb-1">T-Shirt Product Title</h2>
+                            <h2 class="mb-1">{{Name}}</h2>
                         </div>
-                        <div class="mb-3">
-                            <p class="mb-1">Praesent et cursus quam. Etiam vulputate est et metus pellentesque iaculis.
-                                Suspendisse
-                                nec urna augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere
-                                cubilia Curae;</p>
-                        </div>
-                        <div class="mb-3">
-                            <span class="udlite-badge udlite-badge-bestseller udlite-heading-xs">
-                                Best seller
-                            </span>
-                            <div class="product-rating d-inline-block mr-1">
-                                <span>5/5</span>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
+                        <div class="shortDes mb-3" data-des="{{ShortDes}}"></div>
+                        <div class="mb-1">
+                            <div class="d-flex mb-2">
+                                <span class="udlite-badge udlite-badge-bestseller udlite-heading-xs">
+                                    Best seller
+                                </span>
+                                <h6 class="ml-2" style="color: orange;">{{AverageRate}}</h6>
+                                <span class="rate" data-rate="{{AverageRate}}"></span>
+                                <span class="mr-1">({{format TotalRate}} ratings)</span>
                             </div>
-                            <span class="mr-1">(300.000 ratings)</span>
-                            <span>1.884.684 students</span>
+                            <span>{{format TotalStudent}} students</span>
                         </div>
-                        <div class="mb-0">
-                            <p>Create by <a href="#">Alex</a></p>
-                            <p> <i class="fa fa-check-circle" aria-hidden="true"></i> Last update 1/2020</p>
+                        <div class="m-0">
+                            <p class="m-0">Create by {{authorName}}</p>
+                            <p class="m-0"> <i class="fa fa-check-circle" aria-hidden="true"></i> Last update:
+                                {{formatDate
+                                UpdateDate}}</p>
 
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-1">
                             <a href="#" class="product-wishlist-btn udlite-heading-xs udlite-badge">wishlist <i
                                     class="fa fa-heart"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 pl-xl-0 pl-lg-0 pl-md-0  m-b-30">
-                    <img src="/public/img/course.jpg" alt="">
+                    <img src="/public/courses/{{Image}}" alt="image">
                     <div class="product-details-right ">
 
                         <div class="border-bottom border-top pb-3 mb-3">
 
+                            {{#if DiscountPrice}}
                             <div class="product-price mb-2">
-                                $49.00
-                                <del class="product-del">$69.00</del>
+                                ${{formatPrice DiscountPrice}}
+                                <del class="product-del">${{formatPrice Price}}</del>
                             </div>
-                            <div class="product-discount">
-                                <i class="fa fa-clock"></i> 2 day left at this price
+                            {{else}}
+                            <div class="product-price mb-2">
+                                ${{formatPrice Price}}
                             </div>
+                            {{/if}}
+
                         </div>
                         <div class="product-size">
                             <a href="#" class="btn btn-primary btn-block btn-lg">Add to Cart</a>
@@ -101,6 +113,7 @@
 
                 {{!-- End-content-image-detail --}}
             </div>
+
         </div>
 
     </div>
@@ -124,33 +137,8 @@
                 <div class="tab-content" id="myTabContent5">
                     <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="product-tab-1">
 
-                        <div class="text-decrip show-more-height">
-                            <p> Interested in the field of Machine Learning? Then this course is for you!
-                                This course has been designed by two professional Data Scientists so that we can share
-                                our knowledge and help you learn complex theory, algorithms, and coding libraries in a
-                                simple way.
-                                We will walk you step-by-step into the World of Machine Learning. With every tutorial,
-                                you will develop new skills and improve your understanding of this challenging yet
-                                lucrative sub-field of Data Science.
-                                This course is fun and exciting, but at the same time, we dive deep into Machine
-                                Learning. It is structured the following way:
-                            </p>
-                            <p> Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a
-                                bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</p>
-                            <p> Interested in the field of Machine Learning? Then this course is for you!
-                                This course has been designed by two professional Data Scientists so that we can share
-                                our knowledge and help you learn complex theory, algorithms, and coding libraries in a
-                                simple way.
-                                We will walk you step-by-step into the World of Machine Learning. With every tutorial,
-                                you will develop new skills and improve your understanding of this challenging yet
-                                lucrative sub-field of Data Science.
-                                This course is fun and exciting, but at the same time, we dive deep into Machine
-                                Learning. It is structured the following way:
-                            </p>
-                            <p> Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a
-                                bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</p>
+                        <div class="text-decrip show-more-height detailDes" data-des="{{DetailDes}}">
+
                         </div>
                         <div class="show-more">(Show More)</div>
 
