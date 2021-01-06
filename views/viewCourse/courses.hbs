@@ -70,7 +70,8 @@
             $("#form_search #sort").val(sort).change();
             $("#form_search #order").val(order).change();
             $("#form_search #searchContent").val(searchContent);
-            $("#form_search #fullText").val(fullText);
+            if (fullText)
+                $("#form_search #fullText").prop('checked', true);
 
             let PageURL = "?search=" + search + "&sort=" + sort + "&order=" + order + "&searchContent=" + searchContent + "&fullText=" + fullText;
             $('a[class=page-link]').map(function () {
@@ -112,7 +113,6 @@
                                         <option value="c.name" selected>Course Name</option>
                                         <option value="cat.name">Category</option>
                                         <option value="And">Course Name &amp; Category</option>
-                                        <option value="Or">Course Name or Category</option>
                                     </select>
                                 </div>
                             </div>

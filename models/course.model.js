@@ -60,18 +60,12 @@ module.exports = {
   },
 
   async searchWithFullTextByPage(searchType, sort, order, content, offset) {
-    console.log(
-      `${selectField} where MATCH(${searchType}) AGAINST('${content}' IN BOOLEAN MODE) group by c.Id order by ${order} ${sort} limit ${config.pagination.limit} offset ${offset}`
-    );
     return db.load(
       `${selectField} where MATCH(${searchType}) AGAINST('${content}' IN BOOLEAN MODE) group by c.Id order by ${order} ${sort} limit ${config.pagination.limit} offset ${offset}`
     );
   },
 
   async countAllWithFullText(searchType, content) {
-    console.log(
-      `${countField} where match(${searchType}) against('${content}' IN BOOLEAN MODE) group by c.Id`
-    );
     const rows = await db.load(
       `${countField} where match(${searchType}) against('${content}' IN BOOLEAN MODE) group by c.Id`
     );
