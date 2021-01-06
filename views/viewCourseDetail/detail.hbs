@@ -1,8 +1,23 @@
 {{#section 'css'}}
 <link rel="stylesheet" href="/styles/detail.css">
+<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="jquery.rateyo.css" />
 {{/section}}
 
 {{#section 'script'}}
+<script>
+    $(".show-more").click(function () {
+        if ($(".text-decrip ").hasClass("show-more-height")) {
+            $(this).text("(Show Less)");
+        } else {
+            $(this).text("(Show More)");
+        }
+
+        $(".text-decrip ").toggleClass("show-more-height");
+    });
+
+
+</script>
 
 {{/section}}
 
@@ -31,10 +46,10 @@
                                 cubilia Curae;</p>
                         </div>
                         <div class="mb-3">
-                            <div class="product-bestseller d-inline-block">
+                            <span class="udlite-badge udlite-badge-bestseller udlite-heading-xs">
                                 Best seller
-                            </div>
-                            <div class="product-rating d-inline-block">
+                            </span>
+                            <div class="product-rating d-inline-block mr-1">
                                 <span>5/5</span>
                                 <i class="fa fa-fw fa-star"></i>
                                 <i class="fa fa-fw fa-star"></i>
@@ -42,11 +57,17 @@
                                 <i class="fa fa-fw fa-star"></i>
                                 <i class="fa fa-fw fa-star"></i>
                             </div>
-                            <span>(300.000 ratings)</span>
+                            <span class="mr-1">(300.000 ratings)</span>
                             <span>1.884.684 students</span>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-0">
                             <p>Create by <a href="#">Alex</a></p>
+                            <p> <i class="fa fa-check-circle" aria-hidden="true"></i> Last update 1/2020</p>
+
+                        </div>
+                        <div class="mb-3">
+                            <a href="#" class="product-wishlist-btn udlite-heading-xs udlite-badge">wishlist <i
+                                    class="fa fa-heart"></i></a>
                         </div>
                     </div>
                 </div>
@@ -56,7 +77,13 @@
 
                         <div class="border-bottom border-top pb-3 mb-3">
 
-                            <h3 class="mb-0 text-primary">$49.00</h3>
+                            <div class="product-price mb-2">
+                                $49.00
+                                <del class="product-del">$69.00</del>
+                            </div>
+                            <div class="product-discount">
+                                <i class="fa fa-clock"></i> 2 day left at this price
+                            </div>
                         </div>
                         <div class="product-size">
                             <a href="#" class="btn btn-primary btn-block btn-lg">Add to Cart</a>
@@ -92,25 +119,38 @@
                 </ul>
                 <div class="tab-content" id="myTabContent5">
                     <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="product-tab-1">
-                        <p>Praesent et cursus quam. Etiam vulputate est et metus pellentesque iaculis. Suspendisse nec
-                            urna
-                            augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubiliaurae.
-                        </p>
-                        <p>Nam condimentum erat aliquet rutrum fringilla. Suspendisse potenti. Vestibulum placerat
-                            elementum
-                            sollicitudin. Aliquam consequat molestie tortor, et dignissim quam blandit nec. Donec
-                            tincidunt
-                            dui
-                            libero, ac convallis urna dapibus eu. Praesent volutpat mi eget diam efficitur, a mollis
-                            quam
-                            ultricies. Morbi eu turpis odio.</p>
-                        <ul class="list-unstyled arrow">
-                            <li>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                            <li>Donec ut elit sodales, dignissim elit et, sollicitudin nulla.</li>
-                            <li>Donec at leo sed nisl vestibulum fermentum.
-                            </li>
-                        </ul>
+
+                        <div class="text-decrip show-more-height">
+                            <p> Interested in the field of Machine Learning? Then this course is for you!
+                                This course has been designed by two professional Data Scientists so that we can share
+                                our knowledge and help you learn complex theory, algorithms, and coding libraries in a
+                                simple way.
+                                We will walk you step-by-step into the World of Machine Learning. With every tutorial,
+                                you will develop new skills and improve your understanding of this challenging yet
+                                lucrative sub-field of Data Science.
+                                This course is fun and exciting, but at the same time, we dive deep into Machine
+                                Learning. It is structured the following way:
+                            </p>
+                            <p> Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a
+                                bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
+                                helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</p>
+                            <p> Interested in the field of Machine Learning? Then this course is for you!
+                                This course has been designed by two professional Data Scientists so that we can share
+                                our knowledge and help you learn complex theory, algorithms, and coding libraries in a
+                                simple way.
+                                We will walk you step-by-step into the World of Machine Learning. With every tutorial,
+                                you will develop new skills and improve your understanding of this challenging yet
+                                lucrative sub-field of Data Science.
+                                This course is fun and exciting, but at the same time, we dive deep into Machine
+                                Learning. It is structured the following way:
+                            </p>
+                            <p> Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a
+                                bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
+                                helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</p>
+                        </div>
+                        <div class="show-more">(Show More)</div>
+
+
                     </div>
                     <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="product-tab-2">
                         <div class="review-block">
