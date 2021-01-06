@@ -2,6 +2,8 @@
 <link rel="stylesheet" href="/styles/detail.css">
 <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 {{/section}}
 
 {{#section 'script'}}
@@ -18,7 +20,6 @@
     });
 
     $(".rate").each(function (e) {
-        console.log($(this).data("rate"));
         $(this).rateYo({
             rating: $(this).data("rate"),
             readOnly: true,
@@ -31,16 +32,17 @@
     $(".detailDes").each(function (e) {
         $(this).html($(this).data("des"));
     });
+    $("#description").html($("#description").data("des"));
 
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
 
 {{/section}}
 
 {{#with course}}
-<!-- Page Preloder -->
-<div id="preloder">
-    <div class="loader"></div>
-</div>
 
 <!-- Hero section -->
 <div class="paid-course-landing-page__container">
@@ -197,6 +199,180 @@
                             <span class="text-dark font-weight-bold">Gloria S. Castillo</span><small class="text-mute">
                                 (Company
                                 name)</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 m-b-60">
+            <div class="card">
+                <div class="card-header btn text-left" data-toggle="collapse" data-target="#noidungI">
+                    <i class="fas fa-caret-down"></i>Chuong I
+                </div>
+                <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungI">
+                    <ul class="list-group">
+                        <li class="list-group-item">Cras justo odio</li>
+                        <li class="list-group-item">Dapibus ac facilisis in</li>
+                        <li class="list-group-item">Morbi leo risus</li>
+                        <li class="list-group-item">Porta ac consectetur ac</li>
+                        <li class="list-group-item">Vestibulum at eros</li>
+                    </ul>
+                </div>
+                <div class="card-header btn text-left" data-toggle="collapse" data-target="#noidungII">
+                    <i class="fas fa-caret-down"></i>Chuong II
+                </div>
+                <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungII">
+                    <ul class="list-group">
+                        <li class="list-group-item">Cras justo odio</li>
+                        <li class="list-group-item">Dapibus ac facilisis in</li>
+                        <li class="list-group-item">Morbi leo risus</li>
+                        <li class="list-group-item">Porta ac consectetur ac</li>
+                        <li class="list-group-item">Vestibulum at eros</li>
+                    </ul>
+                </div>
+                <div class="card-header btn text-left" data-toggle="collapse" data-target="#noidungIII">
+                    <i class="fas fa-caret-down"></i>Chuong III
+                </div>
+                <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungIII">
+                    <ul class="list-group">
+                        <li class="list-group-item">Cras justo odio</li>
+                        <li class="list-group-item">Dapibus ac facilisis in</li>
+                        <li class="list-group-item">Morbi leo risus</li>
+                        <li class="list-group-item">Porta ac consectetur ac</li>
+                        <li class="list-group-item">Vestibulum at eros</li>
+                    </ul>
+                </div>
+                <div class="card-header btn text-left" data-toggle="collapse" data-target="#noidungIV">
+                    <i class="fas fa-caret-down"></i>Chuong IV
+                </div>
+                <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungIV">
+                    <ul class="list-group">
+                        <li class="list-group-item">Cras justo odio</li>
+                        <li class="list-group-item">Dapibus ac facilisis in</li>
+                        <li class="list-group-item">Morbi leo risus</li>
+                        <li class="list-group-item">Porta ac consectetur ac</li>
+                        <li class="list-group-item">Vestibulum at eros</li>
+                    </ul>
+                </div>
+                <div class="card-header btn text-left" data-toggle="collapse" data-target="#noidungV">
+                    <i class="fas fa-caret-down"></i>Chuong V
+                </div>
+                <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungV">
+                    <ul class="list-group">
+                        <li class="list-group-item">Cras justo odio</li>
+                        <li class="list-group-item">Dapibus ac facilisis in</li>
+                        <li class="list-group-item">Morbi leo risus</li>
+                        <li class="list-group-item">Porta ac consectetur ac</li>
+                        <li class="list-group-item">Vestibulum at eros</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="teacher_cour">
+    <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 m-b-60">
+            <div class="card">
+                <div class="cour">
+                    <div>
+                        <div class="info">
+                            <img src="/public/img/{{authorImage}}" alt="abcc">
+                            <div>
+                                <div class="Name"><b>{{authorName}}</b></div>
+                                <div class="countcour">115 lessons</div>
+                                <div class="avis">23 avis</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="description" data-des="{{description}}">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="CommentStar">
+    <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 m-b-60">
+            <div class="card">
+                <div class="infoStar">
+                    <div class="avgStar">
+                        <h4>{{AverageRate}}</h4>
+                        <div>
+                            <i class="fa fa-fw fa-star"></i>
+                            <i class="fa fa-fw fa-star"></i>
+                            <i class="fa fa-fw fa-star"></i>
+                            <i class="fa fa-fw fa-star"></i>
+                            <i class="fa fa-fw fa-star"></i>
+                        </div>
+                        <div>Course grade</div>
+                    </div>
+                    <div class="star-table">
+                        <div class="Star5">
+                            <div class="bar-container">
+                                <div class="bar-5"></div>
+                            </div>
+                            <div class="star">
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                200000
+                            </div>
+                        </div>
+                        <div class="Star4">
+                            <div class="bar-container">
+                                <div class="bar-4"></div>
+                            </div>
+                            <div class="star">
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                90000
+                            </div>
+                        </div>
+                        <div class="Star3">
+                            <div class="bar-container">
+                                <div class="bar-3"></div>
+                            </div>
+                            <div class="star">
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                10000
+                            </div>
+                        </div>
+                        <div class="Star2">
+                            <div class="bar-container">
+                                <div class="bar-2"></div>
+                            </div>
+                            <div class="star">
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                0
+                            </div>
+                        </div>
+                        <div class="Star1">
+                            <div class="bar-container">
+                                <div class="bar-1"></div>
+                            </div>
+                            <div class="star">
+                                <i class="fa fa-fw fa-star"></i>
+                                0
+                            </div>
                         </div>
                     </div>
                 </div>
