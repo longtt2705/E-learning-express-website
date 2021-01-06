@@ -19,7 +19,7 @@ router.get("/", auth, isTeacher, async (req, res) => {
   const totalPage = Math.ceil(total / config.pagination.limit);
 
   if (page < 1) page = 1;
-  if (page > totalPage) page = totalPage;
+  if (totalPage > 0 && page > totalPage) page = totalPage;
 
   const offset = (page - 1) * config.pagination.limit;
   const rows = await courseModel.allWithUsernameByPage(username, offset);
@@ -128,7 +128,6 @@ router.post("/add", auth, isTeacher, (req, res) => {
         statusId: 2,
         image: username + "/" + courseName + "/courseImage." + imageExtension,
       };
-
       const { insertId } = await courseModel.add(course);
       insertCourseContent(req.body, insertId, username, courseName);
       res.redirect("./add");
@@ -377,6 +376,7 @@ router.get("/edit/:courseId", auth, isTeacher, async function (req, res) {
   const subCate = [];
   for (let cate in categories) {
     categories[cate].SubCate.forEach((element) => {
+      element.selected = element.Id == course.CategoryId ? true : false;
       subCate.push(element);
     });
   }
@@ -492,8 +492,20 @@ router.post(
 
 router.post("/delete", auth, isTeacher, async function (req, res) {
   const id = req.body.Id;
+  const chapters = await courseContentModel.allByCourseId(id);
+  for (let chapter in chapters) {
+    const lessons = await courseContentDetailModel.allByChapterId(
+      chapters[chapter].Id
+    );
+    for (let lesson in lessons) {
+      await courseContentDetailModel.delete(lessons[lesson].Id);
+    }
+
+    await courseContentModel.delete(chapters[chapter].Id);
+  }
 
   await courseModel.delete(id);
+
   res.redirect("/teacher");
 });
 
@@ -503,13 +515,27 @@ router.post("/:courseId/delete", auth, isTeacher, async function (req, res) {
 
   const lessons = await courseContentDetailModel.allByChapterId(chapterId);
 
-  for (lesson in lessons) {
+  for (let lesson in lessons) {
     await courseContentDetailModel.delete(lessons[lesson].Id);
   }
 
   await courseContentModel.delete(chapterId);
   res.redirect("/teacher/" + courseId + "/contents");
 });
+
+router.post(
+  "/:courseId/contents/:chapterId/delete",
+  auth,
+  isTeacher,
+  async function (req, res) {
+    const lessonId = req.body.Id;
+    const courseId = req.params.courseId;
+    const chapterId = req.params.chapterId;
+
+    await courseContentDetailModel.delete(lessonId);
+    res.redirect("/teacher/edit/" + courseId + "/contents/" + chapterId);
+  }
+);
 
 router.get("/:courseId/contents/add", auth, isTeacher, async (req, res) => {
   const course = await courseModel.singleById(req.params.courseId);

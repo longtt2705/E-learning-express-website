@@ -156,4 +156,5 @@ module.exports = (app) => {
   app.use("/admin", require("../routes/admin.route"));
   app.use("/auth", require("../routes/auth.route"));
   app.use("/teacher", require("../routes/teacher.route"));
+  app.use("/course", require("../routes/course.route"));
 };

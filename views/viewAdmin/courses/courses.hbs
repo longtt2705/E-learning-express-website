@@ -1,5 +1,5 @@
 {{#section 'title'}}
-<title>Account</title>
+<title>Course</title>
 {{/section}}
 
 {{#section 'css'}}
@@ -13,68 +13,124 @@
 {{#section 'script'}}
 <!-- Select2 -->
 <script src="/js/admin/select2.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.8.1/dist/sweetalert2.all.min.js"></script>
 <script>
     $(function () {
         $('.select2').select2()
     });
+    $('.delete').on('click', function () {
+        Swal.fire({
+            title: 'Do you want to delete this course?',
+            showCancelButton: true,
+            confirmButtonText: `Accept`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                const id = $(this).data("id");
+                $('#txtId').val(id);
+                $('#frmDelete').submit();
+            }
+        })
+    });
+    var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+    };
+    $(document).ready(function () {
+        const url = window.location.pathname;
+
+        let arr = url.split('/');
+
+        // params found
+        if (url.length > 1 && arr[arr.length - 1] === 'search') {
+
+            const search = getUrlParameter("search").replace("+", " ");
+            const sort = getUrlParameter("sort").replace("+", " ");
+            const order = getUrlParameter("order").replace("+", " ");
+            const searchContent = getUrlParameter("searchContent").replace("+", " ");
+
+            $("#form_search #search").val(search).change();
+            $("#form_search #sort").val(sort).change();
+            $("#form_search #order").val(order).change();
+            $("#form_search #searchContent").val(searchContent);
+
+            let PageURL = "?search=" + search + "&sort=" + sort + "&order=" + order + "&searchContent=" + searchContent;
+            $('a[class=page-link]').map(function () {
+                $(this).attr("href", PageURL + "&page=" + $(this).data("page"));
+            });
+
+        }
+    });
 </script>
 {{/section}}
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+<div class="content-wrapper card mt-lg-5">
+    <form id="frmDelete" action="/admin/course/delete" method="POST">
+        <input type="hidden" name="Id" id="txtId">
+    </form>
+
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Account</h1>
+                    <h1>Courses</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Account Add</li>
+                        <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+                        <li class="breadcrumb-item active">Course</li>
                     </ol>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
         <div class="container-fluid">
-            <form action="enhanced-results.html">
+            <form action="/admin/course/search" method="get" id="form_search">
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label>Result Type:</label>
-                                    <select class="select2" multiple="multiple" data-placeholder="Any"
-                                        style="width: 100%;">
-                                        <option>Title only</option>
-                                        <option>Price</option>
-                                        <option>Category</option>
+                                    <label>Search Type:</label>
+                                    <select class="select2" style="width: 100%;" name="search" id="search">
+                                        <option value="c.author" selected>Author</option>
+                                        <option value="c.name">Course Name</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
                                     <label>Sort Order:</label>
-                                    <select class="select2" style="width: 100%;">
-                                        <option selected>ASC</option>
-                                        <option>DESC</option>
+                                    <select class="select2" style="width: 100%;" name="sort" id="sort">
+                                        <option value="ASC" selected>Ascending</option>
+                                        <option value="DESC">Descending</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
                                     <label>Order By:</label>
-                                    <select class="select2" style="width: 100%;">
-                                        <option selected>Title</option>
-                                        <option>Date</option>
+                                    <select class="select2" style="width: 100%;" name="order" id="order">
+                                        <option value="AverageRate" selected>Rating</option>
+                                        <option value="c.price">Price</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group input-group-lg">
-                                <input type="search" class="form-control form-control-lg"
-                                    placeholder="Type your keywords here" value="">
+                                <input type="text" class="form-control form-control-lg"
+                                    placeholder="Type your keywords here" name="searchContent" id="searchContent">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-lg btn-default">
                                         <i class="fa fa-search"></i>
@@ -95,156 +151,95 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Accounts</h3>
-                <a class="btn btn-info  mx-5" href="/admin/account/add">
-                    <i class="fas fa-plus">
-                    </i>
-                    Add Account
-                </a>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
+                <h3 class="card-title">Courses</h3>
             </div>
             <div class="card-body p-0">
                 <table class="table table-striped projects table-hover">
                     <thead>
                         <tr>
-                            <th style="width: 1%">
-                                No.
-                            </th>
-                            <th style="width: 20%">
+                            <th style="width: 30%">
                                 Course Name
                             </th>
-                            <th style="width: 10%">
+                            <th style="width: 20%">
                                 Author
                             </th>
+                            <th style="width: 15%">
+                                Category
+                            </th>
+                            <th style="width: 10%">
+                                Price
+                            </th>
+                            <th style="width: 8%">
+                                Progress
+                            </th>
                             <th>
-                                Course Progress
-                            </th>
-                            <th style="width: 8%" class="text-center">
-                                Status
-                            </th>
-                            <th style="width: 20%">
                             </th>
                         </tr>
                     </thead>
                     <tbody>
+                        {{#each this.items as |item|}}
+                        {{#with item}}
+                        <tr>
                         <tr>
                             <td>
-                                #
-                            </td>
-                            <td>
                                 <a>
-                                    Basic Python
+                                    {{Name}}
                                 </a>
                                 <br />
                                 <small>
-                                    Created 01.01.2019
+                                    Last update: {{formatDate UpdateDate}}
                                 </small>
                             </td>
                             <td>
-                                <ul class="list-inline">
-                                    <li class="list-inline-item">
-                                        <img alt="Avatar" class="table-avatar" src="/public/img/avatar3.png">
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <p>Gaga</p>
-                                    </li>
-
-                                </ul>
+                                {{Author}}
                             </td>
-                            <td class="project_progress">
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="57"
-                                        aria-valuemin="0" aria-valuemax="100" style="width: 57%">
-                                    </div>
-                                </div>
-                                <small>
-                                    57% Complete
-                                </small>
+                            <td>
+                                {{CateName}}
                             </td>
-                            <td class="project-state">
-                                <span class="badge badge-success">Active</span>
+                            <td>
+                                ${{Price}}
+                            </td>
+                            <td>
+                                {{#if isFinish}}
+                                <span class="badge badge-success">Completed</span>
+                                {{else}}
+                                <span class="badge badge-danger">Not Completed</span>
+                                {{/if}}
                             </td>
                             <td class="project-actions text-right">
-                                <a class="btn btn-primary btn-sm" href="#">
+                                <a class="btn btn-primary btn-sm" href="/course/{{Id}}">
                                     <i class="fas fa-folder">
                                     </i>
                                     View
                                 </a>
-                                <a class="btn btn-info btn-sm" href="#">
-                                    <i class="fas fa-pencil-alt">
-                                    </i>
-                                    Edit
-                                </a>
-                                <a class="btn btn-danger btn-sm" href="#">
-                                    <i class="fas fa-trash">
-                                    </i>
+                                <button class="btn btn-danger btn-sm delete" data-id="{{Id}}">
+                                    <i class="fas fa-trash"></i>
                                     Delete
-                                </a>
+                                </button>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                #
-                            </td>
-                            <td>
-                                <a>
-                                    Advanced Python
-                                </a>
-                                <br />
-                                <small>
-                                    Created 01.01.2019
-                                </small>
-                            </td>
-                            <td>
-                                <ul class="list-inline">
-                                    <li class="list-inline-item">
-                                        <img alt="Avatar" class="table-avatar" src="/public/img/avatar3.png">
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <p>Gaga</p>
-                                    </li>
-                                </ul>
-                            </td>
-                            <td class="project_progress">
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="47"
-                                        aria-valuemin="0" aria-valuemax="100" style="width: 47%">
-                                    </div>
-                                </div>
-                                <small>
-                                    47% Complete
-                                </small>
-                            </td>
-                            <td class="project-state">
-                                <span class="badge badge-success">Active</span>
-                            </td>
-                            <td class="project-actions text-right">
-                                <a class="btn btn-primary btn-sm" href="#">
-                                    <i class="fas fa-folder">
-                                    </i>
-                                    View
-                                </a>
-                                <a class="btn btn-info btn-sm" href="#">
-                                    <i class="fas fa-pencil-alt">
-                                    </i>
-                                    Edit
-                                </a>
-                                <a class="btn btn-danger btn-sm" href="#">
-                                    <i class="fas fa-trash">
-                                    </i>
-                                    Delete
-                                </a>
-                            </td>
+                            {{/with}}
+                            {{/each}}
                         </tr>
                     </tbody>
                 </table>
+                <div class="mt-3">
+                    <nav aria-label="Page navigation example ">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item {{#unless canGoPrev}}disabled{{/unless}}">
+                                <a class="page-link" href="?page={{prevPage}}" data-page={{prevPage}}>Previous</a>
+                            </li>
+                            {{#each page_items}}
+                            <li class="page-item {{#if isActive}}active{{/if}}">
+                                <a class="page-link" href="?page={{value}}" data-page={{value}}>{{value}}</a>
+                            </li>
+                            {{/each}}
+                            <li class="page-item {{#unless canGoNext}}disabled{{/unless}}">
+                                <a class="page-link" href="?page={{nextPage}}" data-page={{nextPage}}>Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
             </div>
             <!-- /.card-body -->
         </div>

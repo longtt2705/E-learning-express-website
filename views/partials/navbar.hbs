@@ -14,16 +14,17 @@
         <div id="navbarSupportedContent" class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active dropdown">
-                    <a href="#" class="nav-link font-weight-bold dropdown-toggle" data-toggle="dropdown">Categories
-                        <span class="sr-only">(current)</span></a>
+                    <a data-target="/course" href="/course" class="nav-link font-weight-bold dropdown-toggle">Categories
+                    </a>
+
                     <ul class="dropdown-menu">
                         {{#each this.lcCategories as |item|}}
                         <li class="dropdown-submenu">
                             <a class="dropdown-item dropdown-toggle font-weight-bold" data-toggle="dropdown"
-                                href="#">{{item.Name}}</a>
+                                data-target="/course/" target="_blank" href="/course">{{item.Name}}</a>
                             <ul class="dropdown-menu">
                                 {{#each item.SubCate as |cate|}}
-                                <li><a class="dropdown-item font-weight-bold" href="#">{{cate.Name}}</a>
+                                <li><a class="dropdown-item font-weight-bold" href="/course">{{cate.Name}}</a>
                                 </li>
                                 {{/each}}
                             </ul>
