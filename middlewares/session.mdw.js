@@ -5,8 +5,8 @@ const options = {
   host: "localhost",
   port: 3306,
   user: "root",
-  password: "password",
-  database: "db_online_academy",
+  password: "root",
+  database: "db_online_category",
   charset: "utf8",
   schema: {
     tableName: "sessions",

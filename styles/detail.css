@@ -317,3 +317,77 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
 .rating-color {
     color: #ffa811;
 }
+
+.teacher_cour img{
+    width:100px;
+    height:100px;
+    border-radius: 50%;
+    margin-right: 10px;
+    
+}
+
+.teacher_cour .card .cour{
+    margin-left: 50px;
+}
+
+.teacher_cour .card .cour .info{
+    display: flex;
+    margin-top:10px;
+    margin-bottom: 10px;
+}
+
+
+/*User Rating */
+.bar-1 {width: 0%; height: 100%; background-color: #2196F3;}
+.bar-2 {width: 0%; height: 100%; background-color: #2196F3;}
+.bar-3 {width: 3.3%; height: 100%; background-color: #2196F3;}
+.bar-4 {width: 30%; height: 100%; background-color: #2196F3;}
+.bar-5 {width: 66.67%; height: 100%; background-color: #2196F3;}
+.bar-container {
+    width: 550px;
+    background-color: #f1f1f1;
+    color: white;
+    margin-top: 18px;
+    height:10px;
+  }
+
+.CommentStar .infoStar{
+    display:flex;
+}
+
+.CommentStar .star{
+    margin-top: 5px;
+    margin-left:20px;
+}
+
+.Star5,.Star4,.Star3,.Star2,.Star1{
+    display:flex;
+    margin-bottom: 5px;
+}
+
+.avgStar{
+    margin-top: 30px;
+    margin-right:20px;
+}
+
+.CommentStar .fa-star{
+    color: #ffa811;
+}
+
+.CommentStar h4
+{
+    color:darkorange;
+    text-align: center;
+    font-size: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.CommentStar .avgStar{
+
+    text-align: center;
+}
+
+.CommentStar .card{
+
+    align-items: center;
+}

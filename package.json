@@ -4,7 +4,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -38,6 +38,7 @@
     "numeral": "^2.0.6",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
+    "rateyo": "^3.0.0-alpha.2",
     "serve-favicon": "^2.5.0",
     "shelljs": "^0.8.4"
   }
