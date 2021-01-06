@@ -103,6 +103,10 @@ router.get("/search", async (req, res) => {
   });
 });
 
+router.get("/favicon.ico", (req, res) => {
+  res.json("OK");
+});
+
 router.get("/:courseId", async (req, res) => {
   const course = await courseModel.singleByIdWithInfo(req.params.courseId);
   course.AverageRate = course.AverageRate ? course.AverageRate : 0;

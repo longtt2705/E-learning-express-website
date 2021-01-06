@@ -1,10 +1,8 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
-
-
 {{#section 'css'}}
 <link rel="stylesheet" href="/styles/detail.css">
 <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 {{/section}}
 
@@ -22,7 +20,6 @@
     });
 
     $(".rate").each(function (e) {
-        console.log($(this).data("rate"));
         $(this).rateYo({
             rating: $(this).data("rate"),
             readOnly: true,
@@ -35,16 +32,17 @@
     $(".detailDes").each(function (e) {
         $(this).html($(this).data("des"));
     });
+    $("#description").html($("#description").data("des"));
 
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
 
 {{/section}}
 
 {{#with course}}
-<!-- Page Preloder -->
-<div id="preloder">
-    <div class="loader"></div>
-</div>
 
 <!-- Hero section -->
 <div class="paid-course-landing-page__container">
@@ -209,6 +207,7 @@
     </div>
 </div>
 
+
 <div>
     <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 m-b-60">
@@ -284,35 +283,17 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 m-b-60">
             <div class="card">
                 <div class="cour">
-                    <h5>Notice Showing</h5>
                     <div>
                         <div class="info">
-                            <img src="/public/img/avatar.jpg" alt="abcc">
+                            <img src="/public/img/{{authorImage}}" alt="abcc">
                             <div>
-                                <div class="Name"><b>Igor Ristovski</b></div>
+                                <div class="Name"><b>{{authorName}}</b></div>
                                 <div class="countcour">115 lessons</div>
                                 <div class="avis">23 avis</div>
                             </div>
                         </div>
-                        <div class="ratingstar">
-                            (Rating Start) one year ago
-                        </div>
                     </div>
-                    <div>
-                        <p>
-                            Jose is by far one of the best instructors I had the pleasure and opportunity to learn from.
-                            I
-                            highly recommend this course for any beginner not only in Python but in programming in
-                            general.
-                            I
-                            also recommend the beginners to not skip the second part, as it is a very nice Python 2
-                            course
-                            and
-                            also a great repetition for what we have learned in the main part. It could have some more
-                            homework
-                            and test assignments though, as for us absolute beginners are very important.
-                        </p>
-                        <br>
+                    <div id="description" data-des="{{description}}">
                     </div>
                 </div>
 
@@ -327,7 +308,7 @@
             <div class="card">
                 <div class="infoStar">
                     <div class="avgStar">
-                        <h4>4.6</h4>
+                        <h4>{{AverageRate}}</h4>
                         <div>
                             <i class="fa fa-fw fa-star"></i>
                             <i class="fa fa-fw fa-star"></i>
@@ -380,6 +361,7 @@
                             </div>
                             <div class="star">
                                 <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
                                 0
                             </div>
                         </div>
@@ -393,37 +375,9 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-
-
             </div>
         </div>
     </div>
 </div>
-
-<div>
-    <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 m-b-60">
-
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
+{{/with}}
