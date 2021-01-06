@@ -73,17 +73,11 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
     left: 10px;
     color: #fff;}
 .product-wishlist-btn{height: 40px;
-    width: 40px;
+    font-size: medium;
     border: 2px solid #dfdfec;
     border-radius: 100px;
-    font-size: 18px;
-    line-height: 2.3;
     color: #dfdfec;
-    text-align: center;
-    display: block;
-    position: absolute;
-    right: 15px;
-    top: 15px;}
+}
     .product-wishlist-btn:hover{border-color: #ff3367; color: #ff3367;transition: 0.3s ease;}
     .product-wishlist-btn.active{border-color: #ff3367; color: #ff3367;transition: 0.3s ease;}
 .product-content{ border-top:1px solid #e6e6f2; padding: 23px;}
@@ -96,9 +90,10 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
     color: #ffa811;
     border: 3px;
     }
-.product-price{ position: absolute; top: 0; right: 0; font-size: 16px; color: #3d405c;font-family: 'Circular Std Medium'; line-height: 1;}
+.product-price{ font-size: 50px; color: #242638;font-family: 'Circular Std Medium'; line-height: 1;}
 .product-btn{}
-.product-del{font-size: 14px; color: #71748d;}
+.product-del{font-size: 24px; color: #50557e;}
+.product-discount{font-size: 15px; color: #ec2f00;font-family: 'Circular Std Medium'; }
 .product-sidebar{ background-color: #fff; border:1px solid #e6e6f2;  }
 .product-sidebar-widget{border-bottom: 1px solid #e6e6f2; padding: 10px 20px; margin-bottom: 10px;}
 .product-sidebar-widget:last-child{border:0px;}
@@ -318,6 +313,7 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
     color: #ffa811;
 }
 
+
 .teacher_cour img{
     width:100px;
     height:100px;
@@ -383,11 +379,67 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
 }
 
 .CommentStar .avgStar{
-
     text-align: center;
 }
 
 .CommentStar .card{
-
     align-items: center;
 }
+
+.udlite-badge {
+    border-radius: 4px;
+    display: inline-block;
+    padding: .4rem .8rem;
+    white-space: nowrap;
+}
+
+.udlite-badge-bestseller {
+    background-color: #ffe799;
+    color: #593d00;
+}
+.udlite-heading-xs {
+    font-family: sf pro display,-apple-system,BlinkMacSystemFont,Roboto,segoe ui,Helvetica,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -.02rem;
+    font-style: oblique;
+}
+.udlite-icon-xsmall {
+    width: 1.6rem;
+    height: 1.6rem;
+}
+.udlite-icon {
+    fill: currentColor;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+
+ .show-more {
+  /*   width: 690px;  */
+    color: rgb(60, 73, 182); 
+    position:relative; 
+    font-size: 15px; 
+    padding-top: 5px;
+    height: 30px; 
+    text-align: center; 
+    background: #f1f1f1; 
+    cursor: pointer;
+  }
+.show-more:hover { 
+      color: #1779dd;
+  }
+.show-more-height { 
+    height: 300px; 
+    overflow:hidden; 
+  }
+  .text-decrip {
+    /*   width: 660px;  */
+      margin-bottom: 5px; 
+      color: #777; 
+      padding: 0 15px; 
+      position:relative; 
+      font-family: Arial; 
+      font-size: 14px; 
+      display: block;
+  }
