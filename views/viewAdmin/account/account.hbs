@@ -54,10 +54,10 @@
         // params found
         if (url.length > 1 && arr[arr.length - 1] === 'search') {
 
-            const search = getUrlParameter("search");
-            const sort = getUrlParameter("sort");
-            const order = getUrlParameter("order");
-            const searchContent = getUrlParameter("searchContent");
+            const search = getUrlParameter("search").replace("+", " ");
+            const sort = getUrlParameter("sort").replace("+", " ");
+            const order = getUrlParameter("order").replace("+", " ");
+            const searchContent = getUrlParameter("searchContent").replace("+", " ");
 
             $("#form_search #search").val(search).change();
             $("#form_search #sort").val(sort).change();
