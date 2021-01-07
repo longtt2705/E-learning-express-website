@@ -1,103 +1,161 @@
 {{#section 'css'}}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-<style>
-    * {
-        margin: 0px;
-        padding: 0px;
-    }
-
-    .card {}
-
-    .video {
-
-        background-color: blueviolet;
-    }
-</style>
+<link rel="stylesheet" href="/styles/lessons.css">
 {{/section}}
 
 {{#section 'script'}}
 
 <script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
+    $(".show-more").click(function () {
+        if ($(".text-decrip ").hasClass("show-more-height")) {
+            $(this).text("(Show Less)");
+        } else {
+            $(this).text("(Show More)");
+        }
+
+        $(".text-decrip ").toggleClass("show-more-height");
+    });
+
+
+    $(".shortDes").each(function (e) {
+        $(this).html($(this).data("des"));
+    });
+
+    $("#description").html($("#description").data("des"));
+
 </script>
+
 {{/section}}
 
 
-<div class="container mx-auto row">
-    <div class="video col-sm-7" width="300px">
+<div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 mt-3">
+    <div class="row">
+        <div class="col-xl-8">
+            <div><video src="/public/courses/Maps.mp4"></video></div>
 
-    </div>
-    <div class="card col-sm-5">
-        <div class="card-header btn" data-toggle="collapse" data-target="#noidungI">
-            Chuong I
-        </div>
-        <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungI">
-            <ul class="list-group">
-                <li class="list-group-item">Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-        </div>
-        <div class="card-header btn" data-toggle="collapse" data-target="#noidungII">
-            Chuong II
-        </div>
-        <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungII">
-            <ul class="list-group">
-                <li class="list-group-item">Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-        </div>
-        <div class="card-header btn" data-toggle="collapse" data-target="#noidungIII">
-            Chuong III
-        </div>
-        <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungIII">
-            <ul class="list-group">
-                <li class="list-group-item">Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-        </div>
-        <div class="card-header btn" data-toggle="collapse" data-target="#noidungIV">
-            Chuong IV
-        </div>
-        <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungIV">
-            <ul class="list-group">
-                <li class="list-group-item">Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-        </div>
-        <div class="card-header btn" data-toggle="collapse" data-target="#noidungV">
-            Chuong V
-        </div>
-        <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungV">
-            <ul class="list-group">
-                <li class="list-group-item">Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-        </div>
+            <div class="simple-card">
+                <ul class="nav nav-tabs" id="myTab5" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active border-left-0" id="product-tab-1" data-toggle="tab" href="#tab-1"
+                            role="tab" aria-controls="product-tab-1" aria-selected="true">Descriptions</a>
+                    </li>
 
+                </ul>
+                <div class="tab-content" id="myTabContent5">
+                    <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="product-tab-1">
+
+                        <div class="text-decrip show-more-height detailDes" data-des="">
+
+                            <div class="teacher_cour">
+                                <div class="info">
+                                    <img src="/public/img/authors/1.jpg" alt="abcc">
+                                    <div>
+                                        <div class="Name"><b>Alex</b></div>
+                                        <div class="countcour">115 lessons</div>
+                                        <div class="avis">23 avis</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores, soluta, cupiditate. Ad
+                                ab, delectus impedit similique voluptate fuga nemo iure, nobis dolorem dolor, quia
+                                voluptas aperiam doloremque commodi id? In? Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                                enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                                commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                                dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet,
+                                consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+
+                        </div>
+                        <div class="show-more">(Show More)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 pl-xl-0 pl-lg-0 pl-md-0  m-b-30">
+            <div class="card">
+
+                <h4 class="mb-4">Gradient Scrollbar</h4>
+                <div class="custom-scrollbar-css">
+                    <div class="card">
+                        <div class="card-header btn" data-toggle="collapse" data-target="#noidungI">
+                            Chuong I
+                        </div>
+                        <div class="collapse" data-toggle="collapse" aria-expanded="false" id="noidungI">
+                            <ul class="list-group">
+                                <li class="list-group-item">Cras justo odio</li>
+                                <li class="list-group-item">Dapibus ac facilisis in</li>
+                                <li class="list-group-item">Morbi leo risus</li>
+                                <li class="list-group-item">Porta ac consectetur ac</li>
+                                <li class="list-group-item">Vestibulum at eros</li>
+                            </ul>
+                        </div>
+                        <div class="card-header btn" data-toggle="collapse" data-target="#noidungII">
+                            Chuong II
+                        </div>
+                        <div class="collapse" data-toggle="collapse" aria-expanded="false" id="noidungII">
+                            <ul class="list-group">
+                                <li class="list-group-item">Cras justo odio</li>
+                                <li class="list-group-item">Dapibus ac facilisis in</li>
+                                <li class="list-group-item">Morbi leo risus</li>
+                                <li class="list-group-item">Porta ac consectetur ac</li>
+                                <li class="list-group-item">Vestibulum at eros</li>
+                            </ul>
+                        </div>
+                        <div class="card-header btn" data-toggle="collapse" data-target="#noidungIII">
+                            Chuong III
+                        </div>
+                        <div class="collapse" data-toggle="collapse" aria-expanded="false" id="noidungIII">
+                            <ul class="list-group">
+                                <li class="list-group-item">Cras justo odio</li>
+                                <li class="list-group-item">Dapibus ac facilisis in</li>
+                                <li class="list-group-item">Morbi leo risus</li>
+                                <li class="list-group-item">Porta ac consectetur ac</li>
+                                <li class="list-group-item">Vestibulum at eros</li>
+                            </ul>
+                        </div>
+                        <div class="card-header btn" data-toggle="collapse" data-target="#noidungIV">
+                            Chuong IV
+                        </div>
+                        <div class="collapse" data-toggle="collapse" aria-expanded="false" id="noidungIV">
+                            <ul class="list-group">
+                                <li class="list-group-item">Cras justo odio</li>
+                                <li class="list-group-item">Dapibus ac facilisis in</li>
+                                <li class="list-group-item">Morbi leo risus</li>
+                                <li class="list-group-item">Porta ac consectetur ac</li>
+                                <li class="list-group-item">Vestibulum at eros</li>
+                            </ul>
+                        </div>
+                        <div class="card-header btn" data-toggle="collapse" data-target="#noidungV">
+                            Chuong V
+                        </div>
+                        <div class="collapse" data-toggle="collapse" aria-expanded="false" id="noidungV">
+                            <ul class="list-group">
+                                <li class="list-group-item">Cras justo odio</li>
+                                <li class="list-group-item">Dapibus ac facilisis in</li>
+                                <li class="list-group-item">Morbi leo risus</li>
+                                <li class="list-group-item">Porta ac consectetur ac</li>
+                                <li class="list-group-item">Vestibulum at eros</li>
+                            </ul>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
     </div>
 </div>
