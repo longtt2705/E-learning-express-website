@@ -38,7 +38,7 @@ router.get("/", async (req, res) => {
     page_items,
     canGoPrev: page > 1,
     canGoNext: page < totalPage,
-    nextPage: page + 1,
+    nextPage: +page + 1,
     prevPage: page - 1,
   });
 });
@@ -54,7 +54,6 @@ router.get("/search", async (req, res) => {
   if (fullText)
     total = await courseModel.countAllWithFullText(searchType, content);
   else total = await courseModel.countAllWithLike(searchType, content);
-
   const totalPage = Math.ceil(total / config.pagination.limit);
 
   let page = req.query.page || 1;
@@ -79,7 +78,6 @@ router.get("/search", async (req, res) => {
       offset
     );
   }
-
   const page_items = [];
   for (let i = 1; i <= totalPage; i++) {
     const page_item = {
@@ -99,7 +97,7 @@ router.get("/search", async (req, res) => {
     page_items,
     canGoPrev: page > 1,
     canGoNext: page < totalPage,
-    nextPage: page + 1,
+    nextPage: +page + 1,
     prevPage: page - 1,
   });
 });
@@ -115,8 +113,12 @@ router.get("/:courseId", async (req, res) => {
   const stars = {};
   const starsIndex = ["one", "two", "three", "four", "five"];
   for (let i = 1; i <= 5; i++) {
-    const result = await ratingModel.countRatingByStars(courseId, i);
-    stars[starsIndex[i - 1]] = (result / course.TotalRate) * 100;
+    if (course.TotalRate > 0) {
+      const result = await ratingModel.countRatingByStars(courseId, i);
+      stars[starsIndex[i - 1]] = (result / course.TotalRate) * 100;
+    } else {
+      stars[starsIndex[i - 1]] = 0;
+    }
   }
 
   const account = await accountModel.singleByUserNameWithoutProvider(
