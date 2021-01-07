@@ -5,6 +5,7 @@ const courseContentModel = require("../models/course-content.model");
 const courseContentDetailModel = require("../models/course-content-detail.model");
 const config = require("../config/default.json");
 const ratingModel = require("../models/rating.model");
+const accountModel = require("../models/account.model");
 const { async } = require("crypto-random-string");
 
 router.get("/", async (req, res) => {
@@ -108,10 +109,33 @@ router.get("/favicon.ico", (req, res) => {
 });
 
 router.get("/:courseId", async (req, res) => {
-  const course = await courseModel.singleByIdWithInfo(req.params.courseId);
+  const courseId = req.params.courseId;
+  const course = await courseModel.singleByIdWithInfo(courseId);
   course.AverageRate = course.AverageRate ? course.AverageRate : 0;
+  const stars = {};
+  const starsIndex = ["one", "two", "three", "four", "five"];
+  for (let i = 1; i <= 5; i++) {
+    const result = await ratingModel.countRatingByStars(courseId, i);
+    stars[starsIndex[i - 1]] = (result / course.TotalRate) * 100;
+  }
+
+  const account = await accountModel.singleByUserNameWithoutProvider(
+    course.Author
+  );
+  const chapters = await courseContentModel.allByCourseId(courseId);
+  for (let chapter in chapters) {
+    chapters[chapter].lessons = await courseContentDetailModel.allByChapterId(
+      chapters[chapter].Id
+    );
+  }
+
+  const ratings = await ratingModel.allByCourseIdWithInfo(courseId);
   res.render("viewCourse/detail", {
     course,
+    stars,
+    chapters,
+    ratings,
+    account,
   });
 });
 

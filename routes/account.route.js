@@ -103,6 +103,39 @@ router.post("/logout", (req, res) => {
   res.redirect(req.headers.referer);
 });
 
+router.get("/profile/password", auth, (req, res) => {
+  res.render("viewAccount/profile-password");
+});
+
+router.post("/profile/password", auth, async (req, res) => {
+  const oldPassword = req.body["old-password"];
+  const newPassword = req.body["new-password"];
+  const user = await accountModel.singleByUserNameWithoutProvider(
+    req.session.authUser.Username
+  );
+
+  const userPassword = user.Password;
+  const isPasswordValid = bcrypt.compareSync(oldPassword, userPassword);
+  if (isPasswordValid) {
+    if (oldPassword === newPassword) {
+      return res.render("viewAccount/profile-password", {
+        err: "Your old password and new password cannot be the same!",
+      });
+    } else {
+      const hash = bcrypt.hashSync(newPassword, encryptTimes);
+      user.Password = hash;
+      await accountModel.patch(user);
+      return res.render("viewAccount/profile-password", {
+        success: "Change password successfully!",
+      });
+    }
+  }
+
+  res.render("viewAccount/profile-password", {
+    err: "Your old password is incorrect!",
+  });
+});
+
 router.get("/profile", auth, (req, res) => {
   res.render("viewAccount/profile");
 });

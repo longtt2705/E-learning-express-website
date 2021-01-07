@@ -334,6 +334,7 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
 
 
 /*User Rating */
+.bar {height: 100%; background-color: #2196F3;}
 .bar-1 {width: 0%; height: 100%; background-color: #2196F3;}
 .bar-2 {width: 0%; height: 100%; background-color: #2196F3;}
 .bar-3 {width: 3.3%; height: 100%; background-color: #2196F3;}

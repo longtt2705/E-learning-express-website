@@ -23,7 +23,7 @@
         $(this).rateYo({
             rating: $(this).data("rate"),
             readOnly: true,
-            starWidth: "18px"
+            starWidth: "16px"
         });
     });
     $(".shortDes").each(function (e) {
@@ -118,6 +118,96 @@
 
 </div>
 
+
+<div class="CommentStar mt-lg-5">
+    <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 m-b-60">
+            <div class="card">
+                <div class="infoStar">
+                    <div class="avgStar">
+                        <h4>{{AverageRate}}</h4>
+                        <div>
+                            <i class="fa fa-fw fa-star"></i>
+                            <i class="fa fa-fw fa-star"></i>
+                            <i class="fa fa-fw fa-star"></i>
+                            <i class="fa fa-fw fa-star"></i>
+                            <i class="fa fa-fw fa-star"></i>
+                        </div>
+                        <div>Course grade</div>
+                    </div>
+                    <div class="star-table">
+                        <div class="Star5">
+                            <div class="bar-container">
+                                <div class="bar" style="width: {{../stars.five}}%;"></div>
+                            </div>
+                            <div class="star">
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                {{../stars.five}}%
+                            </div>
+                        </div>
+                        <div class="Star4">
+                            <div class="bar-container">
+                                <div class="bar" style="width: {{../stars.four}}%;"></div>
+                            </div>
+                            <div class="star">
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="far fa-star"></i>
+                                {{../stars.four}}%
+                            </div>
+                        </div>
+                        <div class="Star3">
+                            <div class="bar-container">
+                                <div class="bar" style="width: {{../stars.three}}%;"></div>
+                            </div>
+                            <div class="star">
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                {{../stars.three}}%
+                            </div>
+                        </div>
+                        <div class="Star2">
+                            <div class="bar-container">
+                                <div class="bar" style="width: {{../stars.two}}%;"></div>
+                            </div>
+                            <div class="star">
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                {{../stars.two}}%
+                            </div>
+                        </div>
+                        <div class="Star1">
+                            <div class="bar-container">
+                                <div class="bar" style="width: {{../stars.one}}%;"></div>
+                            </div>
+                            <div class="star">
+                                <i class="fa fa-fw fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                {{../stars.one}}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row box-detail">
     <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 m-b-60">
@@ -143,135 +233,44 @@
 
                     </div>
                     <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="product-tab-2">
-                        <div class="review-block">
-                            <p class="review-text font-italic m-0">“Vestibulum cursus felis vel arcu convallis, viverra
-                                commodo
-                                felis bibendum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur
-                                ridiculus mus. Proin non auctor est, sed lacinia velit. Orci varius natoque penatibus et
-                                magnis
-                                dis parturient montes nascetur ridiculus mus.”</p>
-                            <div class="rating-star mb-4">
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
+                        {{#each ../ratings as |rating|}}
+                        <div class="review-block row m-lg-3">
+                            <img src="/public/img/{{Image}}" alt="avatar" class="rounded-circle col-sm-2">
+                            <div class="col-sm-10 d-flex flex-column">
+                                <span class="text-dark font-weight-bold ml-1">{{Name}}</span>
+                                <span class="rate" data-rate="{{Rate}}"></span>
+                                <p class="review-text font-italic m-0">“{{Comment}}”</p>
                             </div>
-                            <span class="text-dark font-weight-bold">Virgina G. Lightfoot</span><small
-                                class="text-mute">
-                                (Company name)</small>
                         </div>
-                        <div class="review-block border-top mt-3 pt-3">
-                            <p class="review-text font-italic m-0">“Integer pretium laoreet mi ultrices tincidunt.
-                                Suspendisse
-                                eget risus nec sapien malesuada ullamcorper eu ac sapien. Maecenas nulla orci, varius ac
-                                tincidunt non, ornare a sem. Aliquam sed massa volutpat, aliquet nibh sit amet,
-                                tincidunt
-                                ex.
-                                Donec interdum pharetra dignissim.”</p>
-                            <div class="rating-star mb-4">
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                            </div>
-                            <span class="text-dark font-weight-bold">Ruby B. Matheny</span><small class="text-mute">
-                                (Company
-                                name)</small>
-                        </div>
-                        <div class="review-block  border-top mt-3 pt-3">
-                            <p class="review-text font-italic m-0">“ Cras non rutrum neque. Sed lacinia ex elit, vel
-                                viverra
-                                nisl faucibus eu. Aenean faucibus neque vestibulum condimentum maximus. In id porttitor
-                                nisi.
-                                Quisque sit amet commodo arcu, cursus pharetra elit. Nam tincidunt lobortis augueat
-                                euismod
-                                ante
-                                sodales non. ”</p>
-                            <div class="rating-star mb-4">
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                            </div>
-                            <span class="text-dark font-weight-bold">Gloria S. Castillo</span><small class="text-mute">
-                                (Company
-                                name)</small>
-                        </div>
+                        <hr>
+                        {{/each}}
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+</div>
 
 <div>
     <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 m-b-60">
             <div class="card">
-                <div class="card-header btn text-left" data-toggle="collapse" data-target="#noidungI">
-                    <i class="fas fa-caret-down"></i>Chuong I
+                {{#each ../chapters as |chapter|}}
+                <div class="card-header btn text-left font-weight-bold" data-toggle="collapse"
+                    data-target="#chapter-{{chapter.Id}}">
+                    {{chapter.ChapterName}}<i class="fas fa-caret-down"></i>
                 </div>
-                <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungI">
+                <div class="card-body collapse" data-toggle="collapse" aria-expanded="false"
+                    id="chapter-{{chapter.Id}}">
                     <ul class="list-group">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Morbi leo risus</li>
-                        <li class="list-group-item">Porta ac consectetur ac</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
+                        {{#each chapter.lessons as |lesson|}}
+                        <li class="list-group-item">{{lesson.Name}}</li>
+                        {{/each}}
                     </ul>
                 </div>
-                <div class="card-header btn text-left" data-toggle="collapse" data-target="#noidungII">
-                    <i class="fas fa-caret-down"></i>Chuong II
-                </div>
-                <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungII">
-                    <ul class="list-group">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Morbi leo risus</li>
-                        <li class="list-group-item">Porta ac consectetur ac</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                </div>
-                <div class="card-header btn text-left" data-toggle="collapse" data-target="#noidungIII">
-                    <i class="fas fa-caret-down"></i>Chuong III
-                </div>
-                <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungIII">
-                    <ul class="list-group">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Morbi leo risus</li>
-                        <li class="list-group-item">Porta ac consectetur ac</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                </div>
-                <div class="card-header btn text-left" data-toggle="collapse" data-target="#noidungIV">
-                    <i class="fas fa-caret-down"></i>Chuong IV
-                </div>
-                <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungIV">
-                    <ul class="list-group">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Morbi leo risus</li>
-                        <li class="list-group-item">Porta ac consectetur ac</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                </div>
-                <div class="card-header btn text-left" data-toggle="collapse" data-target="#noidungV">
-                    <i class="fas fa-caret-down"></i>Chuong V
-                </div>
-                <div class="card-body collapse" data-toggle="collapse" aria-expanded="false" id="noidungV">
-                    <ul class="list-group">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Morbi leo risus</li>
-                        <li class="list-group-item">Porta ac consectetur ac</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                </div>
+                {{/each}}
             </div>
         </div>
     </div>
@@ -288,8 +287,9 @@
                             <img src="/public/img/{{authorImage}}" alt="abcc">
                             <div>
                                 <div class="Name"><b>{{authorName}}</b></div>
-                                <div class="countcour">115 lessons</div>
-                                <div class="avis">23 avis</div>
+                                <div class="countcour"><i class="fas fa-envelope"></i>&nbsp;{{../account.Username}}
+                                </div>
+                                <div class="avis"><i class="fas fa-phone"></i>&nbsp;{{../account.Phone}}</div>
                             </div>
                         </div>
                     </div>
@@ -302,82 +302,4 @@
     </div>
 </div>
 
-<div class="CommentStar">
-    <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 m-b-60">
-            <div class="card">
-                <div class="infoStar">
-                    <div class="avgStar">
-                        <h4>{{AverageRate}}</h4>
-                        <div>
-                            <i class="fa fa-fw fa-star"></i>
-                            <i class="fa fa-fw fa-star"></i>
-                            <i class="fa fa-fw fa-star"></i>
-                            <i class="fa fa-fw fa-star"></i>
-                            <i class="fa fa-fw fa-star"></i>
-                        </div>
-                        <div>Course grade</div>
-                    </div>
-                    <div class="star-table">
-                        <div class="Star5">
-                            <div class="bar-container">
-                                <div class="bar-5"></div>
-                            </div>
-                            <div class="star">
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                200000
-                            </div>
-                        </div>
-                        <div class="Star4">
-                            <div class="bar-container">
-                                <div class="bar-4"></div>
-                            </div>
-                            <div class="star">
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                90000
-                            </div>
-                        </div>
-                        <div class="Star3">
-                            <div class="bar-container">
-                                <div class="bar-3"></div>
-                            </div>
-                            <div class="star">
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                10000
-                            </div>
-                        </div>
-                        <div class="Star2">
-                            <div class="bar-container">
-                                <div class="bar-2"></div>
-                            </div>
-                            <div class="star">
-                                <i class="fa fa-fw fa-star"></i>
-                                <i class="fa fa-fw fa-star"></i>
-                                0
-                            </div>
-                        </div>
-                        <div class="Star1">
-                            <div class="bar-container">
-                                <div class="bar-1"></div>
-                            </div>
-                            <div class="star">
-                                <i class="fa fa-fw fa-star"></i>
-                                0
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 {{/with}}
