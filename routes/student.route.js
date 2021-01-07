@@ -3,7 +3,7 @@ const express = require("express");
 const { route } = require("./course.route");
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/course/:courseId/:chapterId/:lessonId", async (req, res) => {
   res.render("viewStudent/lessons");
 });
 

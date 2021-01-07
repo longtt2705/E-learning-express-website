@@ -82,6 +82,16 @@
                             My Courses
                         </a>
                         {{/if}}
+                        {{#if authUser.role.isStudent}}
+                        <a class="dropdown-item" href="/teacher/my-learning">
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            My Learning
+                        </a>
+                        <a class="dropdown-item" href="/teacher/wishlist">
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            Wishlist
+                        </a>
+                        {{/if}}
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="javascript: $('#frmLogout').submit();">
                             <i class="fa fa-sign-out" aria-hidden="true"></i>

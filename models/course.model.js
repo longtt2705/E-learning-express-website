@@ -3,7 +3,7 @@ const config = require("../config/default.json");
 const TBL_COURSE = "courses";
 
 const selectField = `select DISTINCT c.*, s.StatusType, a.name as authorName, a.image as authorImage, a.description, cat.Name as CateName, format(avg(r.rate), 1) as AverageRate, count(r.rate) as TotalRate from courses c join status s on c.statusid = s.id join categories cat on c.categoryid = cat.id join accounts a on a.username = c.author left join rating r on r.CourseId = c.Id`;
-const countField = `select count(DISTINCT c.id) as total, cat.Name as CateName from courses c left join rating r on r.CourseId = c.Id join categories cat on c.categoryid = cat.id`;
+const countField = `select count(DISTINCT c.id) as total, cat.Name as CateName from courses c join categories cat on c.categoryid = cat.id`;
 
 module.exports = {
   all() {
@@ -55,28 +55,42 @@ module.exports = {
   },
 
   async searchWithLikeByPage(searchType, sort, order, content, offset) {
+    let sorting = "";
+    const splited = order.split("/");
+    if (splited.length > 1) {
+      sorting = `COALESCE(${splited[0]}, ${splited[1]}) ${sort}`;
+    } else {
+      sorting = `${order} ${sort}`;
+    }
     return db.load(
-      `${selectField} where ${searchType} like '%${content}%' group by c.Id order by ${order} ${sort} limit ${config.pagination.limit} offset ${offset}`
+      `${selectField} where ${searchType} like '%${content}%' group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
     );
   },
 
   async countAllWithLike(searchType, content) {
     const rows = await db.load(
-      `${countField} where ${searchType} like '%${content}%' group by c.Id`
+      `${countField} where ${searchType} like '%${content}%'`
     );
     if (rows.length === 0) return 0;
     return rows[0].total;
   },
 
   async searchWithFullTextByPage(searchType, sort, order, content, offset) {
+    let sorting = "";
+    const splited = order.split("/");
+    if (splited.length > 1) {
+      sorting = `COALESCE(${splited[0]}, ${splited[1]}) DESC`;
+    } else {
+      sorting = `${order} ${sort}`;
+    }
     return db.load(
-      `${selectField} where MATCH(${searchType}) AGAINST('${content}' IN BOOLEAN MODE) group by c.Id order by ${order} ${sort} limit ${config.pagination.limit} offset ${offset}`
+      `${selectField} where MATCH(${searchType}) AGAINST('${content}' IN BOOLEAN MODE) group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
     );
   },
 
   async countAllWithFullText(searchType, content) {
     const rows = await db.load(
-      `${countField} where match(${searchType}) against('${content}' IN BOOLEAN MODE) group by c.Id`
+      `${countField} where match(${searchType}) against('${content}' IN BOOLEAN MODE)`
     );
     if (rows.length === 0) return 0;
     return rows[0].total;

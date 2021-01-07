@@ -40,7 +40,11 @@ build/Release
 # Dependency directories
 node_modules/
 key/
+<<<<<<< HEAD
 public/courses
+=======
+public/courses/
+>>>>>>> 44ff5b39394df51431aade1ca44377300fa734a8
 jspm_packages/
 
 # Snowpack dependency directory (https://snowpack.dev/)

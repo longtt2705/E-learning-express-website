@@ -61,11 +61,13 @@
             const search = getUrlParameter("search")
             const sort = getUrlParameter("sort")
             const order = getUrlParameter("order")
-            const searchContent = getUrlParameter("searchContent")
+            let searchContent = getUrlParameter("searchContent")
             const fullText = getUrlParameter("fullText")
 
-            if (searchContent)
-                searchContent.replace("+", " ");
+            if (searchContent !== null) {
+                searchContent = searchContent.replace("+", " ");
+            }
+
             $("#form_search #search").val(search).change();
             $("#form_search #sort").val(sort).change();
             $("#form_search #order").val(order).change();
@@ -73,7 +75,8 @@
             if (fullText)
                 $("#form_search #fullText").prop('checked', true);
 
-            let PageURL = "?search=" + search + "&sort=" + sort + "&order=" + order + "&searchContent=" + searchContent + "&fullText=" + fullText;
+
+            let PageURL = "?search=" + search + "&sort=" + sort + "&order=" + order + "&searchContent=" + searchContent + (fullText ? "&fullText=" + fullText : "");
             $('a[class=page-link]').map(function () {
                 $(this).attr("href", PageURL + "&page=" + $(this).data("page"));
             });
@@ -130,7 +133,7 @@
                                     <label>Order By:</label>
                                     <select class="select2" style="width: 100%;" name="order" id="order">
                                         <option value="AverageRate" selected>Rating</option>
-                                        <option value="c.price">Price</option>
+                                        <option value="c.discountprice/c.price">Price</option>
                                     </select>
                                 </div>
                             </div>

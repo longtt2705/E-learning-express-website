@@ -55,7 +55,7 @@ router.get("/account", auth, isAdmin, async function (req, res) {
     page_items,
     canGoPrev: page > 1,
     canGoNext: page < totalPage,
-    nextPage: page + 1,
+    nextPage: +page + 1,
     prevPage: page - 1,
   });
 });
@@ -118,7 +118,7 @@ router.get("/account/search", auth, isAdmin, async (req, res) => {
     page_items,
     canGoPrev: page > 1,
     canGoNext: page < totalPage,
-    nextPage: page + 1,
+    nextPage: +page + 1,
     prevPage: page - 1,
   });
 });
@@ -293,7 +293,7 @@ router.get("/course", auth, isAdmin, async function (req, res) {
     page_items,
     canGoPrev: page > 1,
     canGoNext: page < totalPage,
-    nextPage: page + 1,
+    nextPage: +page + 1,
     prevPage: page - 1,
   });
 });
@@ -368,7 +368,7 @@ router.get("/course/search", auth, isAdmin, async (req, res) => {
     page_items,
     canGoPrev: page > 1,
     canGoNext: page < totalPage,
-    nextPage: page + 1,
+    nextPage: +page + 1,
     prevPage: page - 1,
   });
 });
