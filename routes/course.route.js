@@ -132,6 +132,7 @@ router.get("/:courseId", async (req, res) => {
   }
 
   const ratings = await ratingModel.allByCourseIdWithInfo(courseId);
+
   res.render("viewCourse/detail", {
     course,
     stars,

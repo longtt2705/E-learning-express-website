@@ -1,0 +1,82 @@
+{{#section 'css'}}
+<link rel="stylesheet" href="/styles/detail.css">
+<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+
+{{/section}}
+
+{{#section 'script'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.8.1/dist/sweetalert2.all.min.js"></script>0
+<script>
+    $(".shortDes").each(function (e) {
+        $(this).html($(this).data("des"));
+    });
+    $(".detailDes").each(function (e) {
+        $(this).html($(this).data("des"));
+    });
+    $("#description").html($("#description").data("des"));
+    $('.delete').on('click', function () {
+
+
+        const id = $(this).data("id");
+        $('#txtId').val(id);
+        $('#frmDelete').submit();
+
+
+    });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+
+
+
+{{/section}}
+<nav class="navbar navbar-cyan bg-dark justify-content-md-center nav-watchlist">
+    <h1 class="nav-text-watchlist">Wishlist</h1>
+</nav>
+<form id="frmDelete" action="/student/wishlist/delete" method="POST">
+    <input type="hidden" name="Id" id="txtId">
+</form>
+<section class="course-section spad">
+    <div class="container">
+        <div class="row ">
+            {{#if empty}}
+            <div class="course-btn text-center center">
+                <a href="/" type="button" class="btn btn-rounded btn-danger btn-lg ">Browser more course</a>
+            </div>
+            {{else}}
+
+            {{#each rows as |row|}}
+            {{#with row}}
+            <!-- course -->
+            <div class="mix col-lg-4 col-md-4 col-sm-6 mt-3">
+
+                <div class="course-items">
+                    <div class="course-thumb set-bg">
+                        <img src="/public/courses/{{Image}}"></img>
+                        <button class="heart delete" data-id="{{Id}}"><i class="fa fa-heart"></i></button>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-text">
+                            <h5>{{this.Name}}</h5>
+                            <div class="shortDes mb-3" data-des="{{ShortDes}}"></div>
+                            <div class="students">
+                                {{this.TotalStudent}}
+                            </div>
+                        </div>
+                        <div class="course-btn text-center">
+                            <a href="/course/{{Id}}" type="button" class="btn btn-rounded btn-warning btn-lg ">LEAR
+                                MORE</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/with}}
+            {{/each}}
+            {{/if}}
+        </div>
+    </div>
+
+</section>

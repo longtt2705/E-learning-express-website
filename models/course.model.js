@@ -39,7 +39,7 @@ module.exports = {
       `${selectField} group by c.Id limit ${config.pagination.limit} offset ${offset}`
     );
   },
-
+ 
   allWithUsernameByPage(username, offset) {
     return db.load(
       `${selectField} where c.author = '${username}' group by c.Id limit ${config.pagination.limit} offset ${offset}`

@@ -76,7 +76,7 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
     font-size: medium;
     border: 2px solid #dfdfec;
     border-radius: 100px;
-    color: #dfdfec;
+    color: white;
 }
     .product-wishlist-btn:hover{border-color: #ff3367; color: #ff3367;transition: 0.3s ease;}
     .product-wishlist-btn.active{border-color: #ff3367; color: #ff3367;transition: 0.3s ease;}
@@ -444,3 +444,68 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
       font-size: 14px; 
       display: block;
   }
+
+  /* <-------------Watch list-------------> */
+  .nav-watchlist{
+    height:fit-content;
+    
+  }
+  .nav-text-watchlist{
+    font-size: 50px;
+    color: whitesmoke;
+    
+  }
+
+  .course-items {
+    border-radius: 10px;
+    
+}
+
+.course-items .course-thumb {
+    height: 270px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.course-items .course-thumb .heart {
+	font-size: 30px;
+	color: #d82a4e;
+
+	display: inline-block;
+	padding: 13px 19px;
+	margin-left: 300px;
+}
+.course-items .course-thumb .heart:hover {
+	color:white;
+}
+.course-items .course-info {
+    background: #edf4f6;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.course-items .course-info .course-text {
+	padding: 45px 33px 25px;
+}
+
+.course-items .course-info .course-text h5 {
+	margin-bottom: 5px;
+}
+
+
+.course-items .course-info .course-btn {
+	border-top: 1px solid #d4dee1;
+	padding: 14px 33px;
+	overflow: hidden;
+}
+.center {
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+  }
+
+
+
+
+
+
