@@ -33,11 +33,15 @@ for (const courseId of coursesIDs) {
 router.get("/wishlist/add/:courseId", auth, isStudent, async (req, res) => {
   const username = req.session.authUser.Username;
   const courseid = req.params.courseId;
-  console.log("object",courseid);
-  console.log("object1",username);
   const row ={Username:username,CourseId:courseid};
-  console.log("2",row);
   await wishlistsModel.add(row);
+  res.redirect("/course/"+courseid);
+});
+router.get("/wishlist/delete/:courseId", auth, isStudent, async (req, res) => {
+  const courseid = req.params.courseId;
+  const id = await wishlistsModel.singleIdByCourseID(courseid);
+  console.log("1",id);
+  await wishlistsModel.delete(id);
   res.redirect("/course/"+courseid);
 });
 router.post("/wishlist/delete", auth, isStudent,async (req, res) => {

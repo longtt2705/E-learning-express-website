@@ -41,9 +41,7 @@
     crossorigin="anonymous"></script>
 
 {{/section}}
-
 {{#with course}}
-
 <!-- Hero section -->
 <div class="paid-course-landing-page__container">
     <div class="top-content dark-background">
@@ -68,20 +66,41 @@
                             </div>
                             <span>{{format TotalStudent}} students</span>
                         </div>
-                        <div class="m-0">
+                        <div class="mb-2">
                             <p class="m-0">Create by {{authorName}}</p>
                             <p class="m-0"> <i class="fa fa-check-circle" aria-hidden="true"></i> Last update:
                                 {{formatDate
                                 UpdateDate}}</p>
 
                         </div>
+
+
                         <div class="mb-1">
-                            <a href="/student/wishlist/add/{{Id}}"
+                            {{/with}}
+                            {{#if isWishlistEmpty}}
+                            {{#with course}}
+                            <a href="/student/wishlist/add/{{this.Id}}"
                                 class="product-wishlist-btn udlite-heading-xs udlite-badge">wishlist <i
                                     class="fa fa-heart" aria-hidden="true"></i></a>
+                            {{/with}}
+
+                            {{/if}}
+                            {{#if nonWishlistEmpty}}
+                            {{log 'kl'}}
+                            {{#with course}}
+                            <a href="/student/wishlist/delete/{{this.Id}}"
+                                class="product-wishlist-btn active udlite-heading-xs udlite-badge">wishlist <i
+                                    class="fa fa-heart" aria-hidden="true"></i></a>
+                            {{/with}}
+
+                            {{/if}}
+
+
+
                         </div>
                     </div>
                 </div>
+                {{#with course}}
                 <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 pl-xl-0 pl-lg-0 pl-md-0 m-b-30 mt-lg-3">
                     <img src="/public/courses/{{Image}}" alt="image">
                     <div class="product-details-right ">

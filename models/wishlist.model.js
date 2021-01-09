@@ -29,7 +29,12 @@ module.exports = {
   
       return rows[0];
     },
-  
+    async findIdByCourseid(courseid){
+      const rows = await db.load(
+        `select id from ${TBL_WISHLIST} where CourseId = '${courseid}'`
+      );
+      return rows[0];
+    },
   
  
   

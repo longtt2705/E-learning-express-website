@@ -80,6 +80,7 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
 }
     .product-wishlist-btn:hover{border-color: #ff3367; color: #ff3367;transition: 0.3s ease;}
     .product-wishlist-btn.active{border-color: #ff3367; color: #ff3367;transition: 0.3s ease;}
+    .product-wishlist-btn.active:hover{border-color:  #dfdfec; color:  #dfdfec;transition: 0.3s ease;}
 .product-content{ border-top:1px solid #e6e6f2; padding: 23px;}
 .product-content-head{ position: relative; margin-bottom: 25px; }
 .product-title{font-size: 16px; margin-bottom: 5px;}
@@ -470,9 +471,6 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
 .course-items .course-thumb .heart {
 	font-size: 30px;
 	color: #d82a4e;
-
-	display: inline-block;
-	padding: 13px 19px;
 	margin-left: 300px;
 }
 .course-items .course-thumb .heart:hover {

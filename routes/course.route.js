@@ -6,6 +6,7 @@ const courseContentDetailModel = require("../models/course-content-detail.model"
 const config = require("../config/default.json");
 const ratingModel = require("../models/rating.model");
 const accountModel = require("../models/account.model");
+const wishlistsModel=  require('../models/wishlist.model');
 const { async } = require("crypto-random-string");
 
 router.get("/", async (req, res) => {
@@ -132,13 +133,18 @@ router.get("/:courseId", async (req, res) => {
   }
 
   const ratings = await ratingModel.allByCourseIdWithInfo(courseId);
-
+  const wishlist = await wishlistsModel.findIdByCourseid(courseId);
+  
+    
   res.render("viewCourse/detail", {
     course,
     stars,
     chapters,
     ratings,
     account,
+    wishlist,
+    isWishlistEmpty: wishlist===undefined,
+    nonWishlistEmpty: wishlist!==undefined,
   });
 });
 
