@@ -1,0 +1,114 @@
+{{#section 'title'}}
+<title>Add Category Item</title>
+{{/section}}
+
+{{#section 'css'}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput.min.css">
+{{/section}}
+
+{{#section 'script'}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.8.1/dist/sweetalert2.all.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
+<script>
+    $("#frmRegistercateitem").on("submit", function (e) {
+
+        e.preventDefault();
+
+        const nameCategoryItem = $('#nameCategoryItem').val();
+        if (nameCategoryItem.length === 0) {
+            errorMessage("Name category item cannot be empty!")
+            return;
+        }
+
+        $.getJSON(`/admin/category/:categoryId/is-available?namecateitem=${nameCategoryItem}`, function (data) {
+            if (data === true) {
+                $('#frmRegistercateitem').off('submit').submit();
+            } else {
+                errorMessage("Category already exists!")
+            }
+        })
+    });
+
+    function errorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: message,
+
+        });
+    }
+
+    $('#fuMain').fileinput({
+        theme: 'fa',
+        allowedFileExtensions: ['png', 'jpg', 'gif'],
+    });
+</script>
+{{/section}}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Category Item Add</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+                        <li class="breadcrumb-item active">Category</li>
+                        <li class="breadcrumb-item active">Category Item Add</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content container ">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title font-weight-bold">Add Category Item</h3>
+            </div>
+            <div class="card-body">
+                <form action="" method="POST" id="frmRegistercateitem">
+                    <label for="nameCategory">Avatar category item</label>
+                    <div class="input-group form-group d-flex flex-column align-items-center">
+
+                        <img src="/public/img/categories/new/new_category_item.jpg" alt="avatar" width="400px"
+                            height="163px">
+                    </div>
+                    <label for="nameCategoryItem">Information item</label>
+                    <div class="ml-2">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="far fa-clipboard"></i></span>
+                            </div>
+                            <input id="categoryId" type="text" class="form-control" value="{{categoryId}}" name="categoryId"
+                                readonly>
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="far fa-clipboard"></i></span>
+                            </div>
+                            <input id="nameCategoryItem" type="text" class="form-control"
+                                placeholder="Name Category Item" name="nameCategoryItem" autofocus>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Add" class="btn float-right btn-success">
+
+                    </div>
+                    <a href="/admin/category" class="btn float-left btn-secondary ml-2">Cancel</a>
+                </form>
+            </div>
+            <!-- /.card-body -->
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>

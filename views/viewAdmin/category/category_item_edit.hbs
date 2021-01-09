@@ -1,0 +1,114 @@
+{{#section 'title'}}
+<title>Edit Category</title>
+{{/section}}
+
+{{#section 'script'}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.8.1/dist/sweetalert2.all.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
+<script src="https://cdn.tiny.cloud/1/ezd73nxbzc7bu6e86g2l82jbbffke0mwevwrnyvc5q8h89j6/tinymce/5/tinymce.min.js"
+    referrerpolicy="origin"></script>
+<script>
+    $("#frmEditCateItem").on("submit", function (e) {
+
+        e.preventDefault();
+        const categoryId=$('#categoryId').val();
+        const nameCategoryItem = $('#nameCategoryItem').val();
+        if (nameCategoryItem.length === 0) {
+            errorMessage("Name Category Item cannot be empty!")
+            return;
+        }
+
+        $.getJSON(`/admin/category/${categoryId}/is-available?namecateitem=${nameCategoryItem}`, function (data) {
+            if (data === true) {
+                $('#frmEditCateItem').off('submit').submit();
+            } else {
+                errorMessage("Category name already exists!")
+            }
+        })
+    });
+
+    function errorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: message,
+
+        });
+    }
+</script>
+{{/section}}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Category Edit</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+                        <li class="breadcrumb-item active">Category Item</li>
+                        <li class="breadcrumb-item active">Category Item Edit</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content container">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title font-weight-bold">Edit category item</h3>
+            </div>
+            <form action="" method="POST" id="frmEditCateItem">
+                {{#with category}}
+                <div class="card-body">
+                    <div class="input-group form-group d-flex flex-column align-items-center">
+                        {{#if img}}
+                        <img src="/public/img/categories/{{Id}}/{{Image}}" alt="avatar" width="400px" height="163px">
+                        {{else}}
+                        <img src="/public/img/categories/new/new_category_item.jpg" alt="avatar" width="400px"
+                            height="163px">
+                        {{/if}}
+                        <a href="/admin/category/{{ManagementId}}/edit/upload/{{Id}}" class="btn btn-primary"><i
+                                class="fas fa-camera"></i></a>
+                    </div>
+
+                    <div>
+                        <label for="name">Category</label>
+                        <div class="ml-2">
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="far fa-clipboard"></i></span>
+                                </div>
+                                <input id="categoryId" type="text" class="form-control" value="{{ManagementId}}"
+                                    name="categoryId" readonly>
+                            </div>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="far fa-clipboard"></i></span>
+                                </div>
+                                <input id="nameCategoryItem" type="text" class="form-control"
+                                    value="{{Name}}" name="nameCategoryItem" autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Edit" class="btn float-right btn-success">
+                        </div>
+                        <a href="/admin/category" class="btn float-left btn-secondary ml-2">Cancel</a>
+                    </div>
+                </div>
+                {{/with}}
+                <!-- /.card-body -->
+            </form>
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>
