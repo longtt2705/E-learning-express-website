@@ -1,140 +1,153 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
 
-    * {
-        margin: 0px;
-        padding: 0px;
-    }
+.card {
+}
 
-    .card {}
+.video {
+  background-color: blueviolet;
+}
 
-    .video {
+.video-1 {
+  background-color: rgb(151, 221, 21);
+}
 
-        background-color: blueviolet;
-    }
+body {
+  position: relative;
+}
 
-    .video-1 {
+.custom-scrollbar-js,
+.custom-scrollbar-css {
+  height: 770px;
+}
 
-        background-color: rgb(151, 221, 21);
-    }
+.height-card-scrollbar {
+  height: 900px;
+}
 
-    body {
-        position: relative;
-    }
+/* Custom Scrollbar using CSS */
+.custom-scrollbar-css {
+  overflow-y: scroll;
+}
 
-    .custom-scrollbar-js,
-    .custom-scrollbar-css {
-        height: 770px;
-    }
+/* scrollbar width */
+.custom-scrollbar-css::-webkit-scrollbar {
+  width: 5px;
+}
 
-    .height-card-scrollbar {
-        height: 900px;
-    }
+/* scrollbar track */
+.custom-scrollbar-css::-webkit-scrollbar-track {
+  background: #eee;
+}
 
-    /* Custom Scrollbar using CSS */
-    .custom-scrollbar-css {
-        overflow-y: scroll;
-    }
+/* scrollbar handle */
+.custom-scrollbar-css::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  background-color: #00d2ff;
+  background-image: linear-gradient(to top, #00d2ff 0%, #3a7bd5 100%);
+}
+.simple-card {
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #e9e9f2;
+}
 
-    /* scrollbar width */
-    .custom-scrollbar-css::-webkit-scrollbar {
-        width: 5px;
-    }
+.simple-card .nav.nav-tabs {
+  border-bottom: 1px solid #e6e6f2;
+}
+.simple-card .nav.nav-tabs .nav-item {
+}
 
-    /* scrollbar track */
-    .custom-scrollbar-css::-webkit-scrollbar-track {
-        background: #eee;
-    }
+.simple-card .nav.nav-tabs .nav-item .nav-link {
+  padding: 17px 49px;
+  color: #71748d;
+  background: #f8f8fb;
+  border-color: #e9e9f2 #e9e9f2 #e9e9f2;
+  margin-right: -1px;
+  border-radius: 0px;
+  border-top: transparent;
+}
 
-    /* scrollbar handle */
-    .custom-scrollbar-css::-webkit-scrollbar-thumb {
-        border-radius: 1rem;
-        background-color: #00d2ff;
-        background-image: linear-gradient(to top, #00d2ff 0%, #3a7bd5 100%);
-    }
-    .simple-card {
-        background-color: #fff;
-        border-radius: 4px;
-        border: 1px solid #e9e9f2;
-    }
-    
-    .simple-card .nav.nav-tabs {
-        border-bottom: 1px solid #e6e6f2;
-    }
-    .simple-card .nav.nav-tabs .nav-item {}
-    
-    .simple-card .nav.nav-tabs .nav-item .nav-link {
-        padding: 17px 49px;
-        color: #71748d;
-        background: #f8f8fb;
-        border-color: #e9e9f2 #e9e9f2 #e9e9f2;
-        margin-right: -1px;
-        border-radius: 0px;
-        border-top: transparent;
-    }
-    
-    .simple-card .nav-tabs .nav-link.active {
-        color: #5969ff !important;
-        background-color: transparent !important;
-        border-color: #e9e9f2 #e9e9f2 #fff !important;
-    }
-    
-    .simple-card .tab-content {
-        padding: 30px;
-    }
-    .box-detail
-    {
-        margin-top: 40px;
-        margin-bottom: 60px;
-    }
-    .navbar-right-top .nav-item {
-        border-right: 1px solid #e6e6f2;
-    }
-    
-    .navbar-right-top .nav-item:last-child {
-        border: none;
-    }
-    .teacher_cour img{
-        width:100px;
-        height:100px;
-        border-radius: 50%;
-        margin-right: 10px;
-        
-    }
-    
-   
-    
-    .teacher_cour .info{
-        display: flex;
-        margin-top:10px;
-        margin-bottom: 10px;
-    }
-    .show-more {
-        /*   width: 690px;  */
-          color: rgb(60, 73, 182); 
-          position:relative; 
-          font-size: 15px; 
-          padding-top: 5px;
-          height: 30px; 
-          text-align: center; 
-          background: #f1f1f1; 
-          cursor: pointer;
-        }
-      .show-more:hover { 
-            color: #1779dd;
-        }
-      .show-more-height { 
-          height: 300px; 
-          overflow:hidden; 
-        }
-        .text-decrip {
-          /*   width: 660px;  */
-            margin-bottom: 5px; 
-            color: #777; 
-            padding: 0 15px; 
-            position:relative; 
-            font-family: Arial; 
-            font-size: 14px; 
-            display: block;
-        }
-        .bg-lesson{
-            background-color: #d82a4e;
-        }
+.simple-card .nav-tabs .nav-link.active {
+  color: #5969ff !important;
+  background-color: transparent !important;
+  border-color: #e9e9f2 #e9e9f2 #fff !important;
+}
+
+.simple-card .tab-content {
+  padding: 30px;
+}
+.box-detail {
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+.navbar-right-top .nav-item {
+  border-right: 1px solid #e6e6f2;
+}
+
+.navbar-right-top .nav-item:last-child {
+  border: none;
+}
+.teacher_cour img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.teacher_cour .info {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.show-more {
+  /*   width: 690px;  */
+  color: rgb(60, 73, 182);
+  position: relative;
+  font-size: 15px;
+  padding-top: 5px;
+  height: 30px;
+  text-align: center;
+  background: #f1f1f1;
+  cursor: pointer;
+}
+.show-more:hover {
+  color: #1779dd;
+}
+.show-more-height {
+  height: 300px;
+  overflow: hidden;
+}
+.text-decrip {
+  /*   width: 660px;  */
+  margin-bottom: 5px;
+  color: #777;
+  padding: 0 15px;
+  position: relative;
+  font-family: Arial;
+  font-size: 14px;
+  display: block;
+}
+.bg-lesson {
+  background-color: #d82a4e;
+}
+
+.lesson-item a {
+  text-decoration: none;
+  font-weight: bold;
+  color: dimgrey;
+}
+
+.playing,
+.lesson-item:hover {
+  background-color: cadetblue;
+}
+
+.playing a,
+.lesson-item:hover a {
+  text-decoration: none;
+  font-weight: bold;
+  color: white;
+}

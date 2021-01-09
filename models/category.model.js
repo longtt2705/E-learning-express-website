@@ -7,8 +7,8 @@ module.exports = {
     return db.load(`select * from ${TBL_CATEGORIES}`);
   },
 
-  delete(username) {
-    const condition = { username: username };
+  delete(id) {
+    const condition = { id: id };
     return db.del(condition, TBL_CATEGORIES);
   },
 
@@ -17,7 +17,7 @@ module.exports = {
   },
 
   patch(entity) {
-    const condition = { username: entity.Username };
+    const condition = { id: entity.Id };
     return db.patch(entity, condition, TBL_CATEGORIES);
   },
 };

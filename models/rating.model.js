@@ -1,6 +1,7 @@
 const db = require("../utils/database");
 const config = require("../config/default.json");
 const { allByCourseId } = require("./course-content.model");
+const { singleByUsernameAndCourse } = require("./course-progress.model");
 const TBL_RATING = "rating";
 
 module.exports = {
@@ -16,6 +17,14 @@ module.exports = {
     return rows[0];
   },
 
+  async singleByUsernameAndCourse(courseId, username) {
+    const rows = await db.load(
+      `select * from ${TBL_RATING} where courseId = '${courseId}' and username = '${username}'`
+    );
+    if (rows.length === 0) return null;
+    return rows[0];
+  },
+
   async allByCourseIdWithInfo(courseId) {
     return db.load(
       `select * from ${TBL_RATING} r join accounts a on r.username = a.username where courseid = '${courseId}'`
@@ -24,7 +33,9 @@ module.exports = {
 
   async countRatingByStars(courseId, stars) {
     const rows = await db.load(
-      `select count(*) as total from ${TBL_RATING} where courseid = '${courseId}' and rate = '${stars}'`
+      `select count(*) as total from ${TBL_RATING} where courseid = '${courseId}' and rate <= ${stars} and rate > ${
+        stars - 1
+      }`
     );
     if (rows.length === 0) return 0;
     return rows[0].total;

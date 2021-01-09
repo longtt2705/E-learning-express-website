@@ -2,9 +2,12 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel="stylesheet" href="/styles/lessons.css">
+<link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
+
 {{/section}}
 
 {{#section 'script'}}
+<script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
 
 <script>
     $(".show-more").click(function () {
@@ -23,7 +26,23 @@
     });
 
     $("#description").html($("#description").data("des"));
+    $(window).bind('beforeunload', function () {
 
+        const courseId = $('#data').data("course");
+        const lessonId = $('#data').data("lesson");
+        const video = videojs('video-onplay');
+        const currentTime = video.currentTime();
+
+        const data = {
+            lessonId: lessonId,
+            currentTime: currentTime,
+            courseId: courseId,
+        }
+        $.post(`/student/course-progress/update`, data, function (data) { });
+    });
+
+    $(".playing").parent().parent().addClass("show");
+    const video = videojs('video-onplay').currentTime($('#data').data("time"));
 </script>
 
 {{/section}}
@@ -32,7 +51,12 @@
 <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 mt-3">
     <div class="row">
         <div class="col-xl-8">
-            <div><video src="/public/courses/Maps.mp4"></video></div>
+            <div id="data" data-course="{{course.Id}}" data-lesson="{{playingVideo.Id}}" data-time="{{currentTime}}">
+                <video id="video-onplay" class="video-js" controls preload="auto" data-setup="{}" width="650"
+                    height="350">
+                    <source src="/public/courses/{{playingVideo.Video}}" type="video/mp4" />
+                </video>
+            </div>
 
             <div class="simple-card">
                 <ul class="nav nav-tabs" id="myTab5" role="tablist">
@@ -49,31 +73,17 @@
 
                             <div class="teacher_cour">
                                 <div class="info">
-                                    <img src="/public/img/authors/1.jpg" alt="abcc">
+                                    <img src="/public/img/{{course.authorImage}}" alt="abcc">
                                     <div>
-                                        <div class="Name"><b>Alex</b></div>
-                                        <div class="countcour">115 lessons</div>
-                                        <div class="avis">23 avis</div>
+                                        <div class="Name"><b>{{course.authorName}}</b></div>
+                                        <div class="countcour"><i class="fas fa-envelope"></i>&nbsp;{{account.Username}}
+                                        </div>
+                                        <div class="avis"><i class="fas fa-phone"></i>&nbsp;{{account.Phone}}</div>
                                     </div>
                                 </div>
                             </div>
 
-
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores, soluta, cupiditate. Ad
-                                ab, delectus impedit similique voluptate fuga nemo iure, nobis dolorem dolor, quia
-                                voluptas aperiam doloremque commodi id? In? Lorem ipsum dolor sit amet, consectetur
-                                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                                enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                                commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                                dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                                culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet,
-                                consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-
+                            <div id="description" data-des="{{course.description}}"></div>
                         </div>
                         <div class="show-more">(Show More)</div>
                     </div>
@@ -82,80 +92,27 @@
         </div>
         <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 pl-xl-0 pl-lg-0 pl-md-0  m-b-30">
             <div class="card">
-
-                <h4 class="mb-4">Gradient Scrollbar</h4>
+                <h4 class="m-2 text-center">Content</h4>
                 <div class="custom-scrollbar-css">
                     <div class="card">
-                        <div class="card-header btn" data-toggle="collapse" data-target="#noidungI">
-                            Chuong I
+                        {{#each course.chapters as |chapter|}}
+                        <div class="card-header btn" data-toggle="collapse" data-target="#chapter-{{chapter.Id}}">
+                            {{chapter.ChapterName}}
                         </div>
-                        <div class="collapse" data-toggle="collapse" aria-expanded="false" id="noidungI">
+                        <div class="collapse" data-toggle="collapse" aria-expanded="false" id="chapter-{{chapter.Id}}">
                             <ul class="list-group">
-                                <li class="list-group-item">Cras justo odio</li>
-                                <li class="list-group-item">Dapibus ac facilisis in</li>
-                                <li class="list-group-item">Morbi leo risus</li>
-                                <li class="list-group-item">Porta ac consectetur ac</li>
-                                <li class="list-group-item">Vestibulum at eros</li>
+                                {{#each chapter.lessons as |lesson|}}
+                                <li class="list-group-item lesson-item {{#if lesson.isActive}}playing{{/if}}">
+                                    <a class="text-decoration-none"
+                                        href="?playing={{lesson.index}}">{{lesson.lesson.Name}}</a>
+                                </li>
+                                {{/each}}
                             </ul>
                         </div>
-                        <div class="card-header btn" data-toggle="collapse" data-target="#noidungII">
-                            Chuong II
-                        </div>
-                        <div class="collapse" data-toggle="collapse" aria-expanded="false" id="noidungII">
-                            <ul class="list-group">
-                                <li class="list-group-item">Cras justo odio</li>
-                                <li class="list-group-item">Dapibus ac facilisis in</li>
-                                <li class="list-group-item">Morbi leo risus</li>
-                                <li class="list-group-item">Porta ac consectetur ac</li>
-                                <li class="list-group-item">Vestibulum at eros</li>
-                            </ul>
-                        </div>
-                        <div class="card-header btn" data-toggle="collapse" data-target="#noidungIII">
-                            Chuong III
-                        </div>
-                        <div class="collapse" data-toggle="collapse" aria-expanded="false" id="noidungIII">
-                            <ul class="list-group">
-                                <li class="list-group-item">Cras justo odio</li>
-                                <li class="list-group-item">Dapibus ac facilisis in</li>
-                                <li class="list-group-item">Morbi leo risus</li>
-                                <li class="list-group-item">Porta ac consectetur ac</li>
-                                <li class="list-group-item">Vestibulum at eros</li>
-                            </ul>
-                        </div>
-                        <div class="card-header btn" data-toggle="collapse" data-target="#noidungIV">
-                            Chuong IV
-                        </div>
-                        <div class="collapse" data-toggle="collapse" aria-expanded="false" id="noidungIV">
-                            <ul class="list-group">
-                                <li class="list-group-item">Cras justo odio</li>
-                                <li class="list-group-item">Dapibus ac facilisis in</li>
-                                <li class="list-group-item">Morbi leo risus</li>
-                                <li class="list-group-item">Porta ac consectetur ac</li>
-                                <li class="list-group-item">Vestibulum at eros</li>
-                            </ul>
-                        </div>
-                        <div class="card-header btn" data-toggle="collapse" data-target="#noidungV">
-                            Chuong V
-                        </div>
-                        <div class="collapse" data-toggle="collapse" aria-expanded="false" id="noidungV">
-                            <ul class="list-group">
-                                <li class="list-group-item">Cras justo odio</li>
-                                <li class="list-group-item">Dapibus ac facilisis in</li>
-                                <li class="list-group-item">Morbi leo risus</li>
-                                <li class="list-group-item">Porta ac consectetur ac</li>
-                                <li class="list-group-item">Vestibulum at eros</li>
-                            </ul>
-                        </div>
-
-
+                        {{/each}}
                     </div>
-
                 </div>
-
             </div>
-
-
-
         </div>
     </div>
 </div>

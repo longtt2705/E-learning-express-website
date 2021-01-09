@@ -1,13 +1,17 @@
 const categoryModel = require("../models/category.model");
+const cartModel = require("../models/cart.model");
 
 module.exports = (app) => {
   app.use(async function (req, res, next) {
     if (typeof req.session.isAuth === "undefined") {
       req.session.isAuth = false;
     }
+    if (typeof req.session.cart === "undefined") req.session.cart = [];
 
     res.locals.isAuth = req.session.isAuth;
     res.locals.authUser = req.session.authUser;
+    res.locals.cartSummary = cartModel.getNumberOfItems(req.session.cart);
+
     next();
   });
 
