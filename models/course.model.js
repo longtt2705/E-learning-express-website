@@ -16,6 +16,10 @@ module.exports = {
     return rows[0].total;
   },
 
+  allWithUserName(username) {
+    return db.load(`select * from ${TBL_COURSE} where author = '${username}'`);
+  },
+
   async singleById(id) {
     const rows = await db.load(
       `select * from ${TBL_COURSE} where id = '${id}'`

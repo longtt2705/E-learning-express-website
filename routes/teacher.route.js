@@ -10,6 +10,7 @@ const courseContentDetailModel = require("../models/course-content-detail.model"
 const moment = require("moment");
 const shell = require("shelljs");
 const { async } = require("crypto-random-string");
+const courseProgressDetailModel = require("../models/course-progress-detail.model");
 
 router.get("/", auth, isTeacher, async (req, res) => {
   const username = req.session.authUser.Username;
@@ -318,6 +319,12 @@ router.post(
       } else {
         lesson.Video = dir + "/" + fileName;
         await courseContentDetailModel.patch(lesson);
+        const lessonProgress = await courseProgressDetailModel.allByLessonId(
+          lessonId
+        );
+        for (const lesson of lessonProgress) {
+          await courseProgressDetailModel.delete(lesson.Id);
+        }
         res.redirect("/teacher/edit/" + courseId + "/contents/" + chapterId);
       }
     });
@@ -651,7 +658,7 @@ router.post("/:courseId/contents/add", auth, isTeacher, async (req, res) => {
 
         await courseContentDetailModel.add(lesson);
       }
-      res.redirect("/teacher");
+      res.redirect("/teacher/" + course.Id + "/contents");
     }
   });
 });

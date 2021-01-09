@@ -1,0 +1,73 @@
+{{#section 'script'}}
+<script>
+    $('.removeItem').on('click', function () {
+        const id = $(this).data('id');
+        console.log(id);
+        $('#txtProId').val(id);
+        $('#frmRemoveItem').submit();
+    });
+    $(".shortDes").each(function (e) {
+        $(this).html($(this).data("des"));
+    })
+
+</script>
+{{/section}}
+<div class="container">
+    <div class="card mt-lg-5">
+        <h5 class="card-header">
+            Your Cart
+        </h5>
+        {{#if this.empty}}
+        <div class="card-body">
+            <p class="card-text">No data to display.</p>
+        </div>
+        {{else}}
+        <form id="frmRemoveItem" action="/student/cart/remove" method="POST">
+            <input type="hidden" name="id" id="txtProId">
+        </form>
+        <div class="card-body">
+            {{#each items as |course|}}
+            {{#with course}}
+            <div class="row mt-lg-5">
+                <a href="/course/{{Id}}" class="col-sm-3">
+                    <img src="/public/courses/{{Image}}" alt="courseImage" style="border-radius: 5%;">
+                </a>
+                <div class="col-sm-6 d-flex flex-column">
+                    <h4 class="font-weight-bold">{{Name}}</h4>
+                    <h5><i class="fas fa-calendar-alt"></i>&nbsp;{{CateName}}</h5>
+                    <h6 class="text-gray"><i class="fas fa-user"></i>&nbsp;{{authorName}}</h6>
+                    <div class="shortDes mt-2" data-des="{{ShortDes}}"></div>
+                </div>
+                <div class="col-sm-2 text-right mt-4">
+                    {{#if DiscountPrice}}
+                    <h5 class="font-weight-bold">${{formatPrice DiscountPrice}}</h5>
+                    <h5 class="font-weight-bold" style="text-decoration: line-through;">
+                        ${{formatPrice Price}}
+                    </h5>
+                    {{else}}
+                    <h5 class=" font-weight-bold">${{formatPrice Price}}</h5>
+                    {{/if}}
+                </div>
+                <div class="col-sm-1">
+                    <button class="btn font-weight-bold removeItem" id="{{Id}}" aria-label="Close" data-id="{{Id}}">
+                        <span aria-hidden="true" style="font-size: 30px;">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <hr>
+            {{/with}}
+            {{/each}}
+        </div>
+        <div class="card-footer text-muted">
+            <form action="/student/cart/checkout" method="POST" class="d-flex flex-row-reverse">
+                <button type="submit" class="btn btn-outline-success float-right">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Check Out
+                </button>
+                <h4 class="mr-5">Total cost: ${{formatPrice totalPrice}}</h4>
+            </form>
+        </div>
+        {{/if}}
+
+    </div>
+</div>

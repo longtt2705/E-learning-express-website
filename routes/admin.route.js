@@ -242,6 +242,7 @@ router.post("/account/edit/:user", auth, isAdmin, async function (req, res) {
 
 router.post("/account/delete", auth, isAdmin, async function (req, res) {
   const username = req.body.username;
+  const courses = await courseModel.allWithUserName(username);
 
   await accountModel.delete(username);
   res.redirect("../account");
