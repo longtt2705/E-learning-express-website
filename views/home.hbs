@@ -279,41 +279,44 @@
             <!-- course -->
             {{#each this.newestCourses as |course|}}
             <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="course-item" style="border-radius: 5px;">
-                    <div class="course-thumb set-bg" style="background-color: black;">
-                        <img class="course-image" src="/public/courses/{{course.Image}}" alt="courseImage">
+                <a href="/course/{{course.Id}}">
+                    <div class="course-item">
+                        <div class="course-thumb set-bg" style="background-color: black;">
+                            <img class="course-image" src="/public/courses/{{course.Image}}" alt="courseImage">
 
-                        {{#if course.DiscountPrice}}
-                        <div class="price"><span style="font-size: 20px;">${{formatPrice course.DiscountPrice}}</span>
-                            <span style="font-size: 10px; text-decoration: line-through;">({{formatPrice
-                                course.Price}})</span>
-                        </div>
-                        {{else}}
-                        <div class="price">${{formatPrice course.Price}}</div>
-                        {{/if}}
-                    </div>
-                    <div class="course-info">
-                        <div class="course-text">
-                            <h5>{{course.Name}}</h5>
-                            <div class="shortDes" data-des="{{ShortDes}}"></div>
-                            <div class="students">
-                                {{course.TotalStudent}} students
+                            {{#if course.DiscountPrice}}
+                            <div class="price">
+                                <span style="font-size: 20px;">${{formatPrice course.DiscountPrice}}</span>
+                                <span style="font-size: 10px; text-decoration: line-through;">({{formatPrice
+                                    course.Price}})</span>
                             </div>
-                            <div class="d-flex">
-                                <span class="rating">
-                                    {{#if course.AverageRate}}{{course.AverageRate}}/5{{else}}0/5{{/if}}</span>
-                                <span class="rate" data-rate="{{AverageRate}}"></span>
-                                <span class="numberRating">({{TotalRate}})</span>
+                            {{else}}
+                            <div class="price">${{formatPrice course.Price}}</div>
+                            {{/if}}
+                        </div>
+                        <div class="course-info">
+                            <div class="course-text">
+                                <h5>{{course.Name}}</h5>
+                                <div class="shortDes" data-des="{{ShortDes}}"></div>
+                                <div class="students">
+                                    {{course.TotalStudent}} students
+                                </div>
+                                <div class="d-flex">
+                                    <span class="rating">
+                                        {{#if course.AverageRate}}{{course.AverageRate}}/5{{else}}0/5{{/if}}</span>
+                                    <span class="rate" data-rate="{{AverageRate}}"></span>
+                                    <span class="numberRating">({{TotalRate}})</span>
+                                </div>
+
+                            </div>
+                            <div class="course-author">
+                                <div class="ca-pic set-bg" data-setbg="/public/img/{{course.authorImage}}"></div>
+                                <p>{{this.authorName}}</p>
                             </div>
 
                         </div>
-                        <div class="course-author">
-                            <div class="ca-pic set-bg" data-setbg="/public/img/{{course.authorImage}}"></div>
-                            <p>{{this.authorName}}</p>
-                        </div>
-
                     </div>
-                </div>
+                </a>
             </div>
             {{/each}}
         </div>
