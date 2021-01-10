@@ -24,7 +24,8 @@
                                 data-target="/course/" target="_blank" href="/course">{{item.Name}}</a>
                             <ul class="dropdown-menu">
                                 {{#each item.SubCate as |cate|}}
-                                <li><a class="dropdown-item font-weight-bold" href="/course">{{cate.Name}}</a>
+                                <li><a class="dropdown-item font-weight-bold"
+                                        href="/course/search?search=cat.name&sort=ASC&order=AverageRate&searchContent={{cate.Name}}">{{cate.Name}}</a>
                                 </li>
                                 {{/each}}
                             </ul>
@@ -36,22 +37,35 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <form class="form-inline">
+                    <form class="form-inline" action="/course/search/" method="GET">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-search"></i></span>
                             </div>
                             <input class="form-control mr-sm-2 search-bar" type="search"
-                                placeholder=" Search courses..." aria-label="Search">
+                                placeholder=" Search courses..." aria-label="Search" name="searchContent">
+                            <select style="width: 100%;" name="search" id="search" hidden>
+                                <option value="Or" selected>Course Name or Category</option>
+                            </select>
+                            <select style="width: 100%;" name="sort" id="sort" hidden>
+                                <option value="ASC" selected>Ascending</option>
+                            </select>
+                            <select style="width: 100%;" name="order" id="order" hidden>
+                                <option value="AverageRate" selected>Rating</option>
+                            </select>
                         </div>
                     </form>
                 </li>
                 {{#if isAuth}}
+                {{#if authUser.role.isStudent}}
                 <li class="nav-item">
-                    <a href="/account/notification" class="text-decoration-none font-weight-bold text-white mx-2">
-                        <i class="fas fa-bell" style="font-size: 20pt;"></i>
+                    <a href="/student/cart" class="text-decoration-none font-weight-bold text-white mx-2 cart"
+                        style="font-size: 30px;">
+                        <i class="fas fa-shopping-cart"></i>
+                        <div class="summary-cart text-center">{{cartSummary}}</div>
                     </a>
                 </li>
+                {{/if}}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="accountSection" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -60,7 +74,6 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="accountSection">
                         <span class="dropdown-item">
-
                             Welcome,<br>
                             <b>{{authUser.Name}}</b>!
                         </span>
@@ -83,18 +96,19 @@
                         </a>
                         {{/if}}
                         {{#if authUser.role.isStudent}}
-                        <a class="dropdown-item" href="/teacher/my-learning">
-                            <i class="fa fa-heart" aria-hidden="true"></i>
+                        <a class="dropdown-item" href="/student/my-learning">
+
+                            <i class="fab fa-leanpub"></i>
                             My Learning
                         </a>
-                        <a class="dropdown-item" href="/teacher/wishlist">
+                        <a class="dropdown-item" href="/student/wishlist">
                             <i class="fa fa-heart" aria-hidden="true"></i>
                             Wishlist
                         </a>
                         {{/if}}
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="javascript: $('#frmLogout').submit();">
-                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
                             Sign Out
                         </a>
                     </div>

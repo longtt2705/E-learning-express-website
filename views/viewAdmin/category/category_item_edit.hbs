@@ -14,7 +14,7 @@
     $("#frmEditCateItem").on("submit", function (e) {
 
         e.preventDefault();
-        const categoryId=$('#categoryId').val();
+        const categoryId = $('#categoryId').val();
         const nameCategoryItem = $('#nameCategoryItem').val();
         if (nameCategoryItem.length === 0) {
             errorMessage("Name Category Item cannot be empty!")
@@ -94,8 +94,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="far fa-clipboard"></i></span>
                                 </div>
-                                <input id="nameCategoryItem" type="text" class="form-control"
-                                    value="{{Name}}" name="nameCategoryItem" autofocus>
+                                <input id="nameCategoryItem" type="text" class="form-control" value="{{Name}}"
+                                    name="nameCategoryItem" autofocus>
                             </div>
                         </div>
                         <div class="form-group">

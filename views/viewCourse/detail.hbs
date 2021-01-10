@@ -20,8 +20,9 @@
     });
 
     $(".rate").each(function (e) {
+
         $(this).rateYo({
-            rating: $(this).data("rate"),
+            rating: $(this).data("rate") ? $(this).data("rate") : 0,
             readOnly: true,
             starWidth: "16px"
         });
@@ -34,6 +35,25 @@
     });
     $("#description").html($("#description").data("des"));
 
+    $('.addItem').on('click', function () {
+        const id = $(this).data('id');
+        $('#txtId').val(id);
+        $('#frmAddItem').submit();
+    });
+
+    $("#rateCourse").rateYo({
+        onChange: function (rating, rateYoInstance) {
+            $('#counter').text(rating);
+        },
+        onSet: function (rating, rateYoInstance) {
+            $("#ratingValue").val(rating);
+        },
+        rating: 5,
+    });
+
+    $("#postRating").on("click", function (e) {
+        $("#frmRating").submit();
+    });
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
@@ -41,9 +61,10 @@
     crossorigin="anonymous"></script>
 
 {{/section}}
-
 {{#with course}}
-
+<form action="/student/cart/add" method="POST" id="frmAddItem">
+    <input type="hidden" name="id" id="txtId">
+</form>
 <!-- Hero section -->
 <div class="paid-course-landing-page__container">
     <div class="top-content dark-background">
@@ -68,7 +89,7 @@
                             </div>
                             <span>{{format TotalStudent}} students</span>
                         </div>
-                        <div class="m-0">
+                        <div class="mb-2">
                             <p class="m-0">Create by {{authorName}}</p>
                             <p class="m-0"> <i class="fa fa-check-circle" aria-hidden="true"></i> Last update:
                                 {{formatDate
@@ -76,11 +97,28 @@
 
                         </div>
                         <div class="mb-1">
-                            <a href="#" class="product-wishlist-btn udlite-heading-xs udlite-badge">wishlist <i
-                                    class="fa fa-heart"></i></a>
+                            {{/with}}
+                            {{#if isWishlistEmpty}}
+                            {{#with course}}
+                            <a href="/student/wishlist/add/{{this.Id}}"
+                                class="product-wishlist-btn udlite-heading-xs udlite-badge">wishlist <i
+                                    class="fa fa-heart" aria-hidden="true"></i></a>
+                            {{/with}}
+
+                            {{/if}}
+                            {{#if nonWishlistEmpty}}
+                            {{log 'kl'}}
+                            {{#with course}}
+                            <a href="/student/wishlist/delete/{{this.Id}}"
+                                class="product-wishlist-btn active udlite-heading-xs udlite-badge">wishlist <i
+                                    class="fa fa-heart" aria-hidden="true"></i></a>
+                            {{/with}}
+
+                            {{/if}}
                         </div>
                     </div>
                 </div>
+                {{#with course}}
                 <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 pl-xl-0 pl-lg-0 pl-md-0 m-b-30 mt-lg-3">
                     <img src="/public/courses/{{Image}}" alt="image">
                     <div class="product-details-right ">
@@ -99,9 +137,23 @@
                             {{/if}}
 
                         </div>
+                        {{#if ../IfBought}}
                         <div class="product-size">
-                            <a href="#" class="btn btn-primary btn-block btn-lg">Add to Cart</a>
+                            <a href="/student/course/{{Id}}" class="btn btn-primary btn-block btn-lg">Start Learning</a>
                         </div>
+                        {{else}}
+                        {{#if ../InCart}}
+                        <div class="product-size">
+                            <a href="/student/cart" class="btn btn-primary btn-block btn-lg">Go to Cart</a>
+                        </div>
+                        {{else}}
+                        <div class="product-size">
+                            <a data-id="{{Id}}" href="javascript:;" class="btn btn-primary btn-block btn-lg addItem">Add
+                                to
+                                Cart</a>
+                        </div>
+                        {{/if}}
+                        {{/if}}
                     </div>
                 </div>
                 {{!-- End content-top-detail --}}
@@ -201,6 +253,19 @@
                                 {{../stars.one}}%
                             </div>
                         </div>
+                        <div class="Star1">
+                            <div class="bar-container">
+                                <div class="bar" style="width: {{../stars.zero}}%;"></div>
+                            </div>
+                            <div class="star">
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                {{../stars.zero}}%
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -224,26 +289,75 @@
                 </ul>
                 <div class="tab-content" id="myTabContent5">
                     <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="product-tab-1">
+                        <div class="text-decrip show-more-height detailDes" data-des="{{DetailDes}}"></div>
+                        <div class="show-more">(Show More)</div>
+                    </div>
+                    <div class="tab-pane fade d-flex flex-column" id="tab-2" role="tabpanel"
+                        aria-labelledby="product-tab-2">
+                        <div class="text-decrip show-more-height align-self-center">
+                            {{#if ../IfBought}}
+                            {{#if ../hasRated}}
+                            <button type="button" class="btn btn-danger mx-auto" data-toggle="modal"
+                                data-target="#ratingModal">Edit your rating</button>
+                            {{else}}
+                            <button type="button" class="btn btn-danger mx-auto" data-toggle="modal"
+                                data-target="#ratingModal">Rate this course</button>
+                            {{/if}}
+                            {{/if}}
 
-                        <div class="text-decrip show-more-height detailDes" data-des="{{DetailDes}}">
-
+                            <div class="modal fade" id="ratingModal" tabindex="-1" role="dialog"
+                                aria-labelledby="modalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabel">Write your rating</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" action="/student/rate/{{Id}}" id="frmRating">
+                                                <div class="form-group text-center">
+                                                    <div id="rateCourse" class="mx-auto"></div>
+                                                    <h3 class="my-3">
+                                                        Your rating is <span class="font-weight-bolder"
+                                                            id="counter">5</span>
+                                                    </h3>
+                                                    <input name="rating" type="text" class="form-control"
+                                                        id="ratingValue" value="5" hidden>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text"
+                                                        class="col-form-label font-weight-bold">Comment:</label>
+                                                    <textarea name="comment" class="form-control" id="message-text"
+                                                        rows="5" cols="30"></textarea>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button id="postRating" type="button"
+                                                class="btn btn-primary">Review</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{#each ../ratings as |rating|}}
+                            <div class="review-block row m-lg-3">
+                                <img src="/public/img/{{Image}}" alt="avatar" class="rounded-circle col-sm-2">
+                                <div class="col-sm-10 d-flex flex-column">
+                                    <span class="text-dark font-weight-bold ml-1">{{Name}}</span>
+                                    <div class="d-flex"><span class="rate"
+                                            data-rate="{{Rate}}"></span><span>{{formatDate Date}}</span>
+                                    </div>
+                                    <p class="review-text font-italic m-0">“{{Comment}}”</p>
+                                </div>
+                            </div>
+                            <hr>
+                            {{/each}}
                         </div>
                         <div class="show-more">(Show More)</div>
-
-
-                    </div>
-                    <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="product-tab-2">
-                        {{#each ../ratings as |rating|}}
-                        <div class="review-block row m-lg-3">
-                            <img src="/public/img/{{Image}}" alt="avatar" class="rounded-circle col-sm-2">
-                            <div class="col-sm-10 d-flex flex-column">
-                                <span class="text-dark font-weight-bold ml-1">{{Name}}</span>
-                                <span class="rate" data-rate="{{Rate}}"></span>
-                                <p class="review-text font-italic m-0">“{{Comment}}”</p>
-                            </div>
-                        </div>
-                        <hr>
-                        {{/each}}
                     </div>
 
                 </div>
@@ -301,5 +415,52 @@
         </div>
     </div>
 </div>
-
+<div class="divider-custom">
+    <div class="divider-custom-line"></div>
+    <div class="divider-custom-icon"><i class="fas fa-crown" style="color: yellow;"></i></div>
+    <div class="divider-custom-line"></div>
+</div>
+<h2 class="text-center">Top 5 most bought in {{CateName}}</h2>
 {{/with}}
+
+<section class="content container mt-lg-5">
+    <!-- Default box -->
+    <div>
+        {{#each TopCourses as |course|}}
+        {{#with course}}
+        <div class="row mt-lg-5">
+            <a href="/course/{{Id}}" class="col-sm-3">
+                <img src="/public/courses/{{Image}}" alt="courseImage" style="border-radius: 5%;">
+            </a>
+            <div class="col-sm-7 d-flex flex-column">
+                <h4 class="font-weight-bold">{{Name}}</h4>
+                <h5><i class="fas fa-calendar-alt"></i>&nbsp;{{CateName}}</h5>
+                <h6 class="text-gray"><i class="fas fa-user"></i>&nbsp;{{authorName}}</h6>
+                <div class="shortDes" data-des="{{ShortDes}}"></div>
+                <div class="d-flex m-0 p-0">
+                    <h6 style="color: orange;">{{#if AverageRate}}
+                        {{AverageRate}}
+                        {{else}}
+                        0
+                        {{/if}} </h6>
+                    <span class="rate" data-rate="{{AverageRate}}"></span>
+                    <h6>({{TotalRate}})</h6>
+                </div>
+                <span>Last update: {{formatDate UpdateDate}}</span>
+            </div>
+            <div class="col-sm-2">
+                {{#if DiscountPrice}}
+                <h5 class="font-weight-bold">${{formatPrice DiscountPrice}}</h5>
+                <h5 class="font-weight-bold text-gray" style="text-decoration: line-through;">${{formatPrice Price}}
+                </h5>
+                {{else}}
+                <h5 class="font-weight-bold">${{formatPrice Price}}</h5>
+                {{/if}}
+            </div>
+        </div>
+        <hr>
+        {{/with}}
+        {{/each}}
+    </div>
+
+</section>

@@ -19,7 +19,7 @@ const createUrl = (email) => {
       data: email,
     },
     "SECRET_KEY",
-    { expiresIn: "1m" }
+    { expiresIn: "24h" }
   );
 
   const url = "http://localhost:5555/account/confirmation/?token=" + token;

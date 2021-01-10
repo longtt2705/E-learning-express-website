@@ -1,6 +1,7 @@
 const db = require("../utils/database");
 const config = require("../config/default.json");
 const TBL_COURSE = "courses";
+const moment = require("moment");
 
 const selectField = `select DISTINCT c.*, s.StatusType, a.name as authorName, a.image as authorImage, a.description, cat.Name as CateName, format(avg(r.rate), 1) as AverageRate, count(r.rate) as TotalRate from courses c join status s on c.statusid = s.id join categories cat on c.categoryid = cat.id join accounts a on a.username = c.author left join rating r on r.CourseId = c.Id`;
 const countField = `select count(DISTINCT c.id) as total, cat.Name as CateName from courses c join categories cat on c.categoryid = cat.id`;
@@ -14,6 +15,10 @@ module.exports = {
     const rows = await db.load(`select count(*) as total from ${TBL_COURSE}`);
     if (rows.length === 0) return 0;
     return rows[0].total;
+  },
+
+  allWithUserName(username) {
+    return db.load(`select * from ${TBL_COURSE} where author = '${username}'`);
   },
 
   async singleById(id) {
@@ -62,15 +67,30 @@ module.exports = {
     } else {
       sorting = `${order} ${sort}`;
     }
+
+    if (searchType === "And" || searchType === "Or") {
+      return db.load(
+        `${selectField} where cat.Name like '%${content}%' ${searchType} c.Name like '%${content}%' group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
+      );
+    }
+
     return db.load(
       `${selectField} where ${searchType} like '%${content}%' group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
     );
   },
 
   async countAllWithLike(searchType, content) {
-    const rows = await db.load(
-      `${countField} where ${searchType} like '%${content}%'`
-    );
+    let rows;
+    if (searchType === "And" || searchType === "Or") {
+      rows = await db.load(
+        `${countField} where cat.Name like '%${content}%' ${searchType} c.Name like '%${content}%'`
+      );
+    } else {
+      rows = await db.load(
+        `${countField} where ${searchType} like '%${content}%'`
+      );
+    }
+
     if (rows.length === 0) return 0;
     return rows[0].total;
   },
@@ -83,15 +103,30 @@ module.exports = {
     } else {
       sorting = `${order} ${sort}`;
     }
+
+    if (searchType === "And" || searchType === "Or") {
+      return db.load(
+        `${selectField} where MATCH(cat.name) AGAINST('${content}' IN BOOLEAN MODE) ${searchType} MATCH(c.name) AGAINST('${content}' IN BOOLEAN MODE) group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
+      );
+    }
+
     return db.load(
       `${selectField} where MATCH(${searchType}) AGAINST('${content}' IN BOOLEAN MODE) group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
     );
   },
 
   async countAllWithFullText(searchType, content) {
-    const rows = await db.load(
-      `${countField} where match(${searchType}) against('${content}' IN BOOLEAN MODE)`
-    );
+    let rows;
+    if (searchType === "And" || searchType === "Or") {
+      rows = await db.load(
+        `${countField} where MATCH(cat.name) AGAINST('${content}' IN BOOLEAN MODE) ${searchType} MATCH(c.name) AGAINST('${content}' IN BOOLEAN MODE)`
+      );
+    } else {
+      rows = await db.load(
+        `${countField} where match(${searchType}) against('${content}' IN BOOLEAN MODE)`
+      );
+    }
+
     if (rows.length === 0) return 0;
     return rows[0].total;
   },
@@ -126,5 +161,33 @@ module.exports = {
     if (rows.length === 0) return null;
 
     return rows[0];
+  },
+
+  getCoursesWithMostView(limit = 8) {
+    return db.load(
+      `${selectField} group by c.Id order by c.TotalView DESC limit ${limit}`
+    );
+  },
+
+  getNewestCourses(limit = 8) {
+    return db.load(
+      `${selectField} group by c.Id order by c.UpdateDate DESC limit ${limit}`
+    );
+  },
+
+  getTopCoursesWithMostBuyLastWeek(limit = 3) {
+    return db.load(
+      `select c.Id, count(od.CourseId) as totalBought from courses c left join orderdetails od on od.courseId = c.id left join orders o on od.OrderId = o.Id where if(DateCreate is not null, datecreate >= '${moment()
+        .subtract(1, "weeks")
+        .format(
+          "YYYY-MM-DD HH:mm:ss"
+        )}', datecreate is null) group by c.Id order by totalBought DESC limit ${limit}`
+    );
+  },
+
+  topCourseInSameCategory(courseId, categoryId, limit = 5) {
+    return db.load(
+      `${selectField} where categoryId = '${categoryId}' and c.Id != '${courseId}' group by c.Id order by c.TotalStudent DESC limit ${limit}`
+    );
   },
 };

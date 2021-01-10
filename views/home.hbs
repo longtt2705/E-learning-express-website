@@ -1,8 +1,11 @@
 {{#section 'css'}}
 <link rel="stylesheet" href="/styles/home.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+
 {{/section}}
 
 {{#section 'script'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 
 <script>
     $(function () {
@@ -25,15 +28,18 @@
 
     $(document).ready(function () {
         $(".navbar").removeClass("active");
-    })
+    });
 
-    const container = document.querySelector('#course-container');
-    console.log(container);
-    mixitup(container, {
-        selectors: {
-            control: '[data-mixitup-control]'
-        }
+    $(".shortDes").each(function (e) {
+        $(this).html($(this).data("des"));
     })
+    $(".rate").each(function (e) {
+        $(this).rateYo({
+            rating: $(this).data("rate") ? $(this).data("rate") : 0,
+            readOnly: true,
+            starWidth: "18px"
+        });
+    }) 
 </script>
 {{/section}}
 
@@ -112,34 +118,44 @@
             <div class="row coursebest-items-area" id="coursebest-container">
                 <!-- course -->
 
-                {{#each this.bestcourse}}
-
-                <div class="mix col-lg-4 col-md-4 col-sm-6">
+                {{#each this.outstandingCourses as |course|}}
+                <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="course-items">
-                        <div class="course-thumb set-bg" data-setbg="{{this.CourImage}}">
-                            <div class="price">Price {{this.CourPrice}}</div>
+                        <div class="course-thumb set-bg" data-setbg="{{Image}}">
+                            <img class="course-image" src="/public/courses/{{course.Image}}" alt="courseImage"
+                                style="border-top-right-radius: 10px; border-top-left-radius: 10px;">
+                            {{#if course.DiscountPrice}}
+                            <div class="price">
+                                <span style="font-size: 20px;">${{formatPrice course.DiscountPrice}}</span>
+                                <span style="font-size: 10px; text-decoration: line-through;">({{formatPrice
+                                    course.Price}})</span>
+                            </div>
+                            {{else}}
+                            <div class="price">${{formatPrice course.Price}}</div>
+                            {{/if}}
                         </div>
                         <div class="course-info">
                             <div class="course-text">
-                                <h5>{{this.Course}}</h5>
-                                <p>Mô tả các kiểu sẽ được ghi ở đây</p>
+                                <h5>{{course.Name}}</h5>
+                                <div class="shortDes" data-des="{{ShortDes}}"></div>
                                 <div class="students">
-                                    {{this.CourStudent}}
+                                    {{course.TotalStudent}} students
                                 </div>
-                                <span class="rating"> {{this.CourStar}}/5 </span>
-                                {{#starPrint this.CourStar}}
-                                {{result}}
-                                {{/starPrint}}
-                                <span class="numberRating">({{this.CourNumberRating}})</span>
+                                <div class="d-flex">
+                                    <span class="rating">
+                                        {{#if course.AverageRate}}{{course.AverageRate}}/5{{else}}0/5{{/if}}</span>
+                                    <span class="rate" data-rate="{{AverageRate}}"></span>
+                                    <span class="numberRating">({{TotalRate}})</span>
+                                </div>
                             </div>
                             <div class="course-btn text-center">
-                                <button type="button" class="btn btn-rounded btn-warning btn-lg ">LEAR
-                                    MORE</button>
+                                <a href="/course/{{course.Id}}" type="button"
+                                    class="btn btn-rounded btn-warning btn-lg ">LEARN
+                                    MORE</a>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 {{/each}}
             </div>
         </div>
@@ -152,50 +168,61 @@
 <section class="course-section spad">
     <div class="container">
         <div class="section-title mb-0">
-            <h2>Newest Courses</h2>
+            <h2>Most View Courses</h2>
             <div class="divider-custom">
                 <div class="divider-custom-line"></div>
                 <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                 <div class="divider-custom-line"></div>
             </div>
             <p>
-                The courses with a large number of students have been viewed over the past week</p>
+                The courses with the most views.</p>
         </div>
     </div>
 
-    <div class="course-warp">
-        <ul class="course-filter controls">
-            <li class="control" data-mixitup-control data-filter=".development">Development</li>
-            <li class="control" data-mixitup-control data-filter=".it">IT &amp; Software</li>
-            <li class="control" data-mixitup-control data-filter=".mco">Microsoft Office</li>
-        </ul>
+    <div class="course-warp mt-lg-5">
+
         <div class="row course-items-area">
             <!-- course -->
-            {{#each this.categories}}
-            <div class="mix col-lg-3 col-md-4 col-sm-6 {{this.CourType}}">
-                <div class="course-item">
-                    <div class="course-thumb set-bg" data-setbg="{{this.CourImage}}">
-                        <div class="price">Price {{this.CourPrice}}</div>
-                    </div>
-                    <div class="course-info">
-                        <div class="course-text">
-                            <h5>{{this.Course}}</h5>
-                            <p>Mô tả các kiểu sẽ được ghi ở đây</p>
-                            <div class="students">
-                                {{this.CourStudent}}
+            {{#each this.mostViewCourses as |course|}}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <a href="/course/{{course.Id}}">
+                    <div class="course-item">
+                        <div class="course-thumb set-bg" style="background-color: black;">
+                            <img class="course-image" src="/public/courses/{{course.Image}}" alt="courseImage">
+
+                            {{#if course.DiscountPrice}}
+                            <div class="price">
+                                <span style="font-size: 20px;">${{formatPrice course.DiscountPrice}}</span>
+                                <span style="font-size: 10px; text-decoration: line-through;">({{formatPrice
+                                    course.Price}})</span>
                             </div>
-                            <span class="rating"> {{this.CourStar}}/5 </span>
-                            {{#starPrint this.CourStar}}
-                            {{result}}
-                            {{/starPrint}}
-                            <span class="numberRating">({{this.CourNumberRating}})</span>
+                            {{else}}
+                            <div class="price">${{formatPrice course.Price}}</div>
+                            {{/if}}
                         </div>
-                        <div class="course-author">
-                            <div class="ca-pic set-bg" data-setbg="{{this.CourAuImage}}"></div>
-                            <p>{{this.CourAuName}},{{this.CourAuRole}}</p>
+                        <div class="course-info">
+                            <div class="course-text">
+                                <h5>{{course.Name}}</h5>
+                                <div class="shortDes" data-des="{{ShortDes}}"></div>
+                                <div class="students">
+                                    {{course.TotalStudent}} students
+                                </div>
+                                <div class="d-flex">
+                                    <span class="rating">
+                                        {{#if course.AverageRate}}{{course.AverageRate}}/5{{else}}0/5{{/if}}</span>
+                                    <span class="rate" data-rate="{{AverageRate}}"></span>
+                                    <span class="numberRating">({{TotalRate}})</span>
+                                </div>
+
+                            </div>
+                            <div class="course-author">
+                                <div class="ca-pic set-bg" data-setbg="/public/img/{{course.authorImage}}"></div>
+                                <p>{{this.authorName}}</p>
+                            </div>
+
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             {{/each}}
         </div>
@@ -207,7 +234,7 @@
 <section class="categories-section bg-categories spad">
     <div class="container ">
         <div class="section-title">
-            <h2 style="color: white;">Top Course Categories</h2>
+            <h2 style="color: white;">Top Course Categories of last week</h2>
             <div class="divider-custom divider-light">
                 <div class="divider-custom-line"></div>
                 <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
@@ -236,50 +263,60 @@
 <section class="course-section spad">
     <div class="container">
         <div class="section-title mb-0">
-            <h2>Featured Courses</h2>
+            <h2>Newest Courses</h2>
             <div class="divider-custom">
                 <div class="divider-custom-line"></div>
                 <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                 <div class="divider-custom-line"></div>
             </div>
             <p>
-                The courses with a large number of students have been viewed over the past week</p>
+                The courses with the lastest knownledge are waiting for you</p>
         </div>
     </div>
 
-    <div class="course-warp">
-        <ul class="course-filter controls">
-            <li class="control" data-mixitup-control data-filter=".development">Development</li>
-            <li class="control" data-mixitup-control data-filter=".it">IT &amp; Software</li>
-            <li class="control" data-mixitup-control data-filter=".mco">Microsoft Office</li>
-        </ul>
-        <div class="row course-items-area" id="course-container">
+    <div class="course-warp mt-lg-5">
+        <div class="row course-items-area">
             <!-- course -->
-            {{#each this.categories}}
-            <div class="mix col-lg-3 col-md-4 col-sm-6 {{this.CourType}}">
-                <div class="course-item">
-                    <div class="course-thumb set-bg" data-setbg="{{this.CourImage}}">
-                        <div class="price">Price {{this.CourPrice}}</div>
-                    </div>
-                    <div class="course-info">
-                        <div class="course-text">
-                            <h5>{{this.Course}}</h5>
-                            <p>Mô tả các kiểu sẽ được ghi ở đây</p>
-                            <div class="students">
-                                {{this.CourStudent}}
+            {{#each this.newestCourses as |course|}}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <a href="/course/{{course.Id}}">
+                    <div class="course-item">
+                        <div class="course-thumb set-bg" style="background-color: black;">
+                            <img class="course-image" src="/public/courses/{{course.Image}}" alt="courseImage">
+
+                            {{#if course.DiscountPrice}}
+                            <div class="price">
+                                <span style="font-size: 20px;">${{formatPrice course.DiscountPrice}}</span>
+                                <span style="font-size: 10px; text-decoration: line-through;">({{formatPrice
+                                    course.Price}})</span>
                             </div>
-                            <span class="rating"> {{this.CourStar}}/5 </span>
-                            {{#starPrint this.CourStar}}
-                            {{result}}
-                            {{/starPrint}}
-                            <span class="numberRating">({{this.CourNumberRating}})</span>
+                            {{else}}
+                            <div class="price">${{formatPrice course.Price}}</div>
+                            {{/if}}
                         </div>
-                        <div class="course-author">
-                            <div class="ca-pic set-bg" data-setbg="{{this.CourAuImage}}"></div>
-                            <p>{{this.CourAuName}},{{this.CourAuRole}}</p>
+                        <div class="course-info">
+                            <div class="course-text">
+                                <h5>{{course.Name}}</h5>
+                                <div class="shortDes" data-des="{{ShortDes}}"></div>
+                                <div class="students">
+                                    {{course.TotalStudent}} students
+                                </div>
+                                <div class="d-flex">
+                                    <span class="rating">
+                                        {{#if course.AverageRate}}{{course.AverageRate}}/5{{else}}0/5{{/if}}</span>
+                                    <span class="rate" data-rate="{{AverageRate}}"></span>
+                                    <span class="numberRating">({{TotalRate}})</span>
+                                </div>
+
+                            </div>
+                            <div class="course-author">
+                                <div class="ca-pic set-bg" data-setbg="/public/img/{{course.authorImage}}"></div>
+                                <p>{{this.authorName}}</p>
+                            </div>
+
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             {{/each}}
         </div>

@@ -201,34 +201,39 @@ router.get(
   }
 );
 
-router.post("/account/edit/upload/:username", auth, isAdmin, async (req, res) => {
-  const username = req.params.username;
-  const dir = "./public/img/account/" + username;
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
-  let fileName = null;
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, dir);
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname);
-      fileName = file.originalname;
-    },
-  });
-  const upload = multer({ storage });
-  upload.single("fuMain")(req, res, async function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      let user = await accountModel.singleByUserNameWithoutProvider(username);
-      user.Image = "account/" + username + "/" + fileName;
-      await accountModel.patch(user);
-      res.redirect("../" + username);
+router.post(
+  "/account/edit/upload/:username",
+  auth,
+  isAdmin,
+  async (req, res) => {
+    const username = req.params.username;
+    const dir = "./public/img/account/" + username;
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
     }
-  });
-});
+    let fileName = null;
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, dir);
+      },
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+        fileName = file.originalname;
+      },
+    });
+    const upload = multer({ storage });
+    upload.single("fuMain")(req, res, async function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        let user = await accountModel.singleByUserNameWithoutProvider(username);
+        user.Image = "account/" + username + "/" + fileName;
+        await accountModel.patch(user);
+        res.redirect("../" + username);
+      }
+    });
+  }
+);
 
 router.post("/account/edit/:user", auth, isAdmin, async function (req, res) {
   const account = await accountModel.singleByUserNameWithoutProvider(
@@ -245,6 +250,7 @@ router.post("/account/edit/:user", auth, isAdmin, async function (req, res) {
 
 router.post("/account/delete", auth, isAdmin, async function (req, res) {
   const username = req.body.username;
+  const courses = await courseModel.allWithUserName(username);
 
   await accountModel.delete(username);
   res.redirect("../account");
@@ -384,23 +390,21 @@ router.get("/category", auth, isAdmin, async (req, res) => {
     categories.push({
       ...category,
       img: category.Image != null,
-      notHasChild: category.SubCate.length <= 0
-      
-    })
-    for(const item of category.SubCate){
-      item.img=item.Image!=null;
-      const count=await categoryModel.countCourseById(item.Id);
-      item.courses=count.SL===0;
+      notHasChild: category.SubCate.length <= 0,
+    });
+    for (const item of category.SubCate) {
+      item.img = item.Image != null;
+      const count = await categoryModel.countCourseById(item.Id);
+      item.courses = count.SL === 0;
     }
   }
 
   res.render("viewAdmin/category/category", {
     categories,
     active,
-    layout: "admin"
-
+    layout: "admin",
   });
-})
+});
 
 router.get("/category/edit/is-available", async function (req, res) {
   const nameCategory = req.query.namecate;
@@ -412,60 +416,74 @@ router.get("/category/edit/is-available", async function (req, res) {
   res.json(false);
 });
 
-router.get("/category/edit/:categoryId", auth, isAdmin, async function (req, res) {
-  const active = getActive("category");;
-  const category = await categoryModel.singlebyId(req.params.categoryId);
-  category.img = category.Image !== null;
-  res.render("viewAdmin/category/category-edit", {
-    category,
-    active,
-    layout: "admin"
-  });
-})
-
-router.get("/category/edit/upload/:categoryId", auth, isAdmin, async (req, res) => {
-  const active = getActive("category");
-  const categories = res.locals.lcCategories;
-
-  const category = await categoryModel.singlebyId(req.params.categoryId)
-  res.render("viewAdmin/category/category-edit-avatar", {
-    category,
-    active,
-    layout: "admin"
-  });
-
-})
-
-router.post("/category/edit/upload/:categoryId", auth, isAdmin, async (req, res) => {
-  const category = await categoryModel.singlebyId(req.params.categoryId);
-  const categoryId = req.params.categoryId;
-  const dir = "./public/img/categories/" + categoryId;
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
+router.get(
+  "/category/edit/:categoryId",
+  auth,
+  isAdmin,
+  async function (req, res) {
+    const active = getActive("category");
+    const category = await categoryModel.singlebyId(req.params.categoryId);
+    category.img = category.Image !== null;
+    res.render("viewAdmin/category/category-edit", {
+      category,
+      active,
+      layout: "admin",
+    });
   }
-  let fileName = null;
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, dir);
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname);
-      fileName = file.originalname;
-    },
-  });
-  
-  const upload = multer({ storage });
-  upload.single("fuMain")(req, res, async function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      let cate = await categoryModel.singlebyId(categoryId);
-      cate.Image = fileName;
-      await categoryModel.patch(cate);
-      res.redirect("../" + categoryId);
+);
+
+router.get(
+  "/category/edit/upload/:categoryId",
+  auth,
+  isAdmin,
+  async (req, res) => {
+    const active = getActive("category");
+    const categories = res.locals.lcCategories;
+
+    const category = await categoryModel.singlebyId(req.params.categoryId);
+    res.render("viewAdmin/category/category-edit-avatar", {
+      category,
+      active,
+      layout: "admin",
+    });
+  }
+);
+
+router.post(
+  "/category/edit/upload/:categoryId",
+  auth,
+  isAdmin,
+  async (req, res) => {
+    const category = await categoryModel.singlebyId(req.params.categoryId);
+    const categoryId = req.params.categoryId;
+    const dir = "./public/img/categories/" + categoryId;
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
     }
-  });
-})
+    let fileName = null;
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, dir);
+      },
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+        fileName = file.originalname;
+      },
+    });
+
+    const upload = multer({ storage });
+    upload.single("fuMain")(req, res, async function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        let cate = await categoryModel.singlebyId(categoryId);
+        cate.Image = fileName;
+        await categoryModel.patch(cate);
+        res.redirect("../" + categoryId);
+      }
+    });
+  }
+);
 
 router.post("/category/edit/:categoryId", auth, isAdmin, async (req, res) => {
   const category = await categoryModel.singlebyId(req.params.categoryId);
@@ -473,9 +491,7 @@ router.post("/category/edit/:categoryId", auth, isAdmin, async (req, res) => {
 
   await categoryModel.patch(category);
   res.redirect("../");
-})
-
-
+});
 
 router.post("/category/delete", auth, isAdmin, async (req, res) => {
   const category = await categoryModel.countByCategory(req.body.Id);
@@ -483,8 +499,8 @@ router.post("/category/delete", auth, isAdmin, async (req, res) => {
     await categoryModel.delete(category.Id);
   }
 
-  res.redirect('/admin/category')
-})
+  res.redirect("/admin/category");
+});
 
 router.get("/category/add", auth, isAdmin, async (req, res) => {
   const active = getActive("category");
@@ -492,7 +508,7 @@ router.get("/category/add", auth, isAdmin, async (req, res) => {
     layout: "admin.hbs",
     active,
   });
-})
+});
 
 router.get("/category/is-available", async function (req, res) {
   const nameCategory = req.query.namecate;
@@ -504,14 +520,13 @@ router.get("/category/is-available", async function (req, res) {
   res.json(false);
 });
 
-
 router.post("/category/add", auth, isAdmin, async (req, res) => {
   const nameCategory = {
-    Name: req.body.nameCategory
+    Name: req.body.nameCategory,
   };
   await categoryModel.add(nameCategory);
   res.redirect("../category/add");
-})
+});
 
 router.get("/category/:categoryId/additem", auth, isAdmin, async (req, res) => {
   const active = getActive("category");
@@ -520,112 +535,148 @@ router.get("/category/:categoryId/additem", auth, isAdmin, async (req, res) => {
     categoryId: req.params.categoryId,
     active,
   });
-})
+});
 
-router.get("/category/:categoryId/is-available", auth, isAdmin, async function (req, res) {
-  const nameCategoryItem = req.query.namecateitem;
-  const categoryItem = await categoryModel.singleByName(nameCategoryItem);
-  if (categoryItem === null) {
-    return res.json(true);
-  }
-
-  res.json(false);
-})
-
-router.post("/category/:categoryId/additem", auth, isAdmin, async (req, res) => {
-  const nameCategoryItem = {
-    Name: req.body.nameCategoryItem,
-    ManagementId: req.body.categoryId
-  };
-  await categoryModel.add(nameCategoryItem);
-  res.redirect("/admin/category");
-})
-
-router.get("/category/:ManagementId/is-available", auth, isAdmin, async function (req, res) {
-  const nameCategoryItem = req.query.namecateitem;
-  const categoryItem = await categoryModel.singleByName(nameCategoryItem);
-  if (categoryItem === null) {
-    return res.json(true);
-  }
-
-  res.json(false);
-})
-
-router.get("/category/:ManagementId/edit/:categoryId", auth, isAdmin, async (req, res) => {
-  const active = getActive("category");
-
-  const category = await categoryModel.singlebyId(req.params.categoryId);
-  category.img=category.Image!==null;
-  res.render("viewAdmin/category/category_item_edit", {
-    category,
-    active,
-    layout: "admin"
-
-  });
-})
-
-
-router.get("/category/:ManagementId/edit/upload/:categoryId", auth, isAdmin, async (req, res) => {
-  const active = getActive("category");
-
-  const category = await categoryModel.singlebyId(req.params.categoryId)
-  res.render("viewAdmin/category/category_item_edit_avatar", {
-    category,
-    active,
-    layout: "admin"
-  });
-})
-
-router.post("/category/:ManagementId/edit/upload/:categoryId",auth,isAdmin,async(req,res)=>{
-  const category = await categoryModel.singlebyId(req.params.categoryId);
-
-  const categoryId = req.params.categoryId;
-  const dir = "./public/img/categories/" + categoryId;
-  if (!fs.existsSync(dir)) {
-   fs.mkdirSync(dir);
-  }
-
-  let fileName = null;
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, dir);
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname);
-      fileName = file.originalname;
-    },
-  });
-  console.log(fileName);  
-  const upload = multer({ storage });
-  upload.single("fuMain")(req, res, async function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      let cateitem = await categoryModel.singlebyId(categoryId);
-      cateitem.Image = fileName;
-      await categoryModel.patch(cateitem);
-      res.redirect("../" + categoryId);
+router.get(
+  "/category/:categoryId/is-available",
+  auth,
+  isAdmin,
+  async function (req, res) {
+    const nameCategoryItem = req.query.namecateitem;
+    const categoryItem = await categoryModel.singleByName(nameCategoryItem);
+    if (categoryItem === null) {
+      return res.json(true);
     }
-  });
-})
 
-
-
-router.post("/category/:ManagementId/edit/:categoryId",auth,isAdmin,async(req,res)=>{
-  const category = await categoryModel.singlebyId(req.params.categoryId);
-  category.Name = req.body.nameCategoryItem;
-  await categoryModel.patch(category);
-  res.redirect("../../");
-})
-
-router.post("/category/:ManagementId/delete",auth,isAdmin,async(req,res)=>{
-  const category = await categoryModel.countCourseById(req.body.Id);
-  if (category==0) {
-    await categoryModel.delete(category.Id);
+    res.json(false);
   }
+);
 
-  res.redirect('/admin/category')
-})
+router.post(
+  "/category/:categoryId/additem",
+  auth,
+  isAdmin,
+  async (req, res) => {
+    const nameCategoryItem = {
+      Name: req.body.nameCategoryItem,
+      ManagementId: req.body.categoryId,
+    };
+    await categoryModel.add(nameCategoryItem);
+    res.redirect("/admin/category");
+  }
+);
+
+router.get(
+  "/category/:ManagementId/is-available",
+  auth,
+  isAdmin,
+  async function (req, res) {
+    const nameCategoryItem = req.query.namecateitem;
+    const categoryItem = await categoryModel.singleByName(nameCategoryItem);
+    if (categoryItem === null) {
+      return res.json(true);
+    }
+
+    res.json(false);
+  }
+);
+
+router.get(
+  "/category/:ManagementId/edit/:categoryId",
+  auth,
+  isAdmin,
+  async (req, res) => {
+    const active = getActive("category");
+
+    const category = await categoryModel.singlebyId(req.params.categoryId);
+    category.img = category.Image !== null;
+    res.render("viewAdmin/category/category_item_edit", {
+      category,
+      active,
+      layout: "admin",
+    });
+  }
+);
+
+router.get(
+  "/category/:ManagementId/edit/upload/:categoryId",
+  auth,
+  isAdmin,
+  async (req, res) => {
+    const active = getActive("category");
+
+    const category = await categoryModel.singlebyId(req.params.categoryId);
+    res.render("viewAdmin/category/category_item_edit_avatar", {
+      category,
+      active,
+      layout: "admin",
+    });
+  }
+);
+
+router.post(
+  "/category/:ManagementId/edit/upload/:categoryId",
+  auth,
+  isAdmin,
+  async (req, res) => {
+    const category = await categoryModel.singlebyId(req.params.categoryId);
+
+    const categoryId = req.params.categoryId;
+    const dir = "./public/img/categories/" + categoryId;
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
+    }
+
+    let fileName = null;
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, dir);
+      },
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+        fileName = file.originalname;
+      },
+    });
+    console.log(fileName);
+    const upload = multer({ storage });
+    upload.single("fuMain")(req, res, async function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        let cateitem = await categoryModel.singlebyId(categoryId);
+        cateitem.Image = fileName;
+        await categoryModel.patch(cateitem);
+        res.redirect("../" + categoryId);
+      }
+    });
+  }
+);
+
+router.post(
+  "/category/:ManagementId/edit/:categoryId",
+  auth,
+  isAdmin,
+  async (req, res) => {
+    const category = await categoryModel.singlebyId(req.params.categoryId);
+    category.Name = req.body.nameCategoryItem;
+    await categoryModel.patch(category);
+    res.redirect("../../");
+  }
+);
+
+router.post(
+  "/category/:ManagementId/delete",
+  auth,
+  isAdmin,
+  async (req, res) => {
+    const category = await categoryModel.countCourseById(req.body.Id);
+    if (category == 0) {
+      await categoryModel.delete(category.Id);
+    }
+
+    res.redirect("/admin/category");
+  }
+);
 
 const getActive = (name) => {
   let active = {
@@ -643,7 +694,6 @@ const getActive = (name) => {
     active.dashboardWrapper = true;
   return active;
 };
-
 
 function isAdmin(req, res, next) {
   if (req.session.authUser.RoleId != 1) {

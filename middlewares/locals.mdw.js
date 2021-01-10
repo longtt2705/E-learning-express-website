@@ -1,13 +1,26 @@
 const categoryModel = require("../models/category.model");
+const cartModel = require("../models/cart.model");
+const courseModel = require("../models/course.model");
+const orderModel = require("../models/order.model");
 
 module.exports = (app) => {
   app.use(async function (req, res, next) {
     if (typeof req.session.isAuth === "undefined") {
       req.session.isAuth = false;
     }
+    if (typeof req.session.cart === "undefined") req.session.cart = [];
 
     res.locals.isAuth = req.session.isAuth;
     res.locals.authUser = req.session.authUser;
+    res.locals.cartSummary = cartModel.getNumberOfItems(req.session.cart);
+    res.locals.mostViewCourses = await courseModel.getCoursesWithMostView();
+    res.locals.newestCourses = await courseModel.getNewestCourses();
+    const courseIds = await courseModel.getTopCoursesWithMostBuyLastWeek();
+    const outstandingCourses = [];
+    for (const course of courseIds) {
+      outstandingCourses.push(await courseModel.singleByIdWithInfo(course.Id));
+    }
+    res.locals.outstandingCourses = outstandingCourses;
     next();
   });
 

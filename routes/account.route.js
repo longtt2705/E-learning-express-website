@@ -100,6 +100,7 @@ router.post("/signup", async function (req, res) {
 router.post("/logout", (req, res) => {
   req.session.isAuth = false;
   req.session.authUser = null;
+  req.session.cart = [];
   res.redirect(req.headers.referer);
 });
 

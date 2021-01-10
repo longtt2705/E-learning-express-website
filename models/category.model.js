@@ -12,9 +12,7 @@ module.exports = {
 
   async singlebyId(Id) {
     let rows;
-    rows = await db.load(
-      `select * from ${TBL_CATEGORIES} where Id = ${Id}`
-    );
+    rows = await db.load(`select * from ${TBL_CATEGORIES} where Id = ${Id}`);
     if (rows.length === 0) return null;
 
     return rows[0];
@@ -37,20 +35,18 @@ module.exports = {
       where categories.ManagementId=${Id};`
     );
     if (rows.length === 0) {
-      rows = await load(`select * from categories where Id=${Id}`)
+      rows = await load(`select * from categories where Id=${Id}`);
     }
     return rows[0];
   },
 
-  async countCourseById(Id){
+  async countCourseById(Id) {
     let row;
-    rows=await db.load(
+    rows = await db.load(
       `select count(*)as SL from courses where CategoryId=${Id}`
-    )
+    );
     return rows[0];
-
   },
-
 
   delete(Id) {
     const condition = { Id: Id };

@@ -6,7 +6,10 @@ const courseContentDetailModel = require("../models/course-content-detail.model"
 const config = require("../config/default.json");
 const ratingModel = require("../models/rating.model");
 const accountModel = require("../models/account.model");
+const wishlistsModel = require("../models/wishlist.model");
 const { async } = require("crypto-random-string");
+const cartModel = require("../models/cart.model");
+const orderModel = require("../models/order.model");
 
 router.get("/", async (req, res) => {
   let page = req.query.page || 1;
@@ -108,16 +111,17 @@ router.get("/favicon.ico", (req, res) => {
 
 router.get("/:courseId", async (req, res) => {
   const courseId = req.params.courseId;
+  const username = req.session.authUser ? req.session.authUser.Username : null;
   const course = await courseModel.singleByIdWithInfo(courseId);
   course.AverageRate = course.AverageRate ? course.AverageRate : 0;
   const stars = {};
-  const starsIndex = ["one", "two", "three", "four", "five"];
-  for (let i = 1; i <= 5; i++) {
+  const starsIndex = ["zero", "one", "two", "three", "four", "five"];
+  for (let i = 0; i <= 5; i++) {
     if (course.TotalRate > 0) {
       const result = await ratingModel.countRatingByStars(courseId, i);
-      stars[starsIndex[i - 1]] = (result / course.TotalRate) * 100;
+      stars[starsIndex[i]] = (result / course.TotalRate) * 100;
     } else {
-      stars[starsIndex[i - 1]] = 0;
+      stars[starsIndex[i]] = 0;
     }
   }
 
@@ -131,13 +135,57 @@ router.get("/:courseId", async (req, res) => {
     );
   }
 
+  let ifBought = null;
+  if (req.session.authUser && req.session.authUser.RoleId === 2) {
+    ifBought = await orderModel.getCourseBoughtByUsername(course.Id, username);
+    ifBought = ifBought ? ifBought.length === 1 : false;
+  }
+
   const ratings = await ratingModel.allByCourseIdWithInfo(courseId);
+  const wishlist = await wishlistsModel.findIdByCourseid(courseId);
+
+  let hasRated = false;
+  for (let i = 0; i < ratings.length; i++) {
+    if (ratings[i].Username === username) {
+      hasRated = true;
+      [ratings[0], ratings[i]] = [ratings[i], ratings[0]];
+      break;
+    }
+  }
+
+  await courseModel.patch({
+    Id: course.Id,
+    name: course.Name,
+    price: course.Price,
+    CategoryId: course.CategoryId,
+    ShortDes: course.ShortDes,
+    Image: course.Image,
+    StatusId: course.StatusId,
+    UpdateDate: course.UpdateDate,
+    TotalView: +course.TotalView + 1,
+    TotalStudent: course.TotalStudent,
+    Author: course.Author,
+    DiscountPrice: course.DiscountPrice,
+    DetailDes: course.DetailDes,
+  });
+
+  const topCourses = await courseModel.topCourseInSameCategory(
+    course.Id,
+    course.CategoryId
+  );
   res.render("viewCourse/detail", {
     course,
     stars,
     chapters,
     ratings,
     account,
+    wishlist,
+    isWishlistEmpty: wishlist === undefined,
+    nonWishlistEmpty: wishlist !== undefined,
+    InCart: cartModel.ifInCart(req.session.cart, { id: course.Id }),
+    IfBought: ifBought,
+    hasRated,
+    TopCourses: topCourses,
   });
 });
 
