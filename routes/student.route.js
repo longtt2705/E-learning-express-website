@@ -14,6 +14,7 @@ const courseProgressDetailModel = require("../models/course-progress-detail.mode
 const accountModel = require("../models/account.model");
 const ratingModel = require("../models/rating.model");
 const wishlistsModel = require("../models/wishlist.model");
+const config = require("../config/default.json");
 const router = express.Router();
 
 router.get("/course/favicon.ico", (req, res) => {
@@ -192,7 +193,60 @@ router.get("/cart", auth, isStudent, async (req, res) => {
   });
 });
 
-router.get("student/my-learning", auth, isStudent, (req, res) => {});
+router.get("/my-learning", auth, isStudent, async (req, res) => {
+  const username = req.session.authUser.Username;
+
+  let page = req.query.page || 1;
+  const total = await orderModel.countCoursesBoughtByUsername(username);
+  const totalPage = Math.ceil(total / config.pagination.limit);
+
+  if (page < 1) page = 1;
+  if (totalPage > 0 && page > totalPage) page = totalPage;
+
+  const offset = (page - 1) * config.pagination.limit;
+
+  const page_items = [];
+
+  for (let i = 1; i <= totalPage; i++) {
+    const page_item = {
+      value: i,
+      isActive: page == i,
+    };
+
+    page_items.push(page_item);
+  }
+  const courseIds = await orderModel.getCoursesBoughtByUsernameByPage(
+    username,
+    offset
+  );
+  const courseList = [];
+  for (const courseId of courseIds) {
+    const course = await courseModel.singleByIdWithInfo(courseId.id);
+    const progress = await courseProgressModel.singleByUsernameAndCourse(
+      username,
+      course.Id
+    );
+
+    const allLessons = await courseContentDetailModel.countAllByCourseId(
+      course.Id
+    );
+    const learnedLessons = await courseProgressDetailModel.countAllByProgressId(
+      progress.Id
+    );
+    courseList.push({
+      ...course,
+      progress: (learnedLessons / allLessons) * 100,
+    });
+  }
+  res.render("viewStudent/my-learning", {
+    items: courseList,
+    page_items,
+    canGoPrev: page > 1,
+    canGoNext: page < totalPage,
+    nextPage: +page + 1,
+    prevPage: page - 1,
+  });
+});
 
 router.post("/cart/add", auth, isStudent, function (req, res) {
   const item = {

@@ -23,29 +23,18 @@
         <div class="col-sm-1"></div>
         <div class="categories col-sm-6 mt-4 row">
             <div class="d-flex flex-column col-sm">
-                <h4>Online Certificates</h4>
-                <a href="/">Software Engineer</a>
-                <a href="/">Design &amp; Creatives</a>
-                <a href="/">Architecture</a>
-                <a href="/">Data science</a>
-                <a href="/">Machine Learning</a>
-                <a href="/">Finance</a>
+                <h4>Newest Courses</h4>
+                {{#each newestCourses as |course|}}
+                <a href="/course/{{Id}}">{{Name}}</a>
+                {{/each}}
             </div>
             <div class="d-flex flex-column col-sm">
-                <h4>Top Online Courses</h4>
-                <a href="/">Master Python in 5 mins</a>
-                <a href="/">Deep Learning is easy</a>
-                <a href="/">Android for beginners</a>
-                <a href="/">Becoming a bussiness analysis</a>
-                <a href="/">Web programming advanced</a>
-                <a href="/">Basic Flutter for beginners</a>
-                <a href="/">MS Office Excel with Bill Gates</a>
+                <h4>Most Views Courses</h4>
+                {{#each mostViewCourses as |course|}}
+                <a href="/course/{{Id}}">{{Name}}</a>
+                {{/each}}
             </div>
-            <div class="d-flex flex-column col-sm-2">
-                <h4>Support</h4>
-                <a href="/">Learners</a>
-                <a href="/">Partners</a>
-            </div>
+
         </div>
     </div>
     <div class="copyright">

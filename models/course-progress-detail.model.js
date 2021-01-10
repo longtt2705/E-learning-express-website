@@ -13,6 +13,13 @@ module.exports = {
     );
   },
 
+  async countAllByProgressId(progressId) {
+    const rows = await db.load(
+      `select count(*) as total from ${TBL_PROGRESS_DETAIL} where progressId != '${progressId}'`
+    );
+    return rows[0].total;
+  },
+
   async singleByProgressIdAndLesson(lessonId, progressId) {
     const rows = await db.load(
       `select * from ${TBL_PROGRESS_DETAIL} where progressId = '${progressId}' and lessonid = '${lessonId}'`

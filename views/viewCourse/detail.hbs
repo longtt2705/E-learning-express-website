@@ -20,8 +20,9 @@
     });
 
     $(".rate").each(function (e) {
+
         $(this).rateYo({
-            rating: $(this).data("rate"),
+            rating: $(this).data("rate") ? $(this).data("rate") : 0,
             readOnly: true,
             starWidth: "16px"
         });
@@ -45,7 +46,6 @@
             $('#counter').text(rating);
         },
         onSet: function (rating, rateYoInstance) {
-
             $("#ratingValue").val(rating);
         },
         rating: 5,
@@ -96,8 +96,6 @@
                                 UpdateDate}}</p>
 
                         </div>
-
-
                         <div class="mb-1">
                             {{/with}}
                             {{#if isWishlistEmpty}}
@@ -117,9 +115,6 @@
                             {{/with}}
 
                             {{/if}}
-
-
-
                         </div>
                     </div>
                 </div>
@@ -420,5 +415,52 @@
         </div>
     </div>
 </div>
-
+<div class="divider-custom">
+    <div class="divider-custom-line"></div>
+    <div class="divider-custom-icon"><i class="fas fa-crown" style="color: yellow;"></i></div>
+    <div class="divider-custom-line"></div>
+</div>
+<h2 class="text-center">Top 5 most bought in {{CateName}}</h2>
 {{/with}}
+
+<section class="content container mt-lg-5">
+    <!-- Default box -->
+    <div>
+        {{#each TopCourses as |course|}}
+        {{#with course}}
+        <div class="row mt-lg-5">
+            <a href="/course/{{Id}}" class="col-sm-3">
+                <img src="/public/courses/{{Image}}" alt="courseImage" style="border-radius: 5%;">
+            </a>
+            <div class="col-sm-7 d-flex flex-column">
+                <h4 class="font-weight-bold">{{Name}}</h4>
+                <h5><i class="fas fa-calendar-alt"></i>&nbsp;{{CateName}}</h5>
+                <h6 class="text-gray"><i class="fas fa-user"></i>&nbsp;{{authorName}}</h6>
+                <div class="shortDes" data-des="{{ShortDes}}"></div>
+                <div class="d-flex m-0 p-0">
+                    <h6 style="color: orange;">{{#if AverageRate}}
+                        {{AverageRate}}
+                        {{else}}
+                        0
+                        {{/if}} </h6>
+                    <span class="rate" data-rate="{{AverageRate}}"></span>
+                    <h6>({{TotalRate}})</h6>
+                </div>
+                <span>Last update: {{formatDate UpdateDate}}</span>
+            </div>
+            <div class="col-sm-2">
+                {{#if DiscountPrice}}
+                <h5 class="font-weight-bold">${{formatPrice DiscountPrice}}</h5>
+                <h5 class="font-weight-bold text-gray" style="text-decoration: line-through;">${{formatPrice Price}}
+                </h5>
+                {{else}}
+                <h5 class="font-weight-bold">${{formatPrice Price}}</h5>
+                {{/if}}
+            </div>
+        </div>
+        <hr>
+        {{/with}}
+        {{/each}}
+    </div>
+
+</section>

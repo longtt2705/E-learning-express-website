@@ -24,7 +24,8 @@
                                 data-target="/course/" target="_blank" href="/course">{{item.Name}}</a>
                             <ul class="dropdown-menu">
                                 {{#each item.SubCate as |cate|}}
-                                <li><a class="dropdown-item font-weight-bold" href="/course">{{cate.Name}}</a>
+                                <li><a class="dropdown-item font-weight-bold"
+                                        href="/course/search?search=cat.name&sort=ASC&order=AverageRate&searchContent={{cate.Name}}">{{cate.Name}}</a>
                                 </li>
                                 {{/each}}
                             </ul>
@@ -36,13 +37,22 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <form class="form-inline">
+                    <form class="form-inline" action="/course/search/" method="GET">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-search"></i></span>
                             </div>
                             <input class="form-control mr-sm-2 search-bar" type="search"
-                                placeholder=" Search courses..." aria-label="Search">
+                                placeholder=" Search courses..." aria-label="Search" name="searchContent">
+                            <select class="select2" style="width: 100%;" name="search" id="search" hidden>
+                                <option value="Or" selected>Course Name or Category</option>
+                            </select>
+                            <select class="select2" style="width: 100%;" name="sort" id="sort" hidden>
+                                <option value="ASC" selected>Ascending</option>
+                            </select>
+                            <select class="select2" style="width: 100%;" name="order" id="order" hidden>
+                                <option value="AverageRate" selected>Rating</option>
+                            </select>
                         </div>
                     </form>
                 </li>

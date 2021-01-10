@@ -168,6 +168,11 @@ router.get("/:courseId", async (req, res) => {
     DiscountPrice: course.DiscountPrice,
     DetailDes: course.DetailDes,
   });
+
+  const topCourses = await courseModel.topCourseInSameCategory(
+    course.Id,
+    course.CategoryId
+  );
   res.render("viewCourse/detail", {
     course,
     stars,
@@ -180,6 +185,7 @@ router.get("/:courseId", async (req, res) => {
     InCart: cartModel.ifInCart(req.session.cart, { id: course.Id }),
     IfBought: ifBought,
     hasRated,
+    TopCourses: topCourses,
   });
 });
 

@@ -1,78 +1,87 @@
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: none;
+  color: black;
+}
+
 .cards-group {
-    margin-top: 100px;
+  margin-top: 100px;
 }
 
 .cards-group .card {
-    margin: 20px;
+  margin: 20px;
 }
 
 .cards-group img {
-    
-    width: 100%;
-    padding: 20px;
+  width: 100%;
+  padding: 20px;
 }
 
 .cards-group .card {
-    border-width: 0px;
-    border-radius: 5%;
-    box-sizing: border-box;
+  border-width: 0px;
+  border-radius: 5%;
+  box-sizing: border-box;
 }
 
 .catgories .card-img-top {
-    padding: 0;
+  padding: 0;
 }
 
 .catgories .card {
-    padding: 0;
+  padding: 0;
 }
 
 .banner img {
-    width: 100%;
-    position: relative;
+  width: 100%;
+  position: relative;
 }
 
 .banner .caption {
-    position: absolute;
-    width: 50%;
-    top: 50%;
-    left: 10%;
-    transform: translate(0%, -50%);
+  position: absolute;
+  width: 50%;
+  top: 50%;
+  left: 10%;
+  transform: translate(0%, -50%);
 }
 
 .banner .caption #join-button {
-    margin-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
-    color: mintcream;
-    font-weight: bold;
+  margin-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: mintcream;
+  font-weight: bold;
 }
 
 .banner-outcome {
-    position: relative;
+  position: relative;
 }
 
 .banner-outcome img {
-    margin-top: 100px;
-    width: 100%;
+  margin-top: 100px;
+  width: 100%;
 }
 
 .banner-outcome .caption {
-    position: absolute;
-    top: 50%;
-    right: 10%;
-    font-size: 16pt;
-    transform: translate(0%, -50%);
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  font-size: 16pt;
+  transform: translate(0%, -50%);
 }
 
 /* Change navbar styling on small viewports */
 @media (max-width: 1200px) {
-    .banner {
-        display: none;
-    }
+  .banner {
+    display: none;
+  }
 
-    .banner-outcome {
-        display: none;
-    }
+  .banner-outcome {
+    display: none;
+  }
 }
 
 /*------------------
@@ -80,99 +89,102 @@
 ---------------------*/
 
 .course-warps {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-wrap: wrap;
-    height: 97vh;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 97vh;
 }
 
 .course-items {
-    
-    box-shadow: 0px 0px 200px ;
-    border-radius: 10px;
-    
+  box-shadow: 0px 0px 200px;
+  border-radius: 10px;
 }
 
 .course-items .course-thumb {
-    height: 270px;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
+  height: 270px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  position: relative;
 }
 
-.course-items .course-thumb .price {
-	font-size: 14px;
-	color: #fff;
-	font-weight: 600;
-	background: #d82a4e;
-	display: inline-block;
-	padding: 13px 19px;
-	margin: 14px;
+.price {
+  font-size: 14px;
+  color: #fff;
+  font-weight: 600;
+  background: #d82a4e;
+  display: inline-block;
+  padding: 13px 19px;
+  margin: 14px;
+  position: absolute;
+  top: 5px;
+  left: 10px;
 }
 
 .course-items .course-info {
-    background: #edf4f6;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+  background: #edf4f6;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .course-items .course-info .course-text {
-	padding: 45px 33px 25px;
+  padding: 45px 33px 25px;
 }
 
 .course-items .course-info .course-text h5 {
-	margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .course-items .course-info .course-text .students {
-	font-size: 20px;
-	font-weight: 600;
-	color: #d82a4e;
+  font-size: 20px;
+  font-weight: 600;
+  color: #d82a4e;
 }
-.course-items .course-info .course-text .rating{
-	font-size: 15px;
-	font-weight: 700;
-	margin-right: 5px;
-	color: orange;
+.course-items .course-info .course-text .rating {
+  font-size: 15px;
+  font-weight: 700;
+  margin-right: 5px;
+  color: orange;
 }
-.course-items .course-info .course-text .numberRating{
-	font-size: 15px;
-	font-weight: 400;
-	margin-left: 5px;
+.course-items .course-info .course-text .numberRating {
+  font-size: 15px;
+  font-weight: 400;
+  margin-left: 5px;
 }
 .course-items .course-info .course-text .checked {
-	font-size: 15px;
-	font-weight: 700;
-	color: orange;
+  font-size: 15px;
+  font-weight: 700;
+  color: orange;
 }
 .course-items .course-info .course-btn {
-	border-top: 1px solid #d4dee1;
-	padding: 14px 33px;
-	overflow: hidden;
+  border-top: 1px solid #d4dee1;
+  padding: 14px 33px;
+  overflow: hidden;
 }
-
-
-
-
 
 .course-items:hover {
-	color:  #d82a4e;
-	background-color: #d82a4e;
+  color: #d82a4e;
+  background-color: #d82a4e;
 }
 
-.course-items:hover .course-info{
-	color:  #d82a4e;
-	background-color: #d82a4e;
+.course-items:hover .course-info {
+  color: #d82a4e;
+  background-color: #d82a4e;
 }
-.course-items:hover .course-info .course-text h5{
-	color: white;
+.course-items:hover .course-info .course-text h5 {
+  color: white;
 }
-.course-items:hover .course-info .course-text .students{
-	color: white;
+.course-items:hover .course-info .course-text .students {
+  color: white;
 }
-.course-items:hover .course-info .course-text .numberRating{
-	color: white;
+.course-items:hover .course-info .course-text .numberRating {
+  color: white;
 }
-.course-items:hover .course-info .course-text p{
-	color: white;
+.course-items:hover .course-info .course-text p {
+  color: white;
+}
+
+.course-image {
+  width: 100%;
+  height: 100%;
 }

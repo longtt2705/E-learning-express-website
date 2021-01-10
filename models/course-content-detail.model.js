@@ -1,6 +1,7 @@
 const db = require("../utils/database");
 const config = require("../config/default.json");
 const { singleById, singleByName } = require("./course.model");
+const { countAllByCourseId } = require("./course-content.model");
 const TBL_COURSECONTENTDETAIL = "contentdetails";
 
 module.exports = {
@@ -26,6 +27,13 @@ module.exports = {
   async countAllByChapterId(chapterId) {
     const rows = await db.load(
       `select count(*) as total from ${TBL_COURSECONTENTDETAIL} where contentid = '${chapterId}'`
+    );
+    return rows[0].total;
+  },
+
+  async countAllByCourseId(courseId) {
+    const rows = await db.load(
+      `select count(*) as total from courses c left join coursecontents cc on c.Id = cc.courseId join ${TBL_COURSECONTENTDETAIL} cd on cd.contentId = cc.Id where c.Id = '${courseId}'`
     );
     return rows[0].total;
   },
