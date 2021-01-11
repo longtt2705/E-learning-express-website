@@ -36,6 +36,11 @@
             }
         })
     });
+    $(".tag-data").each(function (e) {
+        const bestTag = $(this).data("best");
+        const newTag = $(this).data("new");
+        $(this).append(newTag).append(" ").append(bestTag);
+    });
     var getUrlParameter = function getUrlParameter(sParam) {
         var sPageURL = window.location.search.substring(1),
             sURLVariables = sPageURL.split('&'),
@@ -183,7 +188,12 @@
                         <h6 style="color: orange;">{{AverageRate}}</h6>
                         <span class="rate" data-rate="{{AverageRate}}"></span>
                         <h6>({{TotalRate}})</h6>
+                        <div class="tag-data ml-2" data-new="{{checkNewCourse course.Id ../newestCourses}}"
+                            data-best="{{checkBestSeller course.Id ../bestSellers}}">
+                        </div>
+
                     </div>
+                    <p class="m-0 p-0">{{TotalStudent}} Students</p>
                     <span>Last update: {{formatDate UpdateDate}}</span>
                 </div>
                 <div class="col-sm-2">

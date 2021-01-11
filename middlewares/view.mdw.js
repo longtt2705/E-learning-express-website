@@ -20,6 +20,19 @@ module.exports = (app) => {
         formatDate(date) {
           return moment(date, "YYYY-MM-DD hh:mm:ss").format("DD-MM-YYYY LTS");
         },
+
+        checkBestSeller(courseId, bestSellers) {
+          for (const course of bestSellers) {
+            if (course.Id === courseId)
+              return `<span class="badge badge-warning">Best Seller</span>`;
+          }
+        },
+        checkNewCourse(courseId, newCourses) {
+          for (const course of newCourses) {
+            if (course.Id === courseId)
+              return `<span class="badge badge-success">New</span>`;
+          }
+        },
         starPrint: function (value, option) {
           //In ngoi sao cua khoa hoc dua vao so diem danh gia
           var str = "";

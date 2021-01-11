@@ -100,6 +100,8 @@ $("#addNewChapter").on("click", function (e) {
       </div>
       <div class="card-body">
         <input class="video" id="video-${chapterId}-${lessonId}" type="file" class="file" data-preview-file-type="text" name="video-${chapterId}-${lessonId}"></input>
+        <input type="checkbox" id="previewable--${chapterId}-${lessonId}" name="isPreview-${chapterId}-${lessonId}" value="Bike">
+        <label for="previewable-${chapterId}-${lessonId}-">Previewable</label><br>
       </div>
     </div>
     `);

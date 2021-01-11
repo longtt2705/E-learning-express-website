@@ -190,4 +190,10 @@ module.exports = {
       `${selectField} where categoryId = '${categoryId}' and c.Id != '${courseId}' group by c.Id order by c.TotalStudent DESC limit ${limit}`
     );
   },
+
+  getCourseWithMostStudent(limit = 10) {
+    return db.load(
+      `select Id from ${TBL_COURSE} where TotalStudent > 0 order by TotalStudent DESC limit ${limit}`
+    );
+  },
 };

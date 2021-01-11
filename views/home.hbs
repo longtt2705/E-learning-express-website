@@ -39,7 +39,13 @@
             readOnly: true,
             starWidth: "18px"
         });
-    }) 
+    })
+
+    $(".tag-data").each(function (e) {
+        const bestTag = $(this).data("best");
+        const newTag = $(this).data("new");
+        $(this).append(newTag).append(" ").append(bestTag);
+    });
 </script>
 {{/section}}
 
@@ -137,6 +143,7 @@
                         <div class="course-info">
                             <div class="course-text">
                                 <h5>{{course.Name}}</h5>
+                                <h6 class="font-italic"><i class="fas fa-calendar-alt"></i>&nbsp;{{CateName}}</h6>
                                 <div class="shortDes" data-des="{{ShortDes}}"></div>
                                 <div class="students">
                                     {{course.TotalStudent}} students
@@ -146,6 +153,9 @@
                                         {{#if course.AverageRate}}{{course.AverageRate}}/5{{else}}0/5{{/if}}</span>
                                     <span class="rate" data-rate="{{AverageRate}}"></span>
                                     <span class="numberRating">({{TotalRate}})</span>
+                                </div>
+                                <div class="tag-data" data-new="{{checkNewCourse course.Id ../newestCourses}}"
+                                    data-best="{{checkBestSeller course.Id ../bestSellers}}">
                                 </div>
                             </div>
                             <div class="course-btn text-center">
@@ -203,6 +213,7 @@
                         <div class="course-info">
                             <div class="course-text">
                                 <h5>{{course.Name}}</h5>
+                                <h6 class="font-italic"><i class="fas fa-calendar-alt"></i>&nbsp;{{CateName}}</h6>
                                 <div class="shortDes" data-des="{{ShortDes}}"></div>
                                 <div class="students">
                                     {{course.TotalStudent}} students
@@ -213,7 +224,9 @@
                                     <span class="rate" data-rate="{{AverageRate}}"></span>
                                     <span class="numberRating">({{TotalRate}})</span>
                                 </div>
-
+                                <div class="tag-data" data-new="{{checkNewCourse course.Id ../newestCourses}}"
+                                    data-best="{{checkBestSeller course.Id ../bestSellers}}">
+                                </div>
                             </div>
                             <div class="course-author">
                                 <div class="ca-pic set-bg" data-setbg="/public/img/{{course.authorImage}}"></div>
@@ -243,15 +256,25 @@
         </div>
 
         <div class="row">
-            {{#each this.topic}}
+            {{#each this.outstandingCate}}
             <!-- categorie -->
             <div class="col-lg-4 col-md-6">
-                <div class="categorie-item">
-                    <div class="ci-thumb set-bg" data-setbg="{{this.TopicImage}}"></div>
-                    <div class="ci-text">
-                        <h5>{{this.TopicType}}</h5>
+                <a href="/course/search?search=cat.name&sort=ASC&order=AverageRate&searchContent={{this.Name}}">
+
+                    <div class="categorie-item">
+                        {{#if this.Image}}
+                        <img class="ci-thumb" src="/public/img/categories/{{this.Image}}" alt="categories" width="400px"
+                            height="163px">
+                        {{else}}
+                        <img class="ci-thumb" src="/public/img/categories/new/new_category_item.jpg" alt="avatar"
+                            width="400px" height="163px">
+                        {{/if}}
+                        <div class="ci-text">
+                            <h5>{{this.Name}}</h5>
+                        </div>
                     </div>
-                </div>
+
+                </a>
             </div>
             {{/each}}
         </div>
@@ -297,6 +320,7 @@
                         <div class="course-info">
                             <div class="course-text">
                                 <h5>{{course.Name}}</h5>
+                                <h6 class="font-italic"><i class="fas fa-calendar-alt"></i>&nbsp;{{CateName}}</h6>
                                 <div class="shortDes" data-des="{{ShortDes}}"></div>
                                 <div class="students">
                                     {{course.TotalStudent}} students
@@ -307,7 +331,9 @@
                                     <span class="rate" data-rate="{{AverageRate}}"></span>
                                     <span class="numberRating">({{TotalRate}})</span>
                                 </div>
-
+                                <div class="tag-data" data-new="{{checkNewCourse course.Id ../newestCourses}}"
+                                    data-best="{{checkBestSeller course.Id ../bestSellers}}">
+                                </div>
                             </div>
                             <div class="course-author">
                                 <div class="ca-pic set-bg" data-setbg="/public/img/{{course.authorImage}}"></div>

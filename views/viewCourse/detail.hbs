@@ -4,9 +4,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
 {{/section}}
 
 {{#section 'script'}}
+<script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <script>
     $(".show-more").click(function () {
@@ -53,6 +55,15 @@
 
     $("#postRating").on("click", function (e) {
         $("#frmRating").submit();
+    });
+
+    $(".modal-video").each(function (e) {
+        $(`#${$(this).attr("id")}`).on('hidden.bs.modal', function (e) {
+            const lessonId = $(this).attr("id").split("-").pop();
+
+            const video = videojs(`video-${lessonId}`);
+            video.pause();
+        })
     });
 </script>
 
@@ -359,7 +370,6 @@
                         </div>
                         <div class="show-more">(Show More)</div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -380,7 +390,26 @@
                     id="chapter-{{chapter.Id}}">
                     <ul class="list-group">
                         {{#each chapter.lessons as |lesson|}}
-                        <li class="list-group-item">{{lesson.Name}}</li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <h6>{{lesson.Name}}</h6>
+                            {{#if lesson.IsPreviewable}}
+                            <button type="button" class="btn btn-default m-0 p-0"
+                                data-target="#previewLesson-{{lesson.Id}}" data-toggle="modal">
+                                <i class="fas fa-play-circle"></i>
+                            </button>
+                            <div class="modal fade modal-video" id="previewLesson-{{lesson.Id}}" tabindex="-1"
+                                role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <video id="video-{{lesson.Id}}" class="video-js" controls preload="auto"
+                                            data-setup="{}" width="600px" height="400px">
+                                            <source src="/public/courses/{{lesson.Video}}" type="video/mp4" />
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/if}}
+                        </li>
                         {{/each}}
                     </ul>
                 </div>

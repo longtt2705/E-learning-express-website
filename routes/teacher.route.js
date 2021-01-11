@@ -175,82 +175,24 @@ router.get("/edit/:courseId/contents/favicon.ico", function (req, res) {
   res.json("remove favicon when get");
 });
 
-// router.post(
-//   "/edit/:courseId/contents/:chapterId",
-//   auth,
-//   isTeacher,
-//   async function (req, res) {
-//     const chapterId = req.params.chapterId;
-//     const courseId = req.params.courseId;
-//     const username = req.session.authUser.Username;
-//     const course = await courseModel.singleById(courseId);
-//     const chapter = await courseContentModel.singleById(chapterId, courseId);
-
-//     const dir =
-//       "./public/courses/" +
-//       username +
-//       "/" +
-//       course.Name +
-//       "/" +
-//       chapter.ChapterName;
-//     const storage = multer.diskStorage({
-//       destination: function (req, file, cb) {
-//         cb(null, dir);
-//       },
-//       filename: async function (req, file, cb) {
-//         fileName =
-//           file.fieldname.split("-").pop() +
-//           "." +
-//           file.originalname.split(".").pop();
-//         const lessonId = file.fieldname.split("-")[0];
-//         const lesson = await courseContentDetailModel.singleById(lessonId);
-
-//         lesson.Video = dir + "/" + fileName;
-//         await courseContentDetailModel.patch(lesson);
-
-//         cb(null, fileName);
-//       },
-//     });
-//     const upload = multer({ storage });
-//     upload.any()(req, res, async function (err) {
-//       if (err) {
-//         console.log(err);
-//       } else {
-//         chapter.ChapterName = req.body[chapterId];
-//         const newDir =
-//           "./public/courses/" +
-//           username +
-//           "/" +
-//           course.Name +
-//           "/" +
-//           chapter.ChapterName;
-//         fs.renameSync(dir, newDir, (err) => {
-//           if (err) console.log(err);
-//         });
-
-//         let i = 0;
-//         for (let lessonId in req.body) {
-//           if (i++ === 0) continue;
-
-//           const lesson = await courseContentDetailModel.singleById(lessonId);
-//           lesson.Name = req.body[lessonId];
-//           lesson.Video =
-//             username +
-//             "/" +
-//             course.Name +
-//             "/" +
-//             chapter.ChapterName +
-//             "/" +
-//             lesson.Video.split("/").pop();
-//           await courseContentDetailModel.patch(lesson);
-//         }
-
-//         await courseContentModel.patch(chapter);
-//         res.redirect(`/teacher/edit/${courseId}/contents/${chapterId}`);
-//       }
-//     });
-//   }
-// );
+router.post(
+  "/edit/:courseId/contents/:chapterId",
+  auth,
+  isTeacher,
+  async function (req, res) {
+    const chapterId = req.params.chapterId;
+    const courseId = req.params.courseId;
+    for (let field in req.body) {
+      if (field.startsWith("lesson")) {
+        const lessonId = field.split("-").pop();
+        const lesson = await courseContentDetailModel.singleById(lessonId);
+        lesson.IsPreviewable = req.body[lessonId] ? 1 : null;
+        await courseContentDetailModel.patch(lesson);
+      }
+    }
+    res.redirect(`/teacher/edit/${courseId}/contents/${chapterId}`);
+  }
+);
 
 router.get(
   "/edit/:courseId/contents/:chapterId",
@@ -606,8 +548,10 @@ router.post(
             chapter.ChapterName +
             "/" +
             fileName,
+          IsPreviewable: req.body.isPreview ? 1 : null,
         };
         await courseContentDetailModel.add(lesson);
+
         res.redirect("/teacher/edit/" + course.Id + "/contents/" + chapter.Id);
       }
     });
@@ -641,22 +585,25 @@ router.post("/:courseId/contents/add", auth, isTeacher, async (req, res) => {
       const { insertId } = await courseContentModel.add(chapter);
       for (let field in req.body) {
         if (field === "chapter") continue;
+        const [fieldType, id] = field.split("-");
+        if (fieldType === "lessonName") {
+          const lesson = {
+            ContentId: insertId,
+            Video:
+              course.Author +
+              "/" +
+              course.Name +
+              "/" +
+              req.body.chapter +
+              "/" +
+              req.body[field] +
+              ".mp4",
+            Name: req.body[field],
+            IsPreviewable: req.body["isPreview-" + id] ? 1 : null,
+          };
 
-        const lesson = {
-          ContentId: insertId,
-          Video:
-            course.Author +
-            "/" +
-            course.Name +
-            "/" +
-            req.body.chapter +
-            "/" +
-            req.body[field] +
-            ".mp4",
-          Name: req.body[field],
-        };
-
-        await courseContentDetailModel.add(lesson);
+          await courseContentDetailModel.add(lesson);
+        }
       }
       res.redirect("/teacher/" + course.Id + "/contents");
     }
@@ -680,7 +627,14 @@ async function insertCourseContent(fields, courseId, username, courseName) {
           chapterId: res.insertId,
           chapterName: fields[field],
         };
-      } else {
+      } else if (fieldType === "lessonName") {
+        const splitedId = field.split("-");
+        const splitedLength = splitedId.length;
+        const lessonId =
+          "-" +
+          splitedId[splitedLength - 2] +
+          "-" +
+          splitedId[splitedLength - 1];
         const courseContentDetail = {
           name: fields[field],
           contentId: chapterIds[chapterId].chapterId,
@@ -693,6 +647,7 @@ async function insertCourseContent(fields, courseId, username, courseName) {
             "/" +
             fields[field] +
             ".mp4",
+          IsPreviewable: fields["isPreview" + lessonId] ? 1 : null,
         };
         await courseContentDetailModel.add(courseContentDetail);
       }

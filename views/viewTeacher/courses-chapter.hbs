@@ -61,56 +61,63 @@
     </section>
 
     <!-- Main content -->
-
-    {{#with chapter}}
-    <section class="content container mt-lg-1">
-        <div class="card card-primary">
-            <div class="card-header" style="background-color: #d82a4e;">
-                <div class="row">
-                    <label class="col-sm-2" for="{{Id}}">Chapter</label>
-                    <input id="chapter" type="text" class="form-control mb-2 col-sm-10 lesson" name="{{Id}}"
-                        value="{{ChapterName}}" data-course="{{../courseId}}" data-id="{{Id}}" readonly>
+    <form action="" method="POST">
+        {{#with chapter}}
+        <section class="content container mt-lg-1">
+            <div class="card card-primary">
+                <div class="card-header" style="background-color: #d82a4e;">
+                    <div class="row">
+                        <label class="col-sm-2" for="{{Id}}">Chapter</label>
+                        <input id="chapter" type="text" class="form-control mb-2 col-sm-10 lesson"
+                            value="{{ChapterName}}" data-course="{{../courseId}}" data-id="{{Id}}" readonly>
+                    </div>
                 </div>
-            </div>
-            <div class="card-body">
-                {{#each lessons as |lesson|}}
-                {{#with lesson}}
-                <div id="{{Id}}" class="my-3 card shadow">
-                    <div class="card-header" style="background-color: #d82a4e; color: white;">
-                        <div class="row">
-                            <div class="col-sm-11 row">
-                                <label class="col-sm-2" for="{{Id}}">Lesson</label>
-                                <input id="{{Id}}" type="text" class="form-control mb-2 col-sm-10 lesson" name="{{Id}}"
-                                    value="{{Name}}" readonly>
-                            </div>
-                            <div class="col-sm-1">
-                                <button class="btn font-weight-bold delete" id="{{Id}}" aria-label="Close"
-                                    data-id="{{Id}}">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                <div class="card-body">
+                    {{#each lessons as |lesson|}}
+                    {{#with lesson}}
+                    <div id="{{Id}}" class="my-3 card shadow">
+                        <div class="card-header" style="background-color: #d82a4e; color: white;">
+                            <div class="row">
+                                <div class="col-sm-11 row">
+                                    <label class="col-sm-2" for="{{Id}}">Lesson</label>
+                                    <input id="{{Id}}" type="text" class="form-control mb-2 col-sm-10 lesson"
+                                        name="lesson-{{Id}}" value="{{Name}}" readonly>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button type="button" class="btn font-weight-bold delete" id="{{Id}}"
+                                        aria-label="Close" data-id="{{Id}}">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                        <div class="card-body">
+                            <video id="preview-{{Id}}" class="video-js mx-auto mb-3" controls preload="auto"
+                                data-setup="{}">
+                                <source src="/public/courses/{{Video}}" type="video/mp4" />
+                            </video>
+                            <a href="/teacher/edit/{{../../courseId}}/contents/{{../Id}}/upload/{{Id}}"
+                                class="btn btn-primary mx-auto d-block w-25">BROWSE</a>
+                            <input type="checkbox" id="previewable-{{Id}}" {{#if IsPreviewable}}checked {{/if}}
+                                name="{{Id}}" value="Bike">
+                            <label for="previewable-{{Id}}">Previewable</label><br>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <video id="preview-{{Id}}" class="video-js mx-auto mb-3" controls preload="auto"
-                            data-setup="{}">
-                            <source src="/public/courses/{{Video}}" type="video/mp4" />
-                        </video>
-                        <a href="/teacher/edit/{{../../courseId}}/contents/{{../Id}}/upload/{{Id}}"
-                            class="btn btn-primary mx-auto d-block w-25">BROWSE</a>
-                    </div>
+                    {{/with}}
+                    {{/each}}
                 </div>
-                {{/with}}
-                {{/each}}
+                <div class="ml-3">
+                    <a href="/teacher/edit/{{../courseId}}/contents/{{Id}}/add" class="form-group btn btn-danger">Add
+                        new
+                        lesson</a>
+                </div>
+
+                <button class=" form-group btn btn-danger mx-auto" type="submit">Save</button>
             </div>
-            <a href="/teacher/edit/{{../courseId}}/contents/{{Id}}/add" class=" form-group mx-auto btn btn-danger">Add
-                new
-                lesson</a>
 
-        </div>
+        </section>
 
-    </section>
-    {{/with}}
-
+        {{/with}}
+    </form>
     <!-- /.content -->
 </div>

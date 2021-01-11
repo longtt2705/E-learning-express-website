@@ -15,12 +15,20 @@ module.exports = (app) => {
     res.locals.cartSummary = cartModel.getNumberOfItems(req.session.cart);
     res.locals.mostViewCourses = await courseModel.getCoursesWithMostView();
     res.locals.newestCourses = await courseModel.getNewestCourses();
+    res.locals.bestSellers = await courseModel.getCourseWithMostStudent();
     const courseIds = await courseModel.getTopCoursesWithMostBuyLastWeek();
     const outstandingCourses = [];
     for (const course of courseIds) {
       outstandingCourses.push(await courseModel.singleByIdWithInfo(course.Id));
     }
     res.locals.outstandingCourses = outstandingCourses;
+
+    const cateIds = await categoryModel.getTopCategoriesWithMostBuyLastWeek();
+    const outstandingCate = [];
+    for (const cate of cateIds) {
+      outstandingCate.push(await categoryModel.singlebyId(cate.Id));
+    }
+    res.locals.outstandingCate = outstandingCate;
     next();
   });
 

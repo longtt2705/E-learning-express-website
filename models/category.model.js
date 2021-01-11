@@ -4,6 +4,7 @@ const { singleByName } = require("./course.model");
 const { load } = require("../utils/database");
 const { countAllByCourseId } = require("./course-content.model");
 const TBL_CATEGORIES = "categories";
+const moment = require("moment");
 
 module.exports = {
   all() {
@@ -60,5 +61,15 @@ module.exports = {
   patch(entity) {
     const condition = { Id: entity.Id };
     return db.patch(entity, condition, TBL_CATEGORIES);
+  },
+
+  getTopCategoriesWithMostBuyLastWeek(limit = 6) {
+    return db.load(
+      `select cate.Id, count(od.CourseId) as totalBought from categories cate left join courses c on cate.Id = c.CategoryId left join orderdetails od on od.courseId = c.id left join orders o on od.OrderId = o.Id where cate.managementId is not null and if(DateCreate is not null, datecreate >= '${moment()
+        .subtract(1, "weeks")
+        .format(
+          "YYYY-MM-DD HH:mm:ss"
+        )}', datecreate is null) group by cate.Id order by totalBought DESC limit ${limit}`
+    );
   },
 };
