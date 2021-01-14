@@ -233,6 +233,7 @@ router.get("/my-learning", auth, isStudent, async (req, res) => {
     const learnedLessons = await courseProgressDetailModel.countAllByProgressId(
       progress.Id
     );
+
     courseList.push({
       ...course,
       progress: (learnedLessons / allLessons) * 100,

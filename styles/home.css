@@ -163,17 +163,20 @@ a:hover {
 }
 
 .course-items:hover {
-  color: #d82a4e;
   background-color: #d82a4e;
 }
 
 .course-items:hover .course-info {
-  color: #d82a4e;
   background-color: #d82a4e;
 }
 .course-items:hover .course-info .course-text h5 {
   color: white;
 }
+
+.course-items:hover .course-info .course-text h6 {
+  color: white;
+}
+
 .course-items:hover .course-info .course-text .students {
   color: white;
 }
@@ -187,4 +190,16 @@ a:hover {
 .course-image {
   width: 100%;
   height: 100%;
+}
+
+.shortDes {
+  overflow: hidden; /*prevent text from being shown outside the border */
+  text-overflow: ellipsis;
+  height: 100px;
+}
+
+.course-name {
+  overflow: hidden; /*prevent text from being shown outside the border */
+  text-overflow: ellipsis;
+  height: 60px;
 }

@@ -15,7 +15,7 @@ module.exports = {
 
   async countAllByProgressId(progressId) {
     const rows = await db.load(
-      `select count(*) as total from ${TBL_PROGRESS_DETAIL} where progressId != '${progressId}'`
+      `select count(*) as total from ${TBL_PROGRESS_DETAIL} where progressId = '${progressId}'`
     );
     return rows[0].total;
   },
