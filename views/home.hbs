@@ -10,13 +10,7 @@
 
 {{#section 'script'}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
-<!-- jsDeliver -->
-<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
-<!-- cdnjs -->
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
-<script type="text/javascript"
-    src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
 <script>
     $(function () {
         $(window).on("scroll", function () {
@@ -56,14 +50,9 @@
         const newTag = $(this).data("new");
         $(this).append(newTag).append(" ").append(bestTag);
     });
-    $('.lazy').Lazy({
-        // your configuration goes here
-        scrollDirection: 'vertical',
-        effect: 'fadeIn',
-        visibleOnly: true,
-        onError: function (element) {
-            console.log('error loading ' + element.data('src'));
-        }
+    $("img.lazy").lazyload({
+        threshold: 200,
+        effect: "fadeIn"
     });
 </script>
 {{/section}}
@@ -147,8 +136,8 @@
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="course-items">
                         <div class="course-thumb set-bg" data-setbg="{{Image}}">
-                            <img class="course-image" src="/public/courses/{{course.Image}}" alt="courseImage"
-                                style="border-top-right-radius: 10px; border-top-left-radius: 10px;">
+                            <img class="course-image lazy" data-original="/public/courses/{{course.Image}}"
+                                alt="courseImage" style="border-top-right-radius: 10px; border-top-left-radius: 10px;">
                             {{#if course.DiscountPrice}}
                             <div class="price">
                                 <span style="font-size: 20px;">${{formatPrice course.DiscountPrice}}</span>
@@ -210,14 +199,15 @@
 
     <div class="course-warp mt-lg-5">
 
-        <div class="row course-items-area lazy">
+        <div class="row course-items-area">
             <!-- course -->
             {{#each this.mostViewCourses as |course|}}
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <a href="/course/{{course.Id}}">
                     <div class="course-item">
                         <div class="course-thumb set-bg" style="background-color: black;">
-                            <img class="course-image" src="/public/courses/{{course.Image}}" alt="courseImage">
+                            <img class="course-image lazy" data-original="/public/courses/{{course.Image}}"
+                                alt="courseImage">
 
                             {{#if course.DiscountPrice}}
                             <div class="price">
@@ -274,7 +264,7 @@
             </div>
         </div>
 
-        <div class="row lazy">
+        <div class="row ">
             {{#each this.outstandingCate}}
             <!-- categorie -->
             <div class="col-lg-4 col-md-6">
@@ -282,11 +272,11 @@
 
                     <div class="categorie-item">
                         {{#if this.Image}}
-                        <img class="ci-thumb" src="/public/img/categories/{{this.Image}}" alt="categories" width="400px"
-                            height="163px">
+                        <img class="ci-thumb lazy" data-original="/public/img/categories/{{this.Image}}"
+                            alt="categories" width="400px" height="163px">
                         {{else}}
-                        <img class="ci-thumb" src="/public/img/categories/new/new_category_item.jpg" alt="avatar"
-                            width="400px" height="163px">
+                        <img class="ci-thumb lazy" data-original="/public/img/categories/new/new_category_item.jpg"
+                            alt="avatar" width="400px" height="163px">
                         {{/if}}
                         <div class="ci-text">
                             <h5>{{this.Name}}</h5>
@@ -324,7 +314,8 @@
                 <a href="/course/{{course.Id}}">
                     <div class="course-item">
                         <div class="course-thumb set-bg" style="background-color: black;">
-                            <img class="course-image" src="/public/courses/{{course.Image}}" alt="courseImage">
+                            <img class="course-image lazy" data-original="/public/courses/{{course.Image}}"
+                                alt="courseImage">
 
                             {{#if course.DiscountPrice}}
                             <div class="price">
