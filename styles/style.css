@@ -528,7 +528,7 @@ ol {
 }
 
 .course-item .course-info {
-  background: #edf4f6;
+  background-image: linear-gradient(white, rgb(189, 187, 187));
 }
 
 .course-item .course-info .course-text {
@@ -661,7 +661,7 @@ ol {
 
 .course-item:hover .course-info {
   color: white;
-  background-color: #d82a4e;
+  background-image: linear-gradient(#f0385c, #d82a4e);
 }
 .course-item:hover .course-info .course-text h5 {
   color: white;

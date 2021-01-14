@@ -32,16 +32,18 @@
         const lessonId = $('#data').data("lesson");
         const video = videojs('video-onplay');
         const currentTime = video.currentTime();
+        const fullTime = video.duration();
 
         const data = {
             lessonId: lessonId,
             currentTime: currentTime,
+            fullTime: fullTime,
             courseId: courseId,
         }
         $.post(`/student/course-progress/update`, data, function (data) { });
     });
 
-    $(".playing").parent().parent().addClass("show");
+    $(".playing").parent().parent().parent().addClass("show");
     const video = videojs('video-onplay').currentTime($('#data').data("time"));
 </script>
 
@@ -92,20 +94,24 @@
         </div>
         <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 pl-xl-0 pl-lg-0 pl-md-0  m-b-30">
             <div class="card">
-                <h4 class="m-2 text-center">Content</h4>
                 <div class="custom-scrollbar-css">
                     <div class="card">
                         {{#each course.chapters as |chapter|}}
-                        <div class="card-header btn" data-toggle="collapse" data-target="#chapter-{{chapter.Id}}">
+                        <div class="card-header btn font-weight-bold" data-toggle="collapse"
+                            data-target="#chapter-{{chapter.Id}}">
                             {{chapter.ChapterName}}
                         </div>
                         <div class="collapse" data-toggle="collapse" aria-expanded="false" id="chapter-{{chapter.Id}}">
                             <ul class="list-group">
                                 {{#each chapter.lessons as |lesson|}}
-                                <li class="list-group-item lesson-item {{#if lesson.isActive}}playing{{/if}}">
-                                    <a class="text-decoration-none"
-                                        href="?playing={{lesson.index}}">{{lesson.lesson.Name}}</a>
-                                </li>
+                                <a class="text-decoration-none {{#if lesson.IsFinish}}finish{{else}}no-finish{{/if}}"
+                                    href="?playing={{lesson.index}}">
+                                    <li
+                                        class="list-group-item lesson-item font-weight-bold {{#if lesson.isActive}}playing{{/if}}">
+                                        <i
+                                            class="fas fa-check-circle {{#if lesson.IsFinish}}finish{{else}}no-finish{{/if}}"></i>&nbsp;{{lesson.lesson.Name}}
+                                    </li>
+                                </a>
                                 {{/each}}
                             </ul>
                         </div>

@@ -517,15 +517,15 @@ router.post(
     );
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {
-        cb(
-          null,
+        const path =
           "./public/courses/" +
-            course.Author +
-            "/" +
-            course.Name +
-            "/" +
-            chapter.ChapterName
-        );
+          course.Author +
+          "/" +
+          course.Name +
+          "/" +
+          chapter.ChapterName;
+        if (!fs.existsSync(path)) fs.mkdirSync(path);
+        cb(null, path);
       },
       filename: function (req, file, cb) {
         fileName = file.fieldname + "." + file.originalname.split(".").pop();

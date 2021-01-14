@@ -52,6 +52,11 @@ module.exports = (app) => {
             await accountModel.add(account);
             accAuth = await accountModel.singleByUserName(email, provider);
           }
+          accAuth.role = {
+            isAdmin: false,
+            isStudent: true,
+            isTeacher: false,
+          };
           req.session.isAuth = true;
           req.session.authUser = accAuth;
           done(null, accAuth);

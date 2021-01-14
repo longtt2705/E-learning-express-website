@@ -1,12 +1,22 @@
 {{#section 'css'}}
 <link rel="stylesheet" href="/styles/home.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
-
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
 {{/section}}
 
 {{#section 'script'}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
-
+<!-- jsDeliver -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+<!-- cdnjs -->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+<script type="text/javascript"
+    src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
 <script>
     $(function () {
         $(window).on("scroll", function () {
@@ -46,6 +56,15 @@
         const newTag = $(this).data("new");
         $(this).append(newTag).append(" ").append(bestTag);
     });
+    $('.lazy').Lazy({
+        // your configuration goes here
+        scrollDirection: 'vertical',
+        effect: 'fadeIn',
+        visibleOnly: true,
+        onError: function (element) {
+            console.log('error loading ' + element.data('src'));
+        }
+    });
 </script>
 {{/section}}
 
@@ -74,7 +93,7 @@
                             world-class universities and
                             companies.</p>
                         {{#if isAuth}}
-                        <a href="#categories" class="btn btn-danger font-weight-bold text-white p-3">Find
+                        <a href="#outstanding-courses" class="btn btn-danger font-weight-bold text-white p-3">Find
                             out</a>
                         {{else}}
                         <a href="/account/signup" class="btn btn-danger font-weight-bold text-white p-3">Join for
@@ -109,7 +128,7 @@
 
 
 
-<section class="course-section spad">
+<section class="course-section spad" id="outstanding-courses">
     <div class="container">
         <div class="section-title">
             <h2>
@@ -191,7 +210,7 @@
 
     <div class="course-warp mt-lg-5">
 
-        <div class="row course-items-area">
+        <div class="row course-items-area lazy">
             <!-- course -->
             {{#each this.mostViewCourses as |course|}}
             <div class="col-lg-3 col-md-4 col-sm-6">
@@ -255,7 +274,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row lazy">
             {{#each this.outstandingCate}}
             <!-- categorie -->
             <div class="col-lg-4 col-md-6">

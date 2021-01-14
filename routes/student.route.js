@@ -44,27 +44,31 @@ router.get("/course/:courseId", auth, isStudent, async (req, res) => {
         lesson: lesson,
         isActive: false,
       };
-      chapter.lessons.push(lessonDetail);
+      const progressDetail = await courseProgressDetailModel.singleByProgressIdAndLesson(
+        lesson.Id,
+        progress.Id
+      );
+
+      if (progressDetail !== null) {
+        lessonDetail.IsFinish =
+          progressDetail.IsFinish == "1" ? progressDetail.IsFinish : null;
+      }
+
       if (playing !== undefined) {
         if (lessonIndex == playing) {
           playingVideo = lesson;
           lessonDetail.isActive = true;
-          const progressDetail = await courseProgressDetailModel.singleByProgressIdAndLesson(
-            lesson.Id,
-            progress.Id
-          );
+
           currentTime = progressDetail ? progressDetail.Progress : 0;
         }
       } else if (progress.CurrentLesson === lesson.Id) {
         playingVideo = lesson;
         lessonDetail.isActive = true;
-        const progressDetail = await courseProgressDetailModel.singleByProgressIdAndLesson(
-          lesson.Id,
-          progress.Id
-        );
+
         currentTime = progressDetail ? progressDetail.Progress : 0;
       }
       lessonIndex++;
+      chapter.lessons.push(lessonDetail);
     }
   }
 
@@ -88,7 +92,7 @@ router.get("/course/:courseId", auth, isStudent, async (req, res) => {
 
 router.post("/course-progress/update", auth, isStudent, async (req, res) => {
   const username = req.session.authUser.Username;
-  const { lessonId, currentTime, courseId } = req.body;
+  const { lessonId, currentTime, fullTime, courseId } = req.body;
   const progress = await courseProgressModel.singleByUsernameAndCourse(
     username,
     courseId
@@ -106,12 +110,15 @@ router.post("/course-progress/update", auth, isStudent, async (req, res) => {
         statusId: 1,
         progress: currentTime,
         lessonId: lessonId,
+        IsFinish: Math.abs(currentTime - fullTime) <= 0.1 * fullTime,
       });
   } else {
-    progressDetail.Progress =
-      progressDetail.Progress >= currentTime
-        ? progressDetail.Progress
-        : currentTime;
+    progressDetail.Progress = currentTime;
+    progressDetail.IsFinish =
+      progressDetail.IsFinish == "1"
+        ? progressDetail.IsFinish
+        : Math.abs(currentTime - fullTime) <= 0.1 * fullTime;
+
     await courseProgressDetailModel.patch(progressDetail);
   }
   res.json("OK");
@@ -230,7 +237,7 @@ router.get("/my-learning", auth, isStudent, async (req, res) => {
     const allLessons = await courseContentDetailModel.countAllByCourseId(
       course.Id
     );
-    const learnedLessons = await courseProgressDetailModel.countAllByProgressId(
+    const learnedLessons = await courseProgressDetailModel.countLessonFinishedByProgressId(
       progress.Id
     );
 

@@ -206,7 +206,11 @@ router.get("/confirmation", function (req, res) {
 
     req.session.isAuth = true;
     req.session.authUser = await accountModel.singleByUserName(email);
-
+    req.session.authUser.role = {
+      isAdmin: false,
+      isStudent: true,
+      isTeacher: false,
+    };
     let url = req.session.retUrl || "/";
     res.redirect(url);
   });

@@ -65,6 +65,12 @@
             video.pause();
         })
     });
+    $(".tag-data").each(function (e) {
+        const bestTag = $(this).data("best");
+        console.log(bestTag);
+        const newTag = $(this).data("new");
+        $(this).append(newTag).append(" ").append(bestTag);
+    });
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
@@ -91,12 +97,13 @@
                         <div class="shortDes mb-3" data-des="{{ShortDes}}"></div>
                         <div class="mb-1">
                             <div class="d-flex mb-2">
-                                <span class="udlite-badge udlite-badge-bestseller udlite-heading-xs">
-                                    Best seller
-                                </span>
+                                <div class="tag-data" data-new="{{checkNewCourse Id ../newestCourses}}"
+                                    data-best="{{checkBestSeller Id ../bestSellers}}">
+                                </div>
                                 <h6 class="ml-2" style="color: orange;">{{AverageRate}}</h6>
                                 <span class="rate" data-rate="{{AverageRate}}"></span>
                                 <span class="mr-1">({{format TotalRate}} ratings)</span>
+
                             </div>
                             <span>{{format TotalStudent}} students</span>
                         </div>
@@ -118,7 +125,6 @@
 
                             {{/if}}
                             {{#if nonWishlistEmpty}}
-                            {{log 'kl'}}
                             {{#with course}}
                             <a href="/student/wishlist/delete/{{this.Id}}"
                                 class="product-wishlist-btn active udlite-heading-xs udlite-badge">wishlist <i
@@ -474,6 +480,9 @@
                         {{/if}} </h6>
                     <span class="rate" data-rate="{{AverageRate}}"></span>
                     <h6>({{TotalRate}})</h6>
+                </div>
+                <div class="tag-data" data-new="{{checkNewCourse Id ../newestCourses}}"
+                    data-best="{{checkBestSeller Id ../bestSellers}}">
                 </div>
                 <span>Last update: {{formatDate UpdateDate}}</span>
             </div>

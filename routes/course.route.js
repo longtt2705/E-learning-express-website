@@ -119,7 +119,7 @@ router.get("/:courseId", async (req, res) => {
   for (let i = 0; i <= 5; i++) {
     if (course.TotalRate > 0) {
       const result = await ratingModel.countRatingByStars(courseId, i);
-      stars[starsIndex[i]] = (result / course.TotalRate) * 100;
+      stars[starsIndex[i]] = Math.round((result / course.TotalRate) * 100);
     } else {
       stars[starsIndex[i]] = 0;
     }

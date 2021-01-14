@@ -42,7 +42,8 @@ node_modules/
 key/
 public/courses/
 jspm_packages/
-
+utils/
+middlewares/session.mdw.js
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 

@@ -143,6 +143,7 @@ body {
 .playing,
 .lesson-item:hover {
   background-color: cadetblue;
+  color: white !important;
 }
 
 .playing a,
@@ -150,4 +151,12 @@ body {
   text-decoration: none;
   font-weight: bold;
   color: white;
+}
+
+.finish {
+  color: green !important;
+}
+
+.no-finish {
+  color: gray;
 }
