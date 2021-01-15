@@ -530,9 +530,10 @@ router.post("/category/add", auth, isAdmin, async (req, res) => {
 
 router.get("/category/:categoryId/additem", auth, isAdmin, async (req, res) => {
   const active = getActive("category");
+  const name=await categoryModel.singlebyId(req.params.categoryId);
   res.render("viewAdmin/category/category-additem", {
     layout: "admin.hbs",
-    categoryId: req.params.categoryId,
+    categoryName:name.Name,
     active,
   });
 });
@@ -557,11 +558,12 @@ router.post(
   auth,
   isAdmin,
   async (req, res) => {
-    const nameCategoryItem = {
+    const name=await categoryModel.singleByName(req.body.categoryName);
+    const CategoryItem = {
       Name: req.body.nameCategoryItem,
-      ManagementId: req.body.categoryId,
+      ManagementId:name[0].Id 
     };
-    await categoryModel.add(nameCategoryItem);
+    await categoryModel.additem(CategoryItem.Name,CategoryItem.ManagementId);
     res.redirect("/admin/category");
   }
 );
