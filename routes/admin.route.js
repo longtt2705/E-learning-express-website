@@ -47,9 +47,13 @@ router.get("/account", auth, isAdmin, async function (req, res) {
     page_items.push(page_item);
   }
 
-  rows.forEach((e) => {
-    e.isVerified = e.StatusId == 4;
-  });
+  if (rows !== null) {
+    rows.forEach((e) => {
+      e.isVerified = e.StatusId == 4;
+      e.isBlocked = e.StatusId == 6;
+    });
+  }
+
   res.render("viewAdmin/account/account", {
     layout: "admin.hbs",
     active,
@@ -68,11 +72,13 @@ router.get("/account/search", auth, isAdmin, async (req, res) => {
   const sort = req.query.sort;
   const order = req.query.order;
   const content = req.query.searchContent;
+  const role = req.query.role;
   const active = getActive("account");
   let rows, total;
   if (searchType === "username")
-    total = await accountModel.countAllWithLike(searchType, content);
-  else total = await accountModel.countAllWithFullText(searchType, content);
+    total = await accountModel.countAllWithLike(searchType, content, role);
+  else
+    total = await accountModel.countAllWithFullText(searchType, content, role);
   const totalPage = Math.ceil(total / config.pagination.limit);
 
   let page = req.query.page || 1;
@@ -85,7 +91,8 @@ router.get("/account/search", auth, isAdmin, async (req, res) => {
       sort,
       order,
       content,
-      offset
+      offset,
+      role
     );
   } else {
     rows = await accountModel.searchWithFullTextByPage(
@@ -93,7 +100,8 @@ router.get("/account/search", auth, isAdmin, async (req, res) => {
       sort,
       order,
       content,
-      offset
+      offset,
+      role
     );
   }
 
@@ -107,9 +115,10 @@ router.get("/account/search", auth, isAdmin, async (req, res) => {
     page_items.push(page_item);
   }
 
-  if (rows != null) {
+  if (rows !== null) {
     rows.forEach((e) => {
       e.isVerified = e.StatusId == 4;
+      e.isBlocked = e.StatusId == 6;
     });
   }
 
@@ -141,6 +150,16 @@ router.post("/course/delete", auth, isAdmin, async (req, res) => {
   }
 
   await courseModel.delete(id);
+
+  res.redirect("/admin/course");
+});
+
+router.post("/course/suspend", auth, isAdmin, async (req, res) => {
+  const id = req.body.Id;
+  const course = await courseModel.singleById(id);
+  if (course.StatusId == 7) course.StatusId = 2;
+  else course.StatusId = 7;
+  await courseModel.patch(course);
 
   res.redirect("/admin/course");
 });
@@ -250,22 +269,30 @@ router.post("/account/edit/:user", auth, isAdmin, async function (req, res) {
 
 router.post("/account/delete", auth, isAdmin, async function (req, res) {
   const username = req.body.username;
-  const courses = await courseModel.allWithUserName(username);
 
   await accountModel.delete(username);
+  res.redirect("../account");
+});
+
+router.post("/account/block", auth, isAdmin, async function (req, res) {
+  const username = req.body.username;
+  const account = await accountModel.singleByUserNameWithoutProvider(username);
+  if (account.StatusId == 6) account.StatusId = 4;
+  else account.StatusId = 6;
+  await accountModel.patch(account);
   res.redirect("../account");
 });
 
 router.get("/course", auth, isAdmin, async function (req, res) {
   const active = getActive("course");
   let page = req.query.page || 1;
-  const total = await courseModel.countAll();
+  const total = await courseModel.countAll(true);
 
   const totalPage = Math.ceil(total / config.pagination.limit);
   if (page > totalPage) page = totalPage;
   if (page < 1) page = 1;
   const offset = (page - 1) * config.pagination.limit;
-  const rows = await courseModel.allByPage(offset);
+  const rows = await courseModel.allByPage(offset, true);
 
   const page_items = [];
 
@@ -278,7 +305,10 @@ router.get("/course", auth, isAdmin, async function (req, res) {
     page_items.push(page_item);
   }
 
-  rows.forEach(async (course) => {
+  for (const course of rows) {
+    course.isApprove = course.StatusId == 2;
+    course.isSuspend = course.StatusId == 7;
+
     const courseChapters = await courseContentModel.allByCourseId(course.Id);
     for (const chapter in courseChapters) {
       const lessons = await courseContentDetailModel.allByChapterId(
@@ -292,7 +322,7 @@ router.get("/course", auth, isAdmin, async function (req, res) {
         course.isFinish = true;
       }
     }
-  });
+  }
 
   res.render("viewAdmin/courses/courses", {
     layout: "admin.hbs",
@@ -315,8 +345,9 @@ router.get("/course/search", auth, isAdmin, async (req, res) => {
   const active = getActive("course");
   let rows, total;
   if (searchType === "c.author")
-    total = await courseModel.countAllWithLike(searchType, content);
-  else total = await courseModel.countAllWithFullText(searchType, content);
+    total = await courseModel.countAllWithLike(searchType, content, true);
+  else
+    total = await courseModel.countAllWithFullText(searchType, content, true);
   const totalPage = Math.ceil(total / config.pagination.limit);
 
   let page = req.query.page || 1;
@@ -329,7 +360,8 @@ router.get("/course/search", auth, isAdmin, async (req, res) => {
       sort,
       order,
       content,
-      offset
+      offset,
+      true
     );
   } else {
     rows = await courseModel.searchWithFullTextByPage(
@@ -337,7 +369,8 @@ router.get("/course/search", auth, isAdmin, async (req, res) => {
       sort,
       order,
       content,
-      offset
+      offset,
+      true
     );
   }
 
@@ -352,7 +385,9 @@ router.get("/course/search", auth, isAdmin, async (req, res) => {
   }
 
   if (rows != null) {
-    rows.forEach(async (course) => {
+    for (const course of rows) {
+      course.isApprove = course.StatusId == 2;
+      course.isSuspend = course.StatusId == 7;
       const courseChapters = await courseContentModel.allByCourseId(course.Id);
       for (const chapter in courseChapters) {
         const lessons = await courseContentDetailModel.allByChapterId(
@@ -366,7 +401,7 @@ router.get("/course/search", auth, isAdmin, async (req, res) => {
           course.isFinish = true;
         }
       }
-    });
+    }
   }
 
   res.render("viewAdmin/courses/courses", {

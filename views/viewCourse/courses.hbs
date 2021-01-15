@@ -70,7 +70,7 @@
             const fullText = getUrlParameter("fullText")
 
             if (searchContent !== null) {
-                searchContent = searchContent.replace("+", " ");
+                searchContent = searchContent.replace(/[+]/g, " ");
             }
 
             $("#form_search #search").val(search).change();

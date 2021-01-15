@@ -36,21 +36,26 @@ router.get("/", auth, isTeacher, async (req, res) => {
     page_items.push(page_item);
   }
 
-  rows.forEach(async (course) => {
-    const courseChapters = await courseContentModel.allByCourseId(course.Id);
-    for (const chapter in courseChapters) {
-      const lessons = await courseContentDetailModel.allByChapterId(
-        courseChapters[chapter].Id
-      );
+  if (rows !== null) {
+    for (const course of rows) {
+      course.isApprove = course.StatusId == 2;
+      course.isSuspend = course.StatusId == 7;
+      const courseChapters = await courseContentModel.allByCourseId(course.Id);
+      for (const chapter in courseChapters) {
+        const lessons = await courseContentDetailModel.allByChapterId(
+          courseChapters[chapter].Id
+        );
 
-      if (lessons.length === 0) {
-        course.isFinish = false;
-        break;
-      } else {
-        course.isFinish = true;
+        if (lessons.length === 0) {
+          course.isFinish = false;
+          break;
+        } else {
+          course.isFinish = true;
+        }
       }
     }
-  });
+  }
+
   res.render("viewTeacher/courses", {
     items: rows,
     isEmpty: rows.length === 0,

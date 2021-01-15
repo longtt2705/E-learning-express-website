@@ -52,6 +52,7 @@ module.exports = (app) => {
             await accountModel.add(account);
             accAuth = await accountModel.singleByUserName(email, provider);
           }
+          if (accAuth.StatusId == 6) return done(null, false);
           accAuth.role = {
             isAdmin: false,
             isStudent: true,

@@ -57,6 +57,7 @@
 </script>
 {{/section}}
 
+
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
@@ -73,7 +74,7 @@
     </ol>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <section class="hero-section set-bg" data-setbg="public/img/banner1.jpg">
+            <section class="hero-section set-bg" data-setbg="public/img/banner1.jpg" style="background-size: cover;">
                 <div class="container">
                     <div class="hero-text">
                         <h1 class="font-weight-bold text-white">Get all the best free online courses </h1>
@@ -88,19 +89,18 @@
                         <a href="/account/signup" class="btn btn-danger font-weight-bold text-white p-3">Join for
                             free</a>
                         {{/if}}
-
                     </div>
                 </div>
             </section>
         </div>
         <div class="carousel-item hero-section">
             <section class="hero-section set-bg w-100" data-setbg="public/img/banner2.jpg"
-                style="background-size: contain;">
+                style="background-size: cover;">
             </section>
         </div>
         <div class="carousel-item">
             <section class="hero-section set-bg w-100" data-setbg="public/img/banner3.jpg"
-                style="background-size: contain;">
+                style="background-size: cover;">
 
             </section>
         </div>
@@ -134,7 +134,7 @@
 
                 {{#each this.outstandingCourses as |course|}}
                 <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="course-items">
+                    <div class="course-items shadow">
                         <div class="course-thumb set-bg" data-setbg="{{Image}}">
                             <img class="course-image lazy" data-original="/public/courses/{{course.Image}}"
                                 alt="courseImage" style="border-top-right-radius: 10px; border-top-left-radius: 10px;">
@@ -204,7 +204,7 @@
             {{#each this.mostViewCourses as |course|}}
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <a href="/course/{{course.Id}}">
-                    <div class="course-item">
+                    <div class="course-item shadow">
                         <div class="course-thumb set-bg" style="background-color: black;">
                             <img class="course-image lazy" data-original="/public/courses/{{course.Image}}"
                                 alt="courseImage">
@@ -312,7 +312,7 @@
             {{#each this.newestCourses as |course|}}
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <a href="/course/{{course.Id}}">
-                    <div class="course-item">
+                    <div class="course-item shadow">
                         <div class="course-thumb set-bg" style="background-color: black;">
                             <img class="course-image lazy" data-original="/public/courses/{{course.Image}}"
                                 alt="courseImage">

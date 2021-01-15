@@ -166,18 +166,28 @@ router.get("/wishlist/add/:courseId", auth, isStudent, async (req, res) => {
   const username = req.session.authUser.Username;
   const courseid = req.params.courseId;
   const row = { Username: username, CourseId: courseid };
-  await wishlistsModel.add(row);
+  const result = await wishlistsModel.singleByCourseIdAndUsername(
+    courseid,
+    username
+  );
+  if (result === null) await wishlistsModel.add(row);
   res.redirect("/course/" + courseid);
 });
 router.get("/wishlist/delete/:courseId", auth, isStudent, async (req, res) => {
   const courseid = req.params.courseId;
-  const id = await wishlistsModel.singleIdByCourseID(courseid);
+  const id = await wishlistsModel.singleByCourseIdAndUsername(
+    courseid,
+    req.session.authUser.Username
+  );
 
   await wishlistsModel.delete(id);
   res.redirect("/course/" + courseid);
 });
 router.post("/wishlist/delete", auth, isStudent, async (req, res) => {
-  const id = await wishlistsModel.singleIdByCourseID(req.body.Id);
+  const id = await wishlistsModel.singleByCourseIdAndUsername(
+    req.body.Id,
+    req.session.authUser.Username
+  );
 
   await wishlistsModel.delete(id);
   res.redirect("/student/wishlist");

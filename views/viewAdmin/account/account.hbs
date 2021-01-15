@@ -27,8 +27,22 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 const username = $(this).data('username');
-                $('#txtUsername').val(username);
+                $('#frmDeleteAccount #txtUsername').val(username);
                 $('#frmDeleteAccount').submit();
+            }
+        })
+    });
+    $('.blockAccount').on('click', function () {
+        Swal.fire({
+            title: 'Do you want to block/unblock this account?',
+            showCancelButton: true,
+            confirmButtonText: `Accept`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                const username = $(this).data('username');
+                $('#frmBlockAccount #txtUsername').val(username);
+                $('#frmBlockAccount').submit();
             }
         })
     });
@@ -54,17 +68,23 @@
         // params found
         if (url.length > 1 && arr[arr.length - 1] === 'search') {
 
-            const search = getUrlParameter("search").replace("+", " ");
-            const sort = getUrlParameter("sort").replace("+", " ");
-            const order = getUrlParameter("order").replace("+", " ");
-            const searchContent = getUrlParameter("searchContent").replace("+", " ");
+            const search = getUrlParameter("search")
+            const sort = getUrlParameter("sort")
+            const order = getUrlParameter("order")
+            const role = getUrlParameter("role");
+            let searchContent = getUrlParameter("searchContent")
+
+            if (searchContent !== null) {
+                searchContent = searchContent.replace(/[+]/g, " ");
+            }
 
             $("#form_search #search").val(search).change();
             $("#form_search #sort").val(sort).change();
             $("#form_search #order").val(order).change();
+            $("#form_search #role").val(role).change();
             $("#form_search #searchContent").val(searchContent);
 
-            let PageURL = "?search=" + search + "&sort=" + sort + "&order=" + order + "&searchContent=" + searchContent;
+            let PageURL = "?search=" + search + "&sort=" + sort + "&order=" + order + "&searchContent=" + searchContent + "&role=" + role;
             $('a[class=page-link]').map(function () {
                 $(this).attr("href", PageURL + "&page=" + $(this).data("page"));
             });
@@ -96,12 +116,22 @@
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-3">
                                 <div class="form-group">
                                     <label>Search Type:</label>
                                     <select class="select2" style="width: 100%;" name="search" id="search">
                                         <option value="username" selected>Email</option>
                                         <option value="name">Name</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Role:</label>
+                                    <select class="select2" style="width: 100%;" name="role" id="role">
+                                        <option value="all" selected>All</option>
+                                        <option value="3">Teacher</option>
+                                        <option value="2">Student</option>
                                     </select>
                                 </div>
                             </div>
@@ -148,6 +178,9 @@
         <form id="frmDeleteAccount" action="/admin/account/delete" method="POST">
             <input type="hidden" name="username" id="txtUsername">
         </form>
+        <form id="frmBlockAccount" action="/admin/account/block" method="POST">
+            <input type="hidden" name="username" id="txtUsername">
+        </form>
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
@@ -172,10 +205,13 @@
                                 Name
                             </th>
                             <th>
-                                Phone
+                                Provider
                             </th>
-                            <th style="width: 15%">
+                            <th style="width: 10%">
                                 Role
+                            </th>
+                            <th style="width: 10%">
+                                Phone
                             </th>
                             <th style="width: 8%" class="text-center">
                                 Status
@@ -199,8 +235,16 @@
                             <td>
                                 {{Name}}
                             </td>
+
                             <td>
                                 {{Phone}}
+                            </td>
+                            <td>
+                                {{#if Provider}}
+                                {{Provider}}
+                                {{else}}
+                                local
+                                {{/if}}
                             </td>
                             <td>
                                 {{RoleType}}
@@ -210,8 +254,9 @@
                                 <span class="badge badge-success">Verified</span>
                             </td>
                             {{else}}
+                            {{StatusType}}
                             <td class="project-state">
-                                <span class="badge badge-danger">Unverified</span>
+                                <span class="badge badge-danger">{{statustype}}</span>
                             </td>
                             {{/if}}
 
@@ -222,6 +267,15 @@
                                     </i>
                                     Edit
                                 </a>
+                                <button class="btn btn-warning btn-sm blockAccount" data-username="{{Username}}">
+                                    {{#unless isBlocked}}
+                                    <i class="fas fa-lock"></i>
+                                    Block
+                                    {{else}}
+                                    <i class="fas fa-lock-open"></i>
+                                    Block
+                                    {{/unless}}
+                                </button>
                                 <button class="btn btn-danger btn-sm deleteAccount" data-username="{{Username}}">
                                     <i class="fas fa-trash"></i>
                                     Delete

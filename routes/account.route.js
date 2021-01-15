@@ -32,12 +32,16 @@ router.post("/login", async function (req, res) {
       err_message: "Invalid username or password.",
     });
   }
-  console.log(user);
   const ret = bcrypt.compareSync(req.body.password, user.Password);
   if (ret === false) {
     return res.render("viewAccount/login", {
       layout: false,
       err_message: "Invalid username or password.",
+    });
+  }
+  if (user.StatusId == 6) {
+    return res.render("blocked", {
+      layout: false,
     });
   }
   // Unverified
@@ -201,6 +205,11 @@ router.get("/confirmation", function (req, res) {
   jwt.verify(token, "SECRET_KEY", async function (err, decoded) {
     const email = decoded.data;
     const rows = await accountModel.singleByUserName(email);
+    if (rows.StatusId == 6) {
+      return res.render("blocked", {
+        layout: false,
+      });
+    }
     rows.StatusId = 4;
     await accountModel.patch(rows);
 

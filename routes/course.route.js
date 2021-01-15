@@ -142,7 +142,10 @@ router.get("/:courseId", async (req, res) => {
   }
 
   const ratings = await ratingModel.allByCourseIdWithInfo(courseId);
-  const wishlist = await wishlistsModel.findIdByCourseid(courseId);
+  const wishlist = await wishlistsModel.singleByCourseIdAndUsername(
+    courseId,
+    username
+  );
 
   let hasRated = false;
   for (let i = 0; i < ratings.length; i++) {
@@ -180,8 +183,6 @@ router.get("/:courseId", async (req, res) => {
     ratings,
     account,
     wishlist,
-    isWishlistEmpty: wishlist === undefined,
-    nonWishlistEmpty: wishlist !== undefined,
     InCart: cartModel.ifInCart(req.session.cart, { id: course.Id }),
     IfBought: ifBought,
     hasRated,

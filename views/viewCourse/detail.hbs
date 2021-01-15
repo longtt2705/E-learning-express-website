@@ -116,22 +116,21 @@
                         </div>
                         <div class="mb-1">
                             {{/with}}
-                            {{#if isWishlistEmpty}}
-                            {{#with course}}
-                            <a href="/student/wishlist/add/{{this.Id}}"
-                                class="product-wishlist-btn udlite-heading-xs udlite-badge">wishlist <i
-                                    class="fa fa-heart" aria-hidden="true"></i></a>
-                            {{/with}}
-
-                            {{/if}}
-                            {{#if nonWishlistEmpty}}
+                            {{#if wishlist}}
                             {{#with course}}
                             <a href="/student/wishlist/delete/{{this.Id}}"
                                 class="product-wishlist-btn active udlite-heading-xs udlite-badge">wishlist <i
                                     class="fa fa-heart" aria-hidden="true"></i></a>
                             {{/with}}
-
+                            {{else}}
+                            {{#with course}}
+                            <a href="/student/wishlist/add/{{this.Id}}"
+                                class="product-wishlist-btn udlite-heading-xs udlite-badge">wishlist <i
+                                    class="fa fa-heart" aria-hidden="true"></i></a>
+                            {{/with}}
                             {{/if}}
+
+
                         </div>
                     </div>
                 </div>

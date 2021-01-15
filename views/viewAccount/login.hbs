@@ -81,8 +81,9 @@
             e.preventDefault();
 
             const email = $('#email').val();
-            if (email.length === 0) {
-                errorMessage("Email cannot be empty!")
+            const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+            if (!re.test(email)) {
+                errorMessage("Email format is incorrect!")
                 return;
             }
 
