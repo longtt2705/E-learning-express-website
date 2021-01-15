@@ -1,6 +1,7 @@
 {{#section 'css'}}
 <link rel="stylesheet" href="/styles/detail.css">
 <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/styles/home.css">
 
 {{/section}}
 
@@ -53,25 +54,39 @@
             <!-- course -->
             <div class="mix col-lg-4 col-md-4 col-sm-6 mt-3">
 
+
                 <div class="course-items">
                     <div class="course-thumb set-bg">
-                        <img src="/public/courses/{{Image}}" style="width: 100%; height: 100%;"></img>
+                        <img class="course-image" src="/public/courses/{{Image}}" alt="courseImage"
+                            style="border-top-right-radius: 10px; border-top-left-radius: 10px;">
                         <button class="heart delete" data-id="{{Id}}"><i class="fa fa-heart"></i></button>
+
                     </div>
                     <div class="course-info">
                         <div class="course-text">
-                            <h5>{{this.Name}}</h5>
-                            <div class="shortDes mb-3" data-des="{{ShortDes}}"></div>
+                            <h5>{{Name}}</h5>
+                            <h6 class="font-italic"><i class="fas fa-calendar-alt"></i>&nbsp;{{CateName}}</h6>
+                            <div class="shortDes" data-des="{{ShortDes}}"></div>
                             <div class="students">
-                                {{this.TotalStudent}}
+                                {{TotalStudent}} students
+                            </div>
+                            <div class="d-flex">
+                                <span class="rating">
+                                    {{#if AverageRate}}{{AverageRate}}/5{{else}}0/5{{/if}}</span>
+                                <span class="rate" data-rate="{{AverageRate}}"></span>
+                                <span class="numberRating">({{TotalRate}})</span>
+                            </div>
+                            <div class="tag-data" data-new="{{checkNewCourse course.Id ../newestCourses}}"
+                                data-best="{{checkBestSeller course.Id ../bestSellers}}">
                             </div>
                         </div>
                         <div class="course-btn text-center">
-                            <a href="/course/{{Id}}" type="button" class="btn btn-rounded btn-warning btn-lg ">LEAR
+                            <a href="/course/{{Id}}" type="button" class="btn btn-rounded btn-warning btn-lg ">LEARN
                                 MORE</a>
                         </div>
                     </div>
                 </div>
+
             </div>
             {{/with}}
             {{/each}}
