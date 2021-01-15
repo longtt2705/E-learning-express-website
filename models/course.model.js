@@ -75,7 +75,8 @@ module.exports = {
     order,
     content,
     offset,
-    admin = false
+    admin = false,
+    categories = "all"
   ) {
     let sorting = "";
     const splited = order.split("/");
@@ -85,29 +86,36 @@ module.exports = {
       sorting = `${order} ${sort}`;
     }
     const adminStatement = admin ? "" : " and c.statusid = '2'";
-
+    const cateFilter =
+      categories === "all" ? "" : ` and c.categoryId = '${categories}'`;
     if (searchType === "And" || searchType === "Or") {
       return db.load(
-        `${selectField} where cat.Name like '%${content}%' ${searchType} c.Name like '%${content}%' ${adminStatement} group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
+        `${selectField} where cat.Name like '%${content}%' ${searchType} c.Name like '%${content}%' ${adminStatement} ${cateFilter} group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
       );
     }
 
     return db.load(
-      `${selectField} where ${searchType} like '%${content}%' ${adminStatement} group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
+      `${selectField} where ${searchType} like '%${content}%' ${adminStatement} ${cateFilter} group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
     );
   },
 
-  async countAllWithLike(searchType, content, admin = false) {
+  async countAllWithLike(
+    searchType,
+    content,
+    admin = false,
+    categories = "all"
+  ) {
     let rows;
     const adminStatement = admin ? "" : " and c.statusid = '2'";
-
+    const cateFilter =
+      categories === "all" ? "" : ` and c.categoryId = '${categories}'`;
     if (searchType === "And" || searchType === "Or") {
       rows = await db.load(
-        `${countField} where cat.Name like '%${content}%' ${searchType} c.Name like '%${content}%' ${adminStatement}`
+        `${countField} where cat.Name like '%${content}%' ${searchType} c.Name like '%${content}%' ${adminStatement} ${cateFilter}`
       );
     } else {
       rows = await db.load(
-        `${countField} where ${searchType} like '%${content}%' ${adminStatement}`
+        `${countField} where ${searchType} like '%${content}%' ${adminStatement} ${cateFilter}`
       );
     }
 
@@ -121,7 +129,8 @@ module.exports = {
     order,
     content,
     offset,
-    admin = false
+    admin = false,
+    categories = "all"
   ) {
     let sorting = "";
     const splited = order.split("/");
@@ -132,29 +141,36 @@ module.exports = {
     }
 
     const adminStatement = admin ? "" : " and c.statusid = '2'";
-
+    const cateFilter =
+      categories === "all" ? "" : ` and c.categoryId = '${categories}'`;
     if (searchType === "And" || searchType === "Or") {
       return db.load(
-        `${selectField} where MATCH(cat.name) AGAINST('${content}' IN BOOLEAN MODE) ${searchType} MATCH(c.name) AGAINST('${content}' IN BOOLEAN MODE) ${adminStatement} group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
+        `${selectField} where MATCH(cat.name) AGAINST('${content}' IN BOOLEAN MODE) ${searchType} MATCH(c.name) AGAINST('${content}' IN BOOLEAN MODE) ${adminStatement} ${cateFilter} group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
       );
     }
 
     return db.load(
-      `${selectField} where MATCH(${searchType}) AGAINST('${content}' IN BOOLEAN MODE) ${adminStatement} group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
+      `${selectField} where MATCH(${searchType}) AGAINST('${content}' IN BOOLEAN MODE) ${adminStatement}  ${cateFilter} group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
     );
   },
 
-  async countAllWithFullText(searchType, content, admin = false) {
+  async countAllWithFullText(
+    searchType,
+    content,
+    admin = false,
+    categories = "all"
+  ) {
     let rows;
     const adminStatement = admin ? "" : " and c.statusid = '2'";
-
+    const cateFilter =
+      categories === "all" ? "" : ` and c.categoryId = '${categories}'`;
     if (searchType === "And" || searchType === "Or") {
       rows = await db.load(
-        `${countField} where MATCH(cat.name) AGAINST('${content}' IN BOOLEAN MODE) ${searchType} MATCH(c.name) AGAINST('${content}' IN BOOLEAN MODE) ${adminStatement}`
+        `${countField} where MATCH(cat.name) AGAINST('${content}' IN BOOLEAN MODE) ${searchType} MATCH(c.name) AGAINST('${content}' IN BOOLEAN MODE) ${adminStatement}  ${cateFilter}`
       );
     } else {
       rows = await db.load(
-        `${countField} where match(${searchType}) against('${content}' IN BOOLEAN MODE) ${adminStatement}`
+        `${countField} where match(${searchType}) against('${content}' IN BOOLEAN MODE) ${adminStatement} ${cateFilter}`
       );
     }
 

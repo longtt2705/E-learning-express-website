@@ -324,6 +324,14 @@ router.get("/course", auth, isAdmin, async function (req, res) {
     }
   }
 
+  const categories = res.locals.lcCategories;
+  const subCate = [];
+  for (let cate in categories) {
+    categories[cate].SubCate.forEach((element) => {
+      subCate.push(element);
+    });
+  }
+
   res.render("viewAdmin/courses/courses", {
     layout: "admin.hbs",
     active,
@@ -334,6 +342,7 @@ router.get("/course", auth, isAdmin, async function (req, res) {
     canGoNext: page < totalPage,
     nextPage: +page + 1,
     prevPage: page - 1,
+    categories: subCate,
   });
 });
 
@@ -342,12 +351,23 @@ router.get("/course/search", auth, isAdmin, async (req, res) => {
   const sort = req.query.sort;
   const order = req.query.order;
   const content = req.query.searchContent;
+  const category = req.query.category;
   const active = getActive("course");
   let rows, total;
   if (searchType === "c.author")
-    total = await courseModel.countAllWithLike(searchType, content, true);
+    total = await courseModel.countAllWithLike(
+      searchType,
+      content,
+      true,
+      category
+    );
   else
-    total = await courseModel.countAllWithFullText(searchType, content, true);
+    total = await courseModel.countAllWithFullText(
+      searchType,
+      content,
+      true,
+      category
+    );
   const totalPage = Math.ceil(total / config.pagination.limit);
 
   let page = req.query.page || 1;
@@ -361,7 +381,8 @@ router.get("/course/search", auth, isAdmin, async (req, res) => {
       order,
       content,
       offset,
-      true
+      true,
+      category
     );
   } else {
     rows = await courseModel.searchWithFullTextByPage(
@@ -370,7 +391,8 @@ router.get("/course/search", auth, isAdmin, async (req, res) => {
       order,
       content,
       offset,
-      true
+      true,
+      category
     );
   }
 
@@ -404,6 +426,14 @@ router.get("/course/search", auth, isAdmin, async (req, res) => {
     }
   }
 
+  const categories = res.locals.lcCategories;
+  const subCate = [];
+  for (let cate in categories) {
+    categories[cate].SubCate.forEach((element) => {
+      subCate.push(element);
+    });
+  }
+
   res.render("viewAdmin/courses/courses", {
     layout: "admin.hbs",
     active,
@@ -414,6 +444,7 @@ router.get("/course/search", auth, isAdmin, async (req, res) => {
     canGoNext: page < totalPage,
     nextPage: +page + 1,
     prevPage: page - 1,
+    categories: subCate,
   });
 });
 

@@ -44,28 +44,34 @@ router.get("/course/:courseId", auth, isStudent, async (req, res) => {
         lesson: lesson,
         isActive: false,
       };
-      const progressDetail = await courseProgressDetailModel.singleByProgressIdAndLesson(
-        lesson.Id,
-        progress.Id
-      );
+      if (progress !== null) {
+        const progressDetail = await courseProgressDetailModel.singleByProgressIdAndLesson(
+          lesson.Id,
+          progress.Id
+        );
 
-      if (progressDetail !== null) {
-        lessonDetail.IsFinish =
-          progressDetail.IsFinish == "1" ? progressDetail.IsFinish : null;
-      }
+        if (progressDetail !== null) {
+          lessonDetail.IsFinish =
+            progressDetail.IsFinish == "1" ? progressDetail.IsFinish : null;
+          lessonDetail.currentTime = progressDetail
+            ? progressDetail.Progress
+            : 0;
+          lessonDetail.duration = progressDetail ? progressDetail.Duration : 0;
+        }
 
-      if (playing !== undefined) {
-        if (lessonIndex == playing) {
+        if (playing !== undefined) {
+          if (lessonIndex == playing) {
+            playingVideo = lesson;
+            lessonDetail.isActive = true;
+
+            currentTime = progressDetail ? progressDetail.Progress : 0;
+          }
+        } else if (progress.CurrentLesson === lesson.Id) {
           playingVideo = lesson;
           lessonDetail.isActive = true;
 
           currentTime = progressDetail ? progressDetail.Progress : 0;
         }
-      } else if (progress.CurrentLesson === lesson.Id) {
-        playingVideo = lesson;
-        lessonDetail.isActive = true;
-
-        currentTime = progressDetail ? progressDetail.Progress : 0;
       }
       lessonIndex++;
       chapter.lessons.push(lessonDetail);
@@ -110,6 +116,7 @@ router.post("/course-progress/update", auth, isStudent, async (req, res) => {
         statusId: 1,
         progress: currentTime,
         lessonId: lessonId,
+        duration: fullTime,
         IsFinish: Math.abs(currentTime - fullTime) <= 0.1 * fullTime,
       });
   } else {
@@ -243,7 +250,13 @@ router.get("/my-learning", auth, isStudent, async (req, res) => {
       username,
       course.Id
     );
-
+    if (progress === null) {
+      courseList.push({
+        ...course,
+        progress: 0,
+      });
+      continue;
+    }
     const allLessons = await courseContentDetailModel.countAllByCourseId(
       course.Id
     );

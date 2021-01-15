@@ -25,6 +25,14 @@
         $(this).html($(this).data("des"));
     });
 
+    $(".progress-bar").each(function (e) {
+        const progress = Math.round(+$(this).data("progress") / $(this).data("duration") * 100);
+        if (isNaN(progress))
+            $(this).css("width", `0%`);
+        else
+            $(this).css("width", `${progress}%`);
+    });
+
     $("#description").html($("#description").data("des"));
     $(window).bind('beforeunload', function () {
 
@@ -54,8 +62,8 @@
     <div class="row">
         <div class="col-xl-8">
             <div id="data" data-course="{{course.Id}}" data-lesson="{{playingVideo.Id}}" data-time="{{currentTime}}">
-                <video id="video-onplay" class="video-js" controls preload="auto" data-setup="{}" width="650"
-                    height="350">
+                <video id="video-onplay" class="video-js w-100" controls preload="auto" data-setup="{}" width="650"
+                    height="400">
                     <source src="/public/courses/{{playingVideo.Video}}" type="video/mp4" />
                 </video>
             </div>
@@ -108,9 +116,10 @@
                                     href="?playing={{lesson.index}}">
                                     <li
                                         class="list-group-item lesson-item font-weight-bold {{#if lesson.isActive}}playing{{/if}}">
-                                        <i
-                                            class="fas fa-check-circle {{#if lesson.IsFinish}}finish{{else}}no-finish{{/if}}"></i>&nbsp;{{lesson.lesson.Name}}
+                                        <i class="fas fa-check-circle"></i>&nbsp;{{lesson.lesson.Name}}
                                     </li>
+                                    <div class="progress-bar" style="background-color: rgb(240, 66, 66); height: 5px"
+                                        data-progress={{lesson.currentTime}} data-duration="{{lesson.duration}}"></div>
                                 </a>
                                 {{/each}}
                             </ul>
