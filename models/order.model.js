@@ -24,7 +24,12 @@ module.exports = {
     );
     return row;
   },
-
+  async getTopCourseOrder(){
+    const row= await db.load(
+      `SELECT Name,count(Name) as total FROM orderdetails as orders join courses as courses on orders.CourseId = courses.Id group by Name; `
+    );
+    return row;
+  },
   getCoursesBoughtByUsername(username) {
     return db.load(
       `select c.id from ${TBL_ORDERS} o join orderdetails od on o.id = od.orderid join courses c on od.courseId = c.id where o.username = '${username}'`

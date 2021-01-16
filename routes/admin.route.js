@@ -22,6 +22,13 @@ router.get("/", auth, isAdmin, async function (req, res) {
   const rowStudent= await accountModel.countStudent();
   const rowTotalCost=await orderModel.getTotalOrder();
   const rowHistory = await orderModel.getHistoryOrder();
+  const rowTopSale = await orderModel.getTopCourseOrder();
+  const rowTopSaleName = [];
+  const rowTopSaleTotal = [];
+  for (let i = 0; i < rowTopSale.length; i++) {
+    rowTopSaleName.push(rowTopSale[i].Name)
+    rowTopSaleTotal.push(rowTopSale[i].total)
+  }
   
   res.render("viewAdmin/dashboard", {
     layout: "admin.hbs",
@@ -29,6 +36,8 @@ router.get("/", auth, isAdmin, async function (req, res) {
     totalStudent:rowStudent,
     TotalOrder:rowTotalCost,
     HistoryOrder:rowHistory,
+    TopSaleName:rowTopSaleName,
+    TopSaleTotal:rowTopSaleTotal,
     active,
   });
 });

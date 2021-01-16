@@ -13,14 +13,44 @@
 <script>
     var ctx1 = document.getElementById('myChart1').getContext('2d');
     var ctx = document.getElementById('myLineChart').getContext('2d');
+    var NameOrder = document.getElementById('NameOrder').getAttribute('value');
+    var TotalOrder = document.getElementById('TotalOrder').getAttribute('value');
+    //Parse Name & Order========================= 
+    var i;
+    var text = "";
+    var No = [];
+    var To = [];
+    NameOrder = NameOrder + ',';
+    TotalOrder = TotalOrder + ',';
+    for (i = 0; i < NameOrder.length; i++) {
+        if (NameOrder[i] != ',') {
+            text += NameOrder[i];
+        }
+        else if (NameOrder[i] == ',') {
+            No.push(text);
+            text = "";
+        }
+
+    }
+    for (i = 0; i < TotalOrder.length; i++) {
+        if (TotalOrder[i] != ',') {
+            text += TotalOrder[i];
+        }
+        else if (TotalOrder[i] == ',') {
+            To.push(text);
+            text = "";
+        }
+
+    }
+    //Parse Name & Order End======================
     var totalStudent = [12, 13, 15];
     var myChart1 = new Chart(ctx1, {
         type: 'bar',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: No,
             datasets: [{
                 label: 'Order',
-                data: [2, 5, 3, 4, 6, 8],
+                data: To,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -50,6 +80,7 @@
             }
         }
     });
+
     var myChart2 = new Chart(ctx, {
         type: 'line',
         data: {
@@ -88,6 +119,9 @@
     });
 </script>
 {{/section}}
+
+<input id="NameOrder" hidden="true" value="{{TopSaleName}}"></input>
+<input id="TotalOrder" hidden="true" value="{{TopSaleTotal}}"></input>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
