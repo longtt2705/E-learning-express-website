@@ -8,6 +8,7 @@ const config = require("../config/default.json");
 const multer = require("multer");
 const fs = require("fs");
 const courseModel = require("../models/course.model");
+const orderModel = require("../models/order.model");
 const courseContentModel = require("../models/course-content.model");
 const courseContentDetailModel = require("../models/course-content-detail.model");
 const { async } = require("crypto-random-string");
@@ -17,8 +18,15 @@ const router = express.Router();
 
 router.get("/", auth, isAdmin, async function (req, res) {
   const active = getActive("dashboard");
+  const rowTeacher=await accountModel.countTeacher();
+  const rowStudent= await accountModel.countStudent();
+  const rowTotalCost=await orderModel.getTotalOrder();
+  
   res.render("viewAdmin/dashboard", {
     layout: "admin.hbs",
+    totalTeacher:rowTeacher,
+    totalStudent:rowStudent,
+    TotalOrder:rowTotalCost,
     active,
   });
 });

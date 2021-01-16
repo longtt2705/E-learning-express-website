@@ -12,6 +12,12 @@ module.exports = {
       `select c.id from ${TBL_ORDERS} o join orderdetails od on o.id = od.orderid join courses c on od.courseId = c.id where o.username = '${username}' and od.courseId = '${courseId}'`
     );
   },
+  async getTotalOrder(){
+    const row= await db.load(
+      `select sum(totalcost) as total from ${TBL_ORDERS}`
+    );
+    return row[0].total;
+  },
 
   getCoursesBoughtByUsername(username) {
     return db.load(

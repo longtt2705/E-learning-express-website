@@ -19,7 +19,7 @@
             labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
             datasets: [{
                 label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                data: [2, 12, 3, 5, 2, 3],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -55,7 +55,7 @@
             labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
             datasets: [{
                 label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                data: [2, 25, 3, 5, 2, 3],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -117,11 +117,11 @@
                     <div class="card mb-3 widget-content bg-midnight-bloom">
                         <div class="widget-content-wrapper text-white">
                             <div class="widget-content-left">
-                                <div class="widget-heading">Total Orders</div>
-                                <div class="widget-subheading">Last year expenses</div>
+                                <div class="widget-heading">Orders</div>
+                                <div class="widget-subheading">Total orders cost</div>
                             </div>
                             <div class="widget-content-right">
-                                <div class="widget-numbers text-white"><span>1896</span></div>
+                                <div class="widget-numbers text-white"><span>{{TotalOrder}}$</span></div>
                             </div>
                         </div>
                     </div>
@@ -131,10 +131,10 @@
                         <div class="widget-content-wrapper text-white">
                             <div class="widget-content-left">
                                 <div class="widget-heading">Teachers</div>
-                                <div class="widget-subheading">Total Teachers Profit</div>
+                                <div class="widget-subheading">Total Teachers</div>
                             </div>
                             <div class="widget-content-right">
-                                <div class="widget-numbers text-white"><span>$ 568</span></div>
+                                <div class="widget-numbers text-white"><span>{{totalTeacher}}</span></div>
                             </div>
                         </div>
                     </div>
@@ -143,11 +143,11 @@
                     <div class="card mb-3 widget-content bg-grow-early">
                         <div class="widget-content-wrapper text-white">
                             <div class="widget-content-left">
-                                <div class="widget-heading">Total Student</div>
-                                <div class="widget-subheading">People Interested</div>
+                                <div class="widget-heading">Students</div>
+                                <div class="widget-subheading">Total Students</div>
                             </div>
                             <div class="widget-content-right">
-                                <div class="widget-numbers text-white"><span>153589</span></div>
+                                <div class="widget-numbers text-white"><span>{{totalStudent}}</span></div>
                             </div>
                         </div>
                     </div>
