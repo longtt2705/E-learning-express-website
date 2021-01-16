@@ -1,12 +1,16 @@
 {{#section 'css'}}
 <link rel="stylesheet" href="/styles/home.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
-
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
 {{/section}}
 
 {{#section 'script'}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
 <script>
     $(function () {
         $(window).on("scroll", function () {
@@ -46,8 +50,13 @@
         const newTag = $(this).data("new");
         $(this).append(newTag).append(" ").append(bestTag);
     });
+    $("img.lazy").lazyload({
+        threshold: 200,
+        effect: "fadeIn"
+    });
 </script>
 {{/section}}
+
 
 <!-- Page Preloder -->
 <div id="preloder">
@@ -65,7 +74,7 @@
     </ol>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <section class="hero-section set-bg" data-setbg="public/img/banner1.jpg">
+            <section class="hero-section set-bg" data-setbg="public/img/banner1.jpg" style="background-size: cover;">
                 <div class="container">
                     <div class="hero-text">
                         <h1 class="font-weight-bold text-white">Get all the best free online courses </h1>
@@ -74,25 +83,24 @@
                             world-class universities and
                             companies.</p>
                         {{#if isAuth}}
-                        <a href="#categories" class="btn btn-danger font-weight-bold text-white p-3">Find
+                        <a href="#outstanding-courses" class="btn btn-danger font-weight-bold text-white p-3">Find
                             out</a>
                         {{else}}
                         <a href="/account/signup" class="btn btn-danger font-weight-bold text-white p-3">Join for
                             free</a>
                         {{/if}}
-
                     </div>
                 </div>
             </section>
         </div>
         <div class="carousel-item hero-section">
             <section class="hero-section set-bg w-100" data-setbg="public/img/banner2.jpg"
-                style="background-size: contain;">
+                style="background-size: cover;">
             </section>
         </div>
         <div class="carousel-item">
             <section class="hero-section set-bg w-100" data-setbg="public/img/banner3.jpg"
-                style="background-size: contain;">
+                style="background-size: cover;">
 
             </section>
         </div>
@@ -109,7 +117,7 @@
 
 
 
-<section class="course-section spad">
+<section class="course-section spad" id="outstanding-courses">
     <div class="container">
         <div class="section-title">
             <h2>
@@ -126,10 +134,10 @@
 
                 {{#each this.outstandingCourses as |course|}}
                 <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="course-items">
+                    <div class="course-items shadow">
                         <div class="course-thumb set-bg" data-setbg="{{Image}}">
-                            <img class="course-image" src="/public/courses/{{course.Image}}" alt="courseImage"
-                                style="border-top-right-radius: 10px; border-top-left-radius: 10px;">
+                            <img class="course-image lazy" data-original="/public/courses/{{course.Image}}"
+                                alt="courseImage" style="border-top-right-radius: 10px; border-top-left-radius: 10px;">
                             {{#if course.DiscountPrice}}
                             <div class="price">
                                 <span style="font-size: 20px;">${{formatPrice course.DiscountPrice}}</span>
@@ -196,9 +204,10 @@
             {{#each this.mostViewCourses as |course|}}
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <a href="/course/{{course.Id}}">
-                    <div class="course-item">
+                    <div class="course-item shadow">
                         <div class="course-thumb set-bg" style="background-color: black;">
-                            <img class="course-image" src="/public/courses/{{course.Image}}" alt="courseImage">
+                            <img class="course-image lazy" data-original="/public/courses/{{course.Image}}"
+                                alt="courseImage">
 
                             {{#if course.DiscountPrice}}
                             <div class="price">
@@ -255,7 +264,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row ">
             {{#each this.outstandingCate}}
             <!-- categorie -->
             <div class="col-lg-4 col-md-6">
@@ -263,11 +272,11 @@
 
                     <div class="categorie-item">
                         {{#if this.Image}}
-                        <img class="ci-thumb" src="/public/img/categories/{{this.Image}}" alt="categories" width="400px"
-                            height="163px">
+                        <img class="ci-thumb lazy" data-original="/public/img/categories/{{this.Image}}"
+                            alt="categories" width="400px" height="163px">
                         {{else}}
-                        <img class="ci-thumb" src="/public/img/categories/new/new_category_item.jpg" alt="avatar"
-                            width="400px" height="163px">
+                        <img class="ci-thumb lazy" data-original="/public/img/categories/new/new_category_item.jpg"
+                            alt="avatar" width="400px" height="163px">
                         {{/if}}
                         <div class="ci-text">
                             <h5>{{this.Name}}</h5>
@@ -303,9 +312,10 @@
             {{#each this.newestCourses as |course|}}
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <a href="/course/{{course.Id}}">
-                    <div class="course-item">
+                    <div class="course-item shadow">
                         <div class="course-thumb set-bg" style="background-color: black;">
-                            <img class="course-image" src="/public/courses/{{course.Image}}" alt="courseImage">
+                            <img class="course-image lazy" data-original="/public/courses/{{course.Image}}"
+                                alt="courseImage">
 
                             {{#if course.DiscountPrice}}
                             <div class="price">

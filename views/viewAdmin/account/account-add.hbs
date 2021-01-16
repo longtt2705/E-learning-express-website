@@ -12,8 +12,9 @@
         e.preventDefault();
 
         const email = $('#email').val();
-        if (email.length === 0) {
-            errorMessage("Email cannot be empty!")
+        const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+        if (!re.test(email)) {
+            errorMessage("Email format is incorrect!")
             return;
         }
 
@@ -30,10 +31,14 @@
         }
 
         const name = $('#name').val();
-        console.log(name)
         if (name.length === 0) {
             errorMessage("Name cannot be empty!")
             return;
+        } else {
+            if (name.includes(`'`) || name.includes(`""`) || name.includes("`")) {
+                errorMessage("Name cannot have special characters!")
+                return;
+            }
         }
 
         const phone = $('#phone').val();

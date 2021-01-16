@@ -27,8 +27,22 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 const id = $(this).data("id");
-                $('#txtId').val(id);
+                $('#frmDelete #txtId').val(id);
                 $('#frmDelete').submit();
+            }
+        })
+    });
+    $('.suspend').on('click', function () {
+        Swal.fire({
+            title: 'Do you want to suspend/unlock this course?',
+            showCancelButton: true,
+            confirmButtonText: `Accept`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                const id = $(this).data("id");
+                $('#frmSuspend #txtId').val(id);
+                $('#frmSuspend').submit();
             }
         })
     });
@@ -54,17 +68,21 @@
         // params found
         if (url.length > 1 && arr[arr.length - 1] === 'search') {
 
-            const search = getUrlParameter("search").replace("+", " ");
-            const sort = getUrlParameter("sort").replace("+", " ");
-            const order = getUrlParameter("order").replace("+", " ");
-            const searchContent = getUrlParameter("searchContent").replace("+", " ");
-
+            const search = getUrlParameter("search");
+            const sort = getUrlParameter("sort");
+            const order = getUrlParameter("order");
+            const category = getUrlParameter("category");
+            let searchContent = getUrlParameter("searchContent");
+            if (searchContent !== null) {
+                searchContent = searchContent.replace(/[+]/g, " ");
+            }
             $("#form_search #search").val(search).change();
             $("#form_search #sort").val(sort).change();
             $("#form_search #order").val(order).change();
             $("#form_search #searchContent").val(searchContent);
+            $("#form_search #category").val(category).change();
 
-            let PageURL = "?search=" + search + "&sort=" + sort + "&order=" + order + "&searchContent=" + searchContent;
+            let PageURL = "?search=" + search + "&sort=" + sort + "&order=" + order + "&searchContent=" + searchContent + "&category=" + category;
             $('a[class=page-link]').map(function () {
                 $(this).attr("href", PageURL + "&page=" + $(this).data("page"));
             });
@@ -78,7 +96,9 @@
     <form id="frmDelete" action="/admin/course/delete" method="POST">
         <input type="hidden" name="Id" id="txtId">
     </form>
-
+    <form id="frmSuspend" action="/admin/course/suspend" method="POST">
+        <input type="hidden" name="Id" id="txtId">
+    </form>
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
@@ -99,12 +119,23 @@
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-3">
                                 <div class="form-group">
                                     <label>Search Type:</label>
                                     <select class="select2" style="width: 100%;" name="search" id="search">
                                         <option value="c.author" selected>Author</option>
                                         <option value="c.name">Course Name</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Category:</label>
+                                    <select class="select2" style="width: 100%;" name="category" id="category">
+                                        <option value="all">All</option>
+                                        {{#each categories}}
+                                        <option value="{{Id}}">{{Name}}</option>
+                                        {{/each}}
                                     </select>
                                 </div>
                             </div>
@@ -122,7 +153,7 @@
                                     <label>Order By:</label>
                                     <select class="select2" style="width: 100%;" name="order" id="order">
                                         <option value="AverageRate" selected>Rating</option>
-                                        <option value="c.price">Price</option>
+                                        <option value="c.discountprice/c.price">Price</option>
                                     </select>
                                 </div>
                             </div>
@@ -157,20 +188,26 @@
                 <table class="table table-striped projects table-hover">
                     <thead>
                         <tr>
-                            <th style="width: 30%">
+                            <th style="width: 25%">
                                 Course Name
                             </th>
-                            <th style="width: 20%">
+                            <th style="width: 17%">
                                 Author
                             </th>
-                            <th style="width: 15%">
+                            <th style="width: 10%">
                                 Category
                             </th>
-                            <th style="width: 10%">
+                            <th style="width: 7%">
                                 Price
+                            </th>
+                            <th style="width: 7%">
+                                Rating
                             </th>
                             <th style="width: 8%">
                                 Progress
+                            </th>
+                            <th style="width: 8%">
+                                Status
                             </th>
                             <th>
                             </th>
@@ -197,7 +234,15 @@
                                 {{CateName}}
                             </td>
                             <td>
-                                ${{Price}}
+                                {{#if DiscountPrice}}
+                                ${{formatPrice DiscountPrice}} <br>
+                                <span style="text-decoration: line-through;">${{formatPrice Price}}</span>
+                                {{else}}
+                                ${{formatPrice Price}}
+                                {{/if}}
+                            </td>
+                            <td>
+                                {{AverageRate}}
                             </td>
                             <td>
                                 {{#if isFinish}}
@@ -206,12 +251,29 @@
                                 <span class="badge badge-danger">Not Completed</span>
                                 {{/if}}
                             </td>
+                            <td>
+                                {{#if isApprove}}
+                                <span class="badge badge-success">{{StatusType}}</span>
+                                {{else}}
+                                <span class="badge badge-danger">{{StatusType}}</span>
+                                {{/if}}
+
+                            </td>
                             <td class="project-actions text-right">
                                 <a class="btn btn-primary btn-sm" href="/course/{{Id}}">
                                     <i class="fas fa-folder">
                                     </i>
                                     View
                                 </a>
+                                <button class="btn btn-warning btn-sm suspend" data-id="{{Id}}">
+                                    {{#unless isSuspend}}
+                                    <i class="fas fa-lock"></i>
+                                    Suspend
+                                    {{else}}
+                                    <i class="fas fa-lock-open"></i>
+                                    Suspend
+                                    {{/unless}}
+                                </button>
                                 <button class="btn btn-danger btn-sm delete" data-id="{{Id}}">
                                     <i class="fas fa-trash"></i>
                                     Delete

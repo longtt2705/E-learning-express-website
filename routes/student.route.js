@@ -44,27 +44,37 @@ router.get("/course/:courseId", auth, isStudent, async (req, res) => {
         lesson: lesson,
         isActive: false,
       };
-      chapter.lessons.push(lessonDetail);
-      if (playing !== undefined) {
-        if (lessonIndex == playing) {
-          playingVideo = lesson;
-          lessonDetail.isActive = true;
-          const progressDetail = await courseProgressDetailModel.singleByProgressIdAndLesson(
-            lesson.Id,
-            progress.Id
-          );
-          currentTime = progressDetail ? progressDetail.Progress : 0;
-        }
-      } else if (progress.CurrentLesson === lesson.Id) {
-        playingVideo = lesson;
-        lessonDetail.isActive = true;
+      if (progress !== null) {
         const progressDetail = await courseProgressDetailModel.singleByProgressIdAndLesson(
           lesson.Id,
           progress.Id
         );
-        currentTime = progressDetail ? progressDetail.Progress : 0;
+
+        if (progressDetail !== null) {
+          lessonDetail.IsFinish =
+            progressDetail.IsFinish == "1" ? progressDetail.IsFinish : null;
+          lessonDetail.currentTime = progressDetail
+            ? progressDetail.Progress
+            : 0;
+          lessonDetail.duration = progressDetail ? progressDetail.Duration : 0;
+        }
+
+        if (playing !== undefined) {
+          if (lessonIndex == playing) {
+            playingVideo = lesson;
+            lessonDetail.isActive = true;
+
+            currentTime = progressDetail ? progressDetail.Progress : 0;
+          }
+        } else if (progress.CurrentLesson === lesson.Id) {
+          playingVideo = lesson;
+          lessonDetail.isActive = true;
+
+          currentTime = progressDetail ? progressDetail.Progress : 0;
+        }
       }
       lessonIndex++;
+      chapter.lessons.push(lessonDetail);
     }
   }
 
@@ -88,7 +98,7 @@ router.get("/course/:courseId", auth, isStudent, async (req, res) => {
 
 router.post("/course-progress/update", auth, isStudent, async (req, res) => {
   const username = req.session.authUser.Username;
-  const { lessonId, currentTime, courseId } = req.body;
+  const { lessonId, currentTime, fullTime, courseId } = req.body;
   const progress = await courseProgressModel.singleByUsernameAndCourse(
     username,
     courseId
@@ -106,12 +116,16 @@ router.post("/course-progress/update", auth, isStudent, async (req, res) => {
         statusId: 1,
         progress: currentTime,
         lessonId: lessonId,
+        duration: fullTime,
+        IsFinish: Math.abs(currentTime - fullTime) <= 0.1 * fullTime,
       });
   } else {
-    progressDetail.Progress =
-      progressDetail.Progress >= currentTime
-        ? progressDetail.Progress
-        : currentTime;
+    progressDetail.Progress = currentTime;
+    progressDetail.IsFinish =
+      progressDetail.IsFinish == "1"
+        ? progressDetail.IsFinish
+        : Math.abs(currentTime - fullTime) <= 0.1 * fullTime;
+
     await courseProgressDetailModel.patch(progressDetail);
   }
   res.json("OK");
@@ -159,18 +173,28 @@ router.get("/wishlist/add/:courseId", auth, isStudent, async (req, res) => {
   const username = req.session.authUser.Username;
   const courseid = req.params.courseId;
   const row = { Username: username, CourseId: courseid };
-  await wishlistsModel.add(row);
+  const result = await wishlistsModel.singleByCourseIdAndUsername(
+    courseid,
+    username
+  );
+  if (result === null) await wishlistsModel.add(row);
   res.redirect("/course/" + courseid);
 });
 router.get("/wishlist/delete/:courseId", auth, isStudent, async (req, res) => {
   const courseid = req.params.courseId;
-  const id = await wishlistsModel.singleIdByCourseID(courseid);
+  const id = await wishlistsModel.singleByCourseIdAndUsername(
+    courseid,
+    req.session.authUser.Username
+  );
 
   await wishlistsModel.delete(id);
   res.redirect("/course/" + courseid);
 });
 router.post("/wishlist/delete", auth, isStudent, async (req, res) => {
-  const id = await wishlistsModel.singleIdByCourseID(req.body.Id);
+  const id = await wishlistsModel.singleByCourseIdAndUsername(
+    req.body.Id,
+    req.session.authUser.Username
+  );
 
   await wishlistsModel.delete(id);
   res.redirect("/student/wishlist");
@@ -226,11 +250,17 @@ router.get("/my-learning", auth, isStudent, async (req, res) => {
       username,
       course.Id
     );
-
+    if (progress === null) {
+      courseList.push({
+        ...course,
+        progress: 0,
+      });
+      continue;
+    }
     const allLessons = await courseContentDetailModel.countAllByCourseId(
       course.Id
     );
-    const learnedLessons = await courseProgressDetailModel.countAllByProgressId(
+    const learnedLessons = await courseProgressDetailModel.countLessonFinishedByProgressId(
       progress.Id
     );
 

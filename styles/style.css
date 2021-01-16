@@ -14,6 +14,7 @@ body {
   height: 100%;
   font-family: "Raleway", sans-serif;
   -webkit-font-smoothing: antialiased;
+  background-color: #f9f9f9;
 }
 
 h1,
@@ -510,7 +511,7 @@ ol {
 
 .course-item {
   margin-bottom: 30px;
-  box-shadow: 0px 0px 10px;
+  /* box-shadow: 0px 0px 10px; */
 }
 
 .course-item .course-thumb {
@@ -528,7 +529,11 @@ ol {
 }
 
 .course-item .course-info {
-  background: #edf4f6;
+  /* background-image: linear-gradient(
+    rgba(255, 221, 225, 0.3),
+    rgba(238, 156, 167, 0.3)
+  ); */
+  background-color: white;
 }
 
 .course-item .course-info .course-text {
@@ -661,7 +666,7 @@ ol {
 
 .course-item:hover .course-info {
   color: white;
-  background-color: #d82a4e;
+  background-image: linear-gradient(#f0385c, #d82a4e);
 }
 .course-item:hover .course-info .course-text h5 {
   color: white;

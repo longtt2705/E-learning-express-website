@@ -13,9 +13,9 @@ module.exports = {
     );
   },
 
-  async countAllByProgressId(progressId) {
+  async countLessonFinishedByProgressId(progressId) {
     const rows = await db.load(
-      `select count(*) as total from ${TBL_PROGRESS_DETAIL} where progressId = '${progressId}'`
+      `select count(*) as total from ${TBL_PROGRESS_DETAIL} where progressId = '${progressId}' and IsFinish = '1'`
     );
     return rows[0].total;
   },

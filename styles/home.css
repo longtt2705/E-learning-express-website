@@ -97,7 +97,7 @@ a:hover {
 }
 
 .course-items {
-  box-shadow: 0px 0px 200px;
+  /* box-shadow: 0px 0px 200px; */
   border-radius: 10px;
 }
 

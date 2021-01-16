@@ -3,9 +3,6 @@
   padding: 0px;
 }
 
-.card {
-}
-
 .video {
   background-color: blueviolet;
 }
@@ -57,9 +54,6 @@ body {
 .simple-card .nav.nav-tabs {
   border-bottom: 1px solid #e6e6f2;
 }
-.simple-card .nav.nav-tabs .nav-item {
-}
-
 .simple-card .nav.nav-tabs .nav-item .nav-link {
   padding: 17px 49px;
   color: #71748d;
@@ -142,7 +136,8 @@ body {
 
 .playing,
 .lesson-item:hover {
-  background-color: cadetblue;
+  background-color: #d82a4e;
+  color: white !important;
 }
 
 .playing a,
@@ -150,4 +145,12 @@ body {
   text-decoration: none;
   font-weight: bold;
   color: white;
+}
+
+.finish {
+  color: #d82a4e !important;
+}
+
+.no-finish {
+  color: gray;
 }

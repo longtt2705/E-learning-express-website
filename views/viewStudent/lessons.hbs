@@ -25,6 +25,14 @@
         $(this).html($(this).data("des"));
     });
 
+    $(".progress-bar").each(function (e) {
+        const progress = Math.round(+$(this).data("progress") / $(this).data("duration") * 100);
+        if (isNaN(progress))
+            $(this).css("width", `0%`);
+        else
+            $(this).css("width", `${progress}%`);
+    });
+
     $("#description").html($("#description").data("des"));
     $(window).bind('beforeunload', function () {
 
@@ -32,16 +40,18 @@
         const lessonId = $('#data').data("lesson");
         const video = videojs('video-onplay');
         const currentTime = video.currentTime();
+        const fullTime = video.duration();
 
         const data = {
             lessonId: lessonId,
             currentTime: currentTime,
+            fullTime: fullTime,
             courseId: courseId,
         }
         $.post(`/student/course-progress/update`, data, function (data) { });
     });
 
-    $(".playing").parent().parent().addClass("show");
+    $(".playing").parent().parent().parent().addClass("show");
     const video = videojs('video-onplay').currentTime($('#data').data("time"));
 </script>
 
@@ -52,8 +62,8 @@
     <div class="row">
         <div class="col-xl-8">
             <div id="data" data-course="{{course.Id}}" data-lesson="{{playingVideo.Id}}" data-time="{{currentTime}}">
-                <video id="video-onplay" class="video-js" controls preload="auto" data-setup="{}" width="650"
-                    height="350">
+                <video id="video-onplay" class="video-js w-100" controls preload="auto" data-setup="{}" width="650"
+                    height="400">
                     <source src="/public/courses/{{playingVideo.Video}}" type="video/mp4" />
                 </video>
             </div>
@@ -92,20 +102,25 @@
         </div>
         <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 pl-xl-0 pl-lg-0 pl-md-0  m-b-30">
             <div class="card">
-                <h4 class="m-2 text-center">Content</h4>
                 <div class="custom-scrollbar-css">
                     <div class="card">
                         {{#each course.chapters as |chapter|}}
-                        <div class="card-header btn" data-toggle="collapse" data-target="#chapter-{{chapter.Id}}">
+                        <div class="card-header btn font-weight-bold" data-toggle="collapse"
+                            data-target="#chapter-{{chapter.Id}}">
                             {{chapter.ChapterName}}
                         </div>
                         <div class="collapse" data-toggle="collapse" aria-expanded="false" id="chapter-{{chapter.Id}}">
                             <ul class="list-group">
                                 {{#each chapter.lessons as |lesson|}}
-                                <li class="list-group-item lesson-item {{#if lesson.isActive}}playing{{/if}}">
-                                    <a class="text-decoration-none"
-                                        href="?playing={{lesson.index}}">{{lesson.lesson.Name}}</a>
-                                </li>
+                                <a class="text-decoration-none {{#if lesson.IsFinish}}finish{{else}}no-finish{{/if}}"
+                                    href="?playing={{lesson.index}}">
+                                    <li
+                                        class="list-group-item lesson-item font-weight-bold {{#if lesson.isActive}}playing{{/if}}">
+                                        <i class="fas fa-check-circle"></i>&nbsp;{{lesson.lesson.Name}}
+                                    </li>
+                                    <div class="progress-bar" style="background-color: rgb(240, 66, 66); height: 5px"
+                                        data-progress={{lesson.currentTime}} data-duration="{{lesson.duration}}"></div>
+                                </a>
                                 {{/each}}
                             </ul>
                         </div>

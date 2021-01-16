@@ -11,8 +11,14 @@ module.exports = {
     return db.load(`select * from ${TBL_COURSE}`);
   },
 
-  async countAll() {
-    const rows = await db.load(`select count(*) as total from ${TBL_COURSE}`);
+  async countAll(admin = false) {
+    let rows = null;
+    if (admin)
+      rows = await db.load(`select count(*) as total from ${TBL_COURSE}`);
+    else
+      rows = await db.load(
+        `select count(*) as total from ${TBL_COURSE} where statusid = '2'`
+      );
     if (rows.length === 0) return 0;
     return rows[0].total;
   },
@@ -39,9 +45,13 @@ module.exports = {
     return rows[0];
   },
 
-  allByPage(offset) {
+  allByPage(offset, admin = false) {
+    if (admin)
+      return db.load(
+        `${selectField} group by c.Id limit ${config.pagination.limit} offset ${offset}`
+      );
     return db.load(
-      `${selectField} group by c.Id limit ${config.pagination.limit} offset ${offset}`
+      `${selectField} where c.statusid = '2' group by c.Id limit ${config.pagination.limit} offset ${offset} `
     );
   },
 
@@ -59,7 +69,69 @@ module.exports = {
     return rows[0].total;
   },
 
-  async searchWithLikeByPage(searchType, sort, order, content, offset) {
+  async searchWithLikeByPage(
+    searchType,
+    sort,
+    order,
+    content,
+    offset,
+    admin = false,
+    categories = "all"
+  ) {
+    let sorting = "";
+    const splited = order.split("/");
+    if (splited.length > 1) {
+      sorting = `COALESCE(${splited[0]}, ${splited[1]}) ${sort}`;
+    } else {
+      sorting = `${order} ${sort}`;
+    }
+    const adminStatement = admin ? "" : " and c.statusid = '2'";
+    const cateFilter =
+      categories === "all" ? "" : ` and c.categoryId = '${categories}'`;
+    if (searchType === "And" || searchType === "Or") {
+      return db.load(
+        `${selectField} where cat.Name like '%${content}%' ${searchType} c.Name like '%${content}%' ${adminStatement} ${cateFilter} group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
+      );
+    }
+
+    return db.load(
+      `${selectField} where ${searchType} like '%${content}%' ${adminStatement} ${cateFilter} group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
+    );
+  },
+
+  async countAllWithLike(
+    searchType,
+    content,
+    admin = false,
+    categories = "all"
+  ) {
+    let rows;
+    const adminStatement = admin ? "" : " and c.statusid = '2'";
+    const cateFilter =
+      categories === "all" ? "" : ` and c.categoryId = '${categories}'`;
+    if (searchType === "And" || searchType === "Or") {
+      rows = await db.load(
+        `${countField} where cat.Name like '%${content}%' ${searchType} c.Name like '%${content}%' ${adminStatement} ${cateFilter}`
+      );
+    } else {
+      rows = await db.load(
+        `${countField} where ${searchType} like '%${content}%' ${adminStatement} ${cateFilter}`
+      );
+    }
+
+    if (rows.length === 0) return 0;
+    return rows[0].total;
+  },
+
+  async searchWithFullTextByPage(
+    searchType,
+    sort,
+    order,
+    content,
+    offset,
+    admin = false,
+    categories = "all"
+  ) {
     let sorting = "";
     const splited = order.split("/");
     if (splited.length > 1) {
@@ -68,62 +140,37 @@ module.exports = {
       sorting = `${order} ${sort}`;
     }
 
+    const adminStatement = admin ? "" : " and c.statusid = '2'";
+    const cateFilter =
+      categories === "all" ? "" : ` and c.categoryId = '${categories}'`;
     if (searchType === "And" || searchType === "Or") {
       return db.load(
-        `${selectField} where cat.Name like '%${content}%' ${searchType} c.Name like '%${content}%' group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
+        `${selectField} where MATCH(cat.name) AGAINST('${content}' IN BOOLEAN MODE) ${searchType} MATCH(c.name) AGAINST('${content}' IN BOOLEAN MODE) ${adminStatement} ${cateFilter} group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
       );
     }
 
     return db.load(
-      `${selectField} where ${searchType} like '%${content}%' group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
+      `${selectField} where MATCH(${searchType}) AGAINST('${content}' IN BOOLEAN MODE) ${adminStatement}  ${cateFilter} group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
     );
   },
 
-  async countAllWithLike(searchType, content) {
+  async countAllWithFullText(
+    searchType,
+    content,
+    admin = false,
+    categories = "all"
+  ) {
     let rows;
+    const adminStatement = admin ? "" : " and c.statusid = '2'";
+    const cateFilter =
+      categories === "all" ? "" : ` and c.categoryId = '${categories}'`;
     if (searchType === "And" || searchType === "Or") {
       rows = await db.load(
-        `${countField} where cat.Name like '%${content}%' ${searchType} c.Name like '%${content}%'`
+        `${countField} where MATCH(cat.name) AGAINST('${content}' IN BOOLEAN MODE) ${searchType} MATCH(c.name) AGAINST('${content}' IN BOOLEAN MODE) ${adminStatement}  ${cateFilter}`
       );
     } else {
       rows = await db.load(
-        `${countField} where ${searchType} like '%${content}%'`
-      );
-    }
-
-    if (rows.length === 0) return 0;
-    return rows[0].total;
-  },
-
-  async searchWithFullTextByPage(searchType, sort, order, content, offset) {
-    let sorting = "";
-    const splited = order.split("/");
-    if (splited.length > 1) {
-      sorting = `COALESCE(${splited[0]}, ${splited[1]}) DESC`;
-    } else {
-      sorting = `${order} ${sort}`;
-    }
-
-    if (searchType === "And" || searchType === "Or") {
-      return db.load(
-        `${selectField} where MATCH(cat.name) AGAINST('${content}' IN BOOLEAN MODE) ${searchType} MATCH(c.name) AGAINST('${content}' IN BOOLEAN MODE) group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
-      );
-    }
-
-    return db.load(
-      `${selectField} where MATCH(${searchType}) AGAINST('${content}' IN BOOLEAN MODE) group by c.Id order by ${sorting} limit ${config.pagination.limit} offset ${offset}`
-    );
-  },
-
-  async countAllWithFullText(searchType, content) {
-    let rows;
-    if (searchType === "And" || searchType === "Or") {
-      rows = await db.load(
-        `${countField} where MATCH(cat.name) AGAINST('${content}' IN BOOLEAN MODE) ${searchType} MATCH(c.name) AGAINST('${content}' IN BOOLEAN MODE)`
-      );
-    } else {
-      rows = await db.load(
-        `${countField} where match(${searchType}) against('${content}' IN BOOLEAN MODE)`
+        `${countField} where match(${searchType}) against('${content}' IN BOOLEAN MODE) ${adminStatement} ${cateFilter}`
       );
     }
 
