@@ -21,12 +21,14 @@ router.get("/", auth, isAdmin, async function (req, res) {
   const rowTeacher=await accountModel.countTeacher();
   const rowStudent= await accountModel.countStudent();
   const rowTotalCost=await orderModel.getTotalOrder();
+  const rowHistory = await orderModel.getHistoryOrder();
   
   res.render("viewAdmin/dashboard", {
     layout: "admin.hbs",
     totalTeacher:rowTeacher,
     totalStudent:rowStudent,
     TotalOrder:rowTotalCost,
+    HistoryOrder:rowHistory,
     active,
   });
 });

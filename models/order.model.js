@@ -1,7 +1,7 @@
 const db = require("../utils/database");
 const config = require("../config/default.json");
 const TBL_ORDERS = "orders";
-
+const TBL_ACCOUNT = "accounts";
 module.exports = {
   all() {
     return db.load(`select * from ${TBL_ORDERS}`);
@@ -17,6 +17,12 @@ module.exports = {
       `select sum(totalcost) as total from ${TBL_ORDERS}`
     );
     return row[0].total;
+  },
+  async getHistoryOrder(){
+    const row= await db.load(
+      `SELECT Name as studentName,TotalCost as sale,RoleType as role FROM orders as orders  join accounts as acc on orders.Username=acc.Username join roles as rl on acc.RoleId = rl.id where RoleId = 2 group by orders.Id `
+    );
+    return row;
   },
 
   getCoursesBoughtByUsername(username) {
