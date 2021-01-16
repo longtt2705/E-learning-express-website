@@ -21,10 +21,11 @@ router.get("/", auth, isAdmin, async function (req, res) {
   const rowTeacher=await accountModel.countTeacher();
   const rowStudent= await accountModel.countStudent();
   const rowTotalCost=await orderModel.getTotalOrder();
-  const rowHistory = await orderModel.getHistoryOrder();
+  const rowHistoryStudent = await orderModel.getHistoryOrder();
   const rowTopSale = await orderModel.getTopCourseOrder();
   const rowTopSaleName = [];
   const rowTopSaleTotal = [];
+  
   for (let i = 0; i < rowTopSale.length; i++) {
     rowTopSaleName.push(rowTopSale[i].Name)
     rowTopSaleTotal.push(rowTopSale[i].total)
@@ -35,7 +36,7 @@ router.get("/", auth, isAdmin, async function (req, res) {
     totalTeacher:rowTeacher,
     totalStudent:rowStudent,
     TotalOrder:rowTotalCost,
-    HistoryOrder:rowHistory,
+    HistoryOrder:rowHistoryStudent,
     TopSaleName:rowTopSaleName,
     TopSaleTotal:rowTopSaleTotal,
     active,

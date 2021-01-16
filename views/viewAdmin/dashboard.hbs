@@ -17,18 +17,20 @@
     var TotalOrder = document.getElementById('TotalOrder').getAttribute('value');
     //Parse Name & Order========================= 
     var i;
+    var flag = 0;
     var text = "";
     var No = [];
     var To = [];
     NameOrder = NameOrder + ',';
     TotalOrder = TotalOrder + ',';
-    for (i = 0; i < NameOrder.length; i++) {
+    for (i = 0; i < NameOrder.length && flag < 10; i++) {
         if (NameOrder[i] != ',') {
             text += NameOrder[i];
         }
         else if (NameOrder[i] == ',') {
             No.push(text);
             text = "";
+            flag += 1;
         }
 
     }
@@ -82,12 +84,12 @@
     });
 
     var myChart2 = new Chart(ctx, {
-        type: 'line',
+        type: 'doughnut',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: No,
             datasets: [{
                 label: '# of Votes',
-                data: [2, 25, 3, 5, 2, 3],
+                data: To,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -104,17 +106,11 @@
                     'rgba(153, 102, 255, 1)',
                     'rgba(255, 159, 64, 1)'
                 ],
-                borderWidth: 1
+
             }]
         },
         options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
+
         }
     });
 </script>
@@ -187,19 +183,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-xl-none d-lg-block col-md-6 col-xl-4">
-                    <div class="card mb-3 widget-content bg-premium-dark">
-                        <div class="widget-content-wrapper text-white">
-                            <div class="widget-content-left">
-                                <div class="widget-heading">Products Sold</div>
-                                <div class="widget-subheading">Revenue streams</div>
-                            </div>
-                            <div class="widget-content-right">
-                                <div class="widget-numbers text-warning"><span>$14M</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
             <div class="row">
                 <div class="col-md-12 col-lg-6">
