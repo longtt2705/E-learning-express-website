@@ -11,36 +11,34 @@ const courseModel = require("../models/course.model");
 const orderModel = require("../models/order.model");
 const courseContentModel = require("../models/course-content.model");
 const courseContentDetailModel = require("../models/course-content-detail.model");
-const { async } = require("crypto-random-string");
-const { CLIENT_RENEG_LIMIT } = require("tls");
 
 const router = express.Router();
 
 router.get("/", auth, isAdmin, async function (req, res) {
   const active = getActive("dashboard");
-  const rowTeacher=await accountModel.countTeacher();
-  const rowStudent= await accountModel.countStudent();
-  const rowTotalCost=await orderModel.getTotalOrder();
+  const rowTeacher = await accountModel.countTeacher();
+  const rowStudent = await accountModel.countStudent();
+  const rowTotalCost = await orderModel.getTotalOrder();
   const rowHistoryStudent = await orderModel.getHistoryOrder();
   const rowTopSale = await orderModel.getTopCourseOrder();
   const rowTopSaleName = [];
   const rowTopSaleTotal = [];
   const rowHistoryTeacher = await courseModel.getHistoryUpCourses();
-  
+
   for (let i = 0; i < rowTopSale.length; i++) {
-    rowTopSaleName.push(rowTopSale[i].Name)
-    rowTopSaleTotal.push(rowTopSale[i].total)
+    rowTopSaleName.push(rowTopSale[i].Name);
+    rowTopSaleTotal.push(rowTopSale[i].total);
   }
-  
+
   res.render("viewAdmin/dashboard", {
     layout: "admin.hbs",
-    totalTeacher:rowTeacher,
-    totalStudent:rowStudent,
-    TotalOrder:rowTotalCost,
-    HistoryOrder:rowHistoryStudent,
-    TopSaleName:rowTopSaleName,
-    TopSaleTotal:rowTopSaleTotal,
-    HistoryUpCourses:rowHistoryTeacher,
+    totalTeacher: rowTeacher,
+    totalStudent: rowStudent,
+    TotalOrder: rowTotalCost,
+    HistoryOrder: rowHistoryStudent,
+    TopSaleName: rowTopSaleName,
+    TopSaleTotal: rowTopSaleTotal,
+    HistoryUpCourses: rowHistoryTeacher,
     active,
   });
 });
@@ -618,10 +616,10 @@ router.post("/category/add", auth, isAdmin, async (req, res) => {
 
 router.get("/category/:categoryId/additem", auth, isAdmin, async (req, res) => {
   const active = getActive("category");
-  const name=await categoryModel.singlebyId(req.params.categoryId);
+  const name = await categoryModel.singlebyId(req.params.categoryId);
   res.render("viewAdmin/category/category-additem", {
     layout: "admin.hbs",
-    categoryName:name.Name,
+    categoryName: name.Name,
     active,
   });
 });
@@ -646,12 +644,12 @@ router.post(
   auth,
   isAdmin,
   async (req, res) => {
-    const name=await categoryModel.singleByName(req.body.categoryName);
+    const name = await categoryModel.singleByName(req.body.categoryName);
     const CategoryItem = {
       Name: req.body.nameCategoryItem,
-      ManagementId:name[0].Id 
+      ManagementId: name[0].Id,
     };
-    await categoryModel.additem(CategoryItem.Name,CategoryItem.ManagementId);
+    await categoryModel.additem(CategoryItem.Name, CategoryItem.ManagementId);
     res.redirect("/admin/category");
   }
 );

@@ -12,20 +12,20 @@ module.exports = {
       `select c.id from ${TBL_ORDERS} o join orderdetails od on o.id = od.orderid join courses c on od.courseId = c.id where o.username = '${username}' and od.courseId = '${courseId}'`
     );
   },
-  async getTotalOrder(){
-    const row= await db.load(
+  async getTotalOrder() {
+    const row = await db.load(
       `select sum(totalcost) as total from ${TBL_ORDERS}`
     );
     return row[0].total;
   },
-  async getHistoryOrder(){
-    const row= await db.load(
-      `SELECT Name as studentName,TotalCost as sale,RoleType as role FROM orders as orders  join accounts as acc on orders.Username=acc.Username join roles as rl on acc.RoleId = rl.id where RoleId = 2 group by orders.Id `
+  async getHistoryOrder(limit = 10) {
+    const row = await db.load(
+      `SELECT Name as studentName,TotalCost as sale,RoleType as role FROM orders as orders  join accounts as acc on orders.Username=acc.Username join roles as rl on acc.RoleId = rl.id where RoleId = 2 group by orders.Id limit ${limit}`
     );
     return row;
   },
-  async getTopCourseOrder(){
-    const row= await db.load(
+  async getTopCourseOrder() {
+    const row = await db.load(
       `SELECT Name,count(Name) as total FROM orderdetails as orders join courses as courses on orders.CourseId = courses.Id group by Name; `
     );
     return row;

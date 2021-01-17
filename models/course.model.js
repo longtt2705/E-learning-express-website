@@ -243,11 +243,10 @@ module.exports = {
       `select Id from ${TBL_COURSE} where TotalStudent > 0 order by TotalStudent DESC limit ${limit}`
     );
   },
-  async getHistoryUpCourses() {
+  async getHistoryUpCourses(limit = 10) {
     const rows = await db.load(
-      `SELECT courses.Name as CourseName,acc.Name as AuthorName,date_format( courses.UpdateDate, "%d/%m/%y") as Date FROM courses as courses join accounts as acc on courses.Author= acc.Username;`
+      `SELECT courses.Name as CourseName,acc.Name as AuthorName,date_format( courses.UpdateDate, "%d/%m/%y") as Date FROM courses as courses join accounts as acc on courses.Author= acc.Username limit ${limit};`
     );
-    
 
     return rows;
   },
