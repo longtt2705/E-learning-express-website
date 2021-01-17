@@ -1,0 +1,297 @@
+
+h1,
+h3
+ {
+    letter-spacing: 0;
+    font-weight: normal;
+    position: relative;
+    padding: 0 0 10px 0;
+    font-weight: normal;
+    line-height: 120% !important;
+    color: #1f1f1f;
+    margin: 0
+}
+
+.container .text-center{
+    position: relative;
+    top:30px;
+
+}
+
+.lead {
+    font-size: 18px;
+    line-height: 30px;
+    color: #767676;
+    margin: 0;
+    padding: 0;
+}
+
+.all-title-box{
+	background: url(/public/about/banner.jpg)no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	background-position: center;
+	min-height: 300px;
+}
+
+.section-title h3 {
+    font-size: 42px;
+    font-weight: 500;
+    line-height: 62px;
+    margin: 0 0 25px;
+    padding: 0;
+    text-transform: none;
+}
+
+
+.section.colorsection h3,
+.section.db h3 {
+    color: #ffffff;
+}
+
+.customwidget h1 {
+    font-size: 44px;
+    color: #333333;
+    padding: 15px 0 25px;
+    margin: 0;
+    line-height: 1 !important;
+    font-weight: 300;
+}
+
+.all-title-box h1{
+	color: #fff;
+	font-weight: 600;
+	text-transform: capitalize;
+	padding-top: 11%;
+	font-size: 48px;
+	line-height: 0px;
+}
+
+.testimonial h4 {
+    font-size: 18px;
+    color: #ffffff;
+    padding: 13px 0 0;
+}
+
+
+.message-box h4 {
+    text-transform: uppercase;
+    padding: 0;
+    margin: 0 0 5px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-size: 15px;
+    color: #eea412;
+}
+
+#features h4 {
+    text-transform: capitalize;
+    margin: 0;
+    font-size: 19px;
+}
+
+span.m_1 {
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 1.5em;
+	display: block;
+}
+
+.section_lb{
+    background-color: #F2F3F5;
+    
+}
+
+
+.align-items-center{
+    margin-top: 40px;
+}
+
+#carouselExampleCaptions{
+    margin-top: 80px;
+}
+
+#bottom{
+    height:50px;
+    background-color:#F2F3F5 ;
+}
+
+.hmv-box{
+	padding: 60px 0px; 
+}
+
+.row .bootstrap-select.btn-group[class*="col-"].dropdown-menu-right {
+    float: right;
+}
+
+.inner-hmv{
+	padding: 15px;
+	box-shadow: 0 0px 10px rgba(0,0,0,.1);
+	position: relative;
+	overflow: hidden;
+}
+
+.inner-hmv h3{
+	font-size: 28px;
+	color: #212121;
+    font-weight: 500;
+	margin-bottom: 20px;
+	padding: 0px;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	-o-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.inner-hmv p{
+	margin: 0px;
+}
+
+.inner-hmv:hover .tr-pa{
+	opacity: 1;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	-o-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.icon-box-hmv i{
+	font-size: 60px;
+	color: #eea412;
+}
+.inner-hmv h3{
+	font-size: 28px;
+	color: #212121;
+    font-weight: 500;
+	margin-bottom: 20px;
+	padding: 0px;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	-o-transition: all 0.3s;
+	transition: all 0.3s;
+}
+.inner-hmv p{
+	margin: 0px;
+}
+
+.box-header{
+    display: flex;
+    flex-direction: column;
+    justify-content:center;   
+
+}
+
+.inner-hmv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.teacher{
+    width:200px;
+}
+
+.teacheritem{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.team-avatar img{
+    border-radius: 50%;
+}
+
+.top5teacher{
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    
+}
+
+.fg-primary {
+    color: #eea412 !important;
+    font-family: Arial;
+    text-align: center;
+}
+
+.card-page {
+    position: relative;
+    padding: 20px;
+    background-color: #fff;
+    color: #6b6872;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(95, 90, 104, 0.12);
+  }
+  
+  .card-page hr {
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-bottom: 24px;
+    border-width: 2px;
+    border-color: #F0EEF5;
+  }
+
+  .testimonial{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .desc{
+      height:180px;
+      width:800px;
+      background-color: black;
+      margin-top: 20px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .desc i{
+	color: #eea412;
+  
+  }
+
+  .desc h3{
+      color:white;
+  }
+
+  .carousel-item{
+      margin-top: -300px;
+  }
+
+  .testi-meta img{
+      height:200px;
+      width:200px;
+      border-radius: 50%;
+  }
+
+  #carouselExampleCaptions{
+      background-color: cornflowerblue;
+      background-image: url("/public/about/study.jpg") ;
+      background-size:cover;
+      height: 750px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  }
+
+  #carouselExampleCaptions .section-title{
+      margin-top: 50px;
+      height: 0px;
+
+  }
+
+  #carouselExampleCaptions .section-title h3{
+      color:white;
+      font-weight: bold;
+  }
+

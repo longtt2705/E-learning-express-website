@@ -49,6 +49,15 @@ module.exports = {
     return rows[0];
   },
 
+  async singlebyId(Id){
+    let rows;
+    rows=await db.load(`select* from categories where ID=${Id}`);
+    return rows[0];
+  },
+  additem(name,Id){
+    return db.load(`insert into categories (Name, ManagementId) values ('${name}',${Id})`);
+  },
+
   delete(Id) {
     const condition = { Id: Id };
     return db.del(condition, TBL_CATEGORIES);
