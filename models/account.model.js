@@ -22,6 +22,18 @@ module.exports = {
     );
     return rows[0].total;
   },
+  async countTeacher() {
+    const rows = await db.load(
+      `select count(*) as total from ${TBL_ACCOUNT} where roleid = '3'`
+    );
+    return rows[0].total;
+  },
+  async countStudent() {
+    const rows = await db.load(
+      `select count(*) as total from ${TBL_ACCOUNT} where roleid = '2'`
+    );
+    return rows[0].total;
+  },
 
   async singleByUserName(username, provider = null) {
     let rows;
