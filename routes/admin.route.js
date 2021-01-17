@@ -25,6 +25,7 @@ router.get("/", auth, isAdmin, async function (req, res) {
   const rowTopSale = await orderModel.getTopCourseOrder();
   const rowTopSaleName = [];
   const rowTopSaleTotal = [];
+  const rowHistoryTeacher = await courseModel.getHistoryUpCourses();
   
   for (let i = 0; i < rowTopSale.length; i++) {
     rowTopSaleName.push(rowTopSale[i].Name)
@@ -39,6 +40,7 @@ router.get("/", auth, isAdmin, async function (req, res) {
     HistoryOrder:rowHistoryStudent,
     TopSaleName:rowTopSaleName,
     TopSaleTotal:rowTopSaleTotal,
+    HistoryUpCourses:rowHistoryTeacher,
     active,
   });
 });
