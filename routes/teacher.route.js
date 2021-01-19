@@ -438,9 +438,6 @@ router.post(
         res.redirect("/teacher/edit/" + courseId);
       }
     });
-    res.render("viewTeacher/courses-upload-image", {
-      course,
-    });
   }
 );
 
