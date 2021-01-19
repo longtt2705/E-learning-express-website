@@ -416,7 +416,13 @@ router.post(
     const courseId = req.params.courseId;
     const course = await courseModel.singleById(courseId);
 
+    const dir1 ="./public/courses/"+course.Author+"/";
+    if (!fs.existsSync(dir1)){
+      fs.mkdirSync(dir1);
+    }
+
     const dir = "./public/courses/" + course.Author + "/" + course.Name + "/";
+    
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }
